@@ -16,7 +16,7 @@
       class="flex items-center justify-center bg-blueberry w-full font-hand text-xl"
       :style="'height: ' + heighttext + 'vh'"
     >
-      {{ name }}
+      <router-link :to="`/recipes/${id}`">{{ name }}</router-link>
     </div>
   </section>
 </template>

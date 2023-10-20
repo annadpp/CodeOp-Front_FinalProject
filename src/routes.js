@@ -11,5 +11,5 @@ export const routes = [
   { path: "/grocery", component: Grocery, name: Grocery },
   { path: "/schedule", component: Schedule, name: Schedule },
 
-  { path: "/recipe/:id", component: Recipe, name: Recipe },
+  { path: "/recipes/:id", component: Recipe, name: Recipe },
 ];
