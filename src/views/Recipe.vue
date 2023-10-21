@@ -1,19 +1,21 @@
 <template>
-  <div class="grid grid-cols-2 items-center h-[17vh] pt-8 px-5">
-    <div class="col-span-1"><h2>Name of recipe</h2></div>
-    <div class="col-span-1">
+  <div class="grid grid-cols-8 items-center h-[17vh] pt-8 px-5">
+    <div class="col-span-5 leading-[3rem]">
+      <h2>{{ data.name }}</h2>
+    </div>
+    <div class="col-span-3">
       <div class="flex gap-x-5">
         <p class="text-6xl flex justify-end items-end text-right w-2/3">*</p>
         <div class="flex flex-col items-end gap-y-2 w-1/3">
           <h4
             class="bg-lime h-8 w-full flex justify-center items-center text-border-orange text-xl"
           >
-            Vegetarian
+            {{ data.mainIngredient }}
           </h4>
           <h4
             class="bg-orange h-8 w-full flex justify-center items-center text-border-lime text-xl"
           >
-            Filipino
+            {{ data.country }}
           </h4>
         </div>
       </div>
@@ -21,33 +23,20 @@
   </div>
   <div class="grid grid-cols-7">
     <div class="grid col-span-3 h-[68vh] border-black border-r-2 p-5 gap-y-5">
-      <img
-        class="h-[25vh] object-cover w-full"
-        src="https://www.themealdb.com/images/media/meals/ewcikl1614348364.jpg"
-        alt=""
-      />
+      <img class="h-[25vh] object-cover w-full" :src="data.img" alt="" />
       <p>I N G R E D I E N T S</p>
 
-      <div class="h-[20vh] w-full grid grid-cols-2 gap-2 content-start">
+      <div
+        class="overflow-auto scrollbar-thin scrollbar-thumb-lime scrollbar-track-orange h-[20vh] w-full grid grid-cols-2 gap-2 content-start"
+      >
         <div
+          v-for="ingredient in this.data.ingredients"
           class="flex justify-center items-center bg-blueberry h-[3vh] w-full"
         >
-          <p class="font-hand">Beef</p>
-        </div>
-        <div
-          class="flex justify-center items-center bg-blueberry h-[3vh] w-full"
-        >
-          <p class="font-hand">Beef</p>
-        </div>
-        <div
-          class="flex justify-center items-center bg-blueberry h-[3vh] w-full"
-        >
-          <p class="font-hand">Beef</p>
-        </div>
-        <div
-          class="flex justify-center items-center bg-blueberry h-[3vh] w-full"
-        >
-          <p class="font-hand">Beef</p>
+          <p class="font-hand">
+            <u class="capitalize">{{ ingredient.name }}</u
+            >: <i>{{ ingredient.measure }}</i>
+          </p>
         </div>
       </div>
 
@@ -61,11 +50,13 @@
     <div class="grid col-span-4 h-[68vh] p-5">
       <p>H O W &nbsp&nbspT O &nbsp&nbspC O O K&nbsp&nbsp I T</p>
 
-      <div
-        class="h-[58vh] overflow-auto w-[98%] p-5 font-hand border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-background"
+      <ol
+        class="list-decimal h-[58vh] overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime w-[98%] pl-16 pr-10 pt-10 pb-8 font-hand text-lg border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-background"
       >
-        añlsjfñalsj
-      </div>
+        <li v-for="(step, i) in formattedSteps" :key="i" class="mb-3">
+          {{ step }}
+        </li>
+      </ol>
 
       <!--ADD WEEKLY CARD-->
       <form
@@ -125,80 +116,67 @@
 </template>
 
 <script>
-import Card from "../components/Card.vue";
+import axios from "axios";
+
 export default {
-  components: { Card },
+  name: "Recipe",
+  data() {
+    return {
+      data: [],
+      loading: false,
+    };
+  },
+  created() {
+    this.getRecipes();
+  },
+  methods: {
+    async getRecipes() {
+      this.loading = true;
+      const idRecipe = Number(this.$route.params.id); // Use this.$route.params.id to get the ID from the route
+      const apiUrl = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idRecipe}`;
+      try {
+        const response = await axios.get(apiUrl);
+        this.handleResponse(response);
+      } catch (error) {
+        console.error(`Error fetching recipe:`, error);
+      }
+      this.loading = false;
+    },
+    handleResponse(response) {
+      const recipe = response.data.meals[0]; // Assuming it's a single recipe
+      const ingredients = [];
+      for (let i = 1; i <= 20; i++) {
+        const ingredientName = recipe[`strIngredient${i}`];
+        const measure = recipe[`strMeasure${i}`];
+        if (ingredientName) {
+          ingredients.push({
+            name: ingredientName,
+            measure: measure,
+          });
+        }
+
+        this.data = {
+          img: recipe.strMealThumb,
+          name: recipe.strMeal,
+          ingredients: ingredients,
+          mainIngredient: recipe.strCategory,
+          country: recipe.strArea,
+          steps: recipe.strInstructions,
+        };
+      }
+    },
+  },
+  computed: {
+    formattedSteps() {
+      const steps = this.data.steps;
+      if (steps) {
+        // Use a regular expression to split the text into an array of steps
+        return steps.split(/(?<=\.\s)(?!\()|(?<=\.\))\s/);
+      }
+      return [];
+    },
+  },
 };
 </script>
 
-<style>
-.text-border-lime {
-  text-shadow: rgb(208, 238, 82) 5px 0px 0px,
-    rgb(208, 238, 82) 4.90033px 0.993347px 0px,
-    rgb(208, 238, 82) 4.60531px 1.94709px 0px,
-    rgb(208, 238, 82) 4.12668px 2.82321px 0px,
-    rgb(208, 238, 82) 3.48353px 3.58678px 0px,
-    rgb(208, 238, 82) 2.70151px 4.20736px 0px,
-    rgb(208, 238, 82) 1.81179px 4.6602px 0px,
-    rgb(208, 238, 82) 0.849836px 4.92725px 0px,
-    rgb(208, 238, 82) -0.145998px 4.99787px 0px,
-    rgb(208, 238, 82) -1.13601px 4.86924px 0px,
-    rgb(208, 238, 82) -2.08073px 4.54649px 0px,
-    rgb(208, 238, 82) -2.94251px 4.04248px 0px,
-    rgb(208, 238, 82) -3.68697px 3.37732px 0px,
-    rgb(208, 238, 82) -4.28444px 2.57751px 0px,
-    rgb(208, 238, 82) -4.71111px 1.67494px 0px,
-    rgb(208, 238, 82) -4.94996px 0.7056px 0px,
-    rgb(208, 238, 82) -4.99147px -0.291871px 0px,
-    rgb(208, 238, 82) -4.83399px -1.27771px 0px,
-    rgb(208, 238, 82) -4.48379px -2.2126px 0px,
-    rgb(208, 238, 82) -3.95484px -3.05929px 0px,
-    rgb(208, 238, 82) -3.26822px -3.78401px 0px,
-    rgb(208, 238, 82) -2.4513px -4.35788px 0px,
-    rgb(208, 238, 82) -1.53666px -4.75801px 0px,
-    rgb(208, 238, 82) -0.560763px -4.96845px 0px,
-    rgb(208, 238, 82) 0.437495px -4.98082px 0px,
-    rgb(208, 238, 82) 1.41831px -4.79462px 0px,
-    rgb(208, 238, 82) 2.34258px -4.41727px 0px,
-    rgb(208, 238, 82) 3.17346px -3.86382px 0px,
-    rgb(208, 238, 82) 3.87783px -3.15633px 0px,
-    rgb(208, 238, 82) 4.4276px -2.32301px 0px,
-    rgb(208, 238, 82) 4.80085px -1.39708px 0px,
-    rgb(208, 238, 82) 4.98271px -0.415447px 0px;
-}
-
-.text-border-orange {
-  text-shadow: rgb(253, 95, 9) 5px 0px 0px,
-    rgb(253, 95, 9) 4.90033px 0.993347px 0px,
-    rgb(253, 95, 9) 4.60531px 1.94709px 0px,
-    rgb(253, 95, 9) 4.12668px 2.82321px 0px,
-    rgb(253, 95, 9) 3.48353px 3.58678px 0px,
-    rgb(253, 95, 9) 2.70151px 4.20736px 0px,
-    rgb(253, 95, 9) 1.81179px 4.6602px 0px,
-    rgb(253, 95, 9) 0.849836px 4.92725px 0px,
-    rgb(253, 95, 9) -0.145998px 4.99787px 0px,
-    rgb(253, 95, 9) -1.13601px 4.86924px 0px,
-    rgb(253, 95, 9) -2.08073px 4.54649px 0px,
-    rgb(253, 95, 9) -2.94251px 4.04248px 0px,
-    rgb(253, 95, 9) -3.68697px 3.37732px 0px,
-    rgb(253, 95, 9) -4.28444px 2.57751px 0px,
-    rgb(253, 95, 9) -4.71111px 1.67494px 0px,
-    rgb(253, 95, 9) -4.94996px 0.7056px 0px,
-    rgb(253, 95, 9) -4.99147px -0.291871px 0px,
-    rgb(253, 95, 9) -4.83399px -1.27771px 0px,
-    rgb(253, 95, 9) -4.48379px -2.2126px 0px,
-    rgb(253, 95, 9) -3.95484px -3.05929px 0px,
-    rgb(253, 95, 9) -3.26822px -3.78401px 0px,
-    rgb(253, 95, 9) -2.4513px -4.35788px 0px,
-    rgb(253, 95, 9) -1.53666px -4.75801px 0px,
-    rgb(253, 95, 9) -0.560763px -4.96845px 0px,
-    rgb(253, 95, 9) 0.437495px -4.98082px 0px,
-    rgb(253, 95, 9) 1.41831px -4.79462px 0px,
-    rgb(253, 95, 9) 2.34258px -4.41727px 0px,
-    rgb(253, 95, 9) 3.17346px -3.86382px 0px,
-    rgb(253, 95, 9) 3.87783px -3.15633px 0px,
-    rgb(253, 95, 9) 4.4276px -2.32301px 0px,
-    rgb(253, 95, 9) 4.80085px -1.39708px 0px,
-    rgb(253, 95, 9) 4.98271px -0.415447px 0px;
-}
-</style>
+<style></style>

@@ -13,9 +13,11 @@
             Recipes ({{ totalRecipes }})
           </h3>
         </div>
-        <div class="grid grid-cols-2 h-[55vh] gap-5 overflow-auto mt-6">
+        <div
+          class="grid grid-cols-2 h-[55vh] gap-5 overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime mt-6"
+        >
           <Card
-            v-for="(recipe, i) in data"
+            v-for="recipe in data"
             heightcard="25"
             heightimg="15"
             heighttext="10"
