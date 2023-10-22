@@ -10,7 +10,9 @@
           <h3
             class="bg-orange h-8 w-full flex justify-center items-center text-border-lime text-2xl"
           >
-            Recipes ({{ search ? filteredRecipes.length : totalRecipes }})
+            Recipes ({{
+              search ? filteredRecipes.length : filtersRight.length
+            }})
           </h3>
         </div>
         <div
@@ -55,7 +57,6 @@
             @click="
               showCategories = true;
               showCountries = false;
-              activeCountry = false;
             "
           >
             Category
@@ -137,12 +138,6 @@ export default {
     return {
       data: [],
       dataCategories: [],
-      loading: false,
-      search: "",
-      selectedCategory: null,
-      activeCategory: true,
-      selectedCountry: null,
-      activeCountry: true,
       dataCountries: [
         "French",
         "Chinese",
@@ -159,6 +154,12 @@ export default {
         "Spanish",
         "Kenyan",
       ],
+      loading: false,
+      search: "",
+      selectedCategory: null,
+      activeCategory: true,
+      selectedCountry: null,
+      activeCountry: true,
       showCategories: true,
       showCountries: false,
     };
@@ -170,6 +171,10 @@ export default {
   },
   watch: {
     data: "totalRecipes",
+    search: function () {
+      this.selectedCountry = null;
+      this.selectedCategory = null;
+    },
   },
   methods: {
     async getRecipes() {
@@ -190,7 +195,6 @@ export default {
             error;
         }
       }
-
       this.loading = false;
     },
     handleResponse(response) {
@@ -219,31 +223,47 @@ export default {
         (category) => category.strCategory
       );
     },
-    handleCategories(category) {
+    async handleCategories(category) {
+      this.search = null;
+      await new Promise((resolve) => requestAnimationFrame(resolve));
       if (this.selectedCategory === category) {
         this.selectedCategory = null;
-        this.activeCategory = true;
       } else {
         this.selectedCategory = category;
-        this.activeCategory = false;
+        this.selectedCountry = null;
       }
+      this.activeCategory = !this.activeCategory;
+      this.activeCountry = false;
+    },
+    switchCategories() {
+      this.showCategories = true;
+      this.showCountries = false;
     },
     handleResponseCountries() {
       this.dataCountries = response.data;
     },
-    handleCountries(country) {
+    async handleCountries(country) {
+      this.search = null;
+      await new Promise((resolve) => requestAnimationFrame(resolve));
       if (this.selectedCountry === country) {
         this.selectedCountry = null;
-        this.activeCountry = true;
       } else {
         this.selectedCountry = country;
-        this.activeCountry = false;
+        this.selectedCategory = null;
       }
+      this.activeCountry = !this.activeCountry;
+      this.activeCategory = false;
+
+      this.search = null;
+    },
+    switchCountries() {
+      this.showCategories = false;
+      this.showCountries = true;
     },
   },
   computed: {
     totalRecipes() {
-      return this.data.length + 1;
+      return this.data.length;
     },
     filteredRecipes() {
       const input = this.search.toLowerCase();
