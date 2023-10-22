@@ -23,10 +23,16 @@
   </div>
   <div class="grid grid-cols-7">
     <div class="grid col-span-3 h-[68vh] border-black border-r-2 p-5 gap-y-5">
-      <img class="h-[25vh] object-cover w-full" :src="data.img" alt="" />
-      <p>I N G R E D I E N T S</p>
+      <img
+        class="object-cover w-full"
+        :src="data.img"
+        alt=""
+        :class="closedForm ? 'h-[25vh]' : 'h-[55vh]'"
+      />
+      <p v-if="closedForm">I N G R E D I E N T S</p>
 
       <div
+        v-if="closedForm"
         class="overflow-auto scrollbar-thin scrollbar-thumb-lime scrollbar-track-orange h-[20vh] w-full grid grid-cols-2 gap-2 content-start"
       >
         <div
@@ -41,6 +47,8 @@
       </div>
 
       <button
+        v-if="closedForm"
+        @click="toggleVisibility"
         class="rounded-full border-2 border-black h-[5vh] w-full hover:border-orange hover:text-orange"
       >
         Add to weekly menu
@@ -48,9 +56,13 @@
     </div>
 
     <div class="grid col-span-4 h-[68vh] p-5">
-      <p>H O W &nbsp&nbspT O &nbsp&nbspC O O K&nbsp&nbsp I T</p>
+      <p v-if="closedForm">
+        H O W &nbsp&nbspT O &nbsp&nbspC O O K&nbsp&nbsp I T
+      </p>
+      <p v-else>A D D &nbsp&nbspT O &nbsp&nbspW E E K L Y &nbsp&nbspM E N U</p>
 
       <ol
+        v-if="closedForm"
         class="list-decimal h-[58vh] overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime w-[98%] pl-16 pr-10 pt-10 pb-8 font-hand text-lg border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-background"
       >
         <li v-for="(step, i) in formattedSteps" :key="i" class="mb-3">
@@ -60,10 +72,13 @@
 
       <!--ADD WEEKLY CARD-->
       <form
-        class="hidden h-[58vh] w-full p-5 border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-blueberry"
+        v-else
+        class="h-[58vh] w-full p-5 border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-blueberry"
       >
         <div class="h-[10vh] flex items-start justify-end">
-          <button class="h-[40px] w-[40px] bg-lime">X</button>
+          <button @click="toggleVisibility" class="h-[40px] w-[40px] bg-lime">
+            <p class="text-border-orange hover:text-2xl">X</p>
+          </button>
         </div>
 
         <div class="grid grid-cols-4 gap-x-5 h-[25vh] w-[98%] mt-[7vh]">
@@ -107,7 +122,7 @@
         <button
           class="mt-6 rounded-full border-2 border-black h-[5vh] w-full hover:border-orange hover:text-orange"
         >
-          Add new product
+          Add to weekly menu
         </button>
       </form>
       <!--ADD WEEKLY CARD-->
@@ -124,6 +139,7 @@ export default {
     return {
       data: [],
       loading: false,
+      closedForm: true,
     };
   },
   created() {
@@ -164,6 +180,9 @@ export default {
           steps: recipe.strInstructions,
         };
       }
+    },
+    toggleVisibility() {
+      this.closedForm = !this.closedForm;
     },
   },
   computed: {
