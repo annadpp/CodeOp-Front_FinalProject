@@ -70,7 +70,7 @@
         </li>
       </ol>
 
-      <!--ADD WEEKLY CARD-->
+      <!-- ADD WEEKLY CARD -->
       <form
         v-else
         class="h-[58vh] w-full p-5 border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-blueberry"
@@ -107,25 +107,33 @@
                 id="meal"
                 class="p-1 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[5vh]"
               >
-                <option value="xxxx">xxxx</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
               </select>
               <select
                 name="day"
                 id="day"
                 class="p-1 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[5vh]"
               >
-                <option value="xxxx">xxxx</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
               </select>
             </div>
           </div>
         </div>
         <button
+          @click.prevent="addToWeeklyMenu"
           class="mt-6 rounded-full border-2 border-black h-[5vh] w-full hover:border-orange hover:text-orange"
         >
           Add to weekly menu
         </button>
       </form>
-      <!--ADD WEEKLY CARD-->
+      <!-- ADD WEEKLY CARD -->
     </div>
   </div>
 </template>
@@ -140,6 +148,7 @@ export default {
       data: [],
       loading: false,
       closedForm: true,
+      weeklyMenu: [],
     };
   },
   created() {
@@ -148,7 +157,7 @@ export default {
   methods: {
     async getRecipes() {
       this.loading = true;
-      const idRecipe = Number(this.$route.params.id); // Use this.$route.params.id to get the ID from the route
+      const idRecipe = Number(this.$route.params.id);
       const apiUrl = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idRecipe}`;
       try {
         const response = await axios.get(apiUrl);
@@ -159,7 +168,7 @@ export default {
       this.loading = false;
     },
     handleResponse(response) {
-      const recipe = response.data.meals[0]; // Assuming it's a single recipe
+      const recipe = response.data.meals[0];
       const ingredients = [];
       for (let i = 1; i <= 20; i++) {
         const ingredientName = recipe[`strIngredient${i}`];
@@ -184,13 +193,32 @@ export default {
     toggleVisibility() {
       this.closedForm = !this.closedForm;
     },
+    addToWeeklyMenu() {
+      const selectedMeal = document.getElementById("meal").value;
+      const selectedDay = document.getElementById("day").value;
+
+      this.weeklyMenu.push({
+        img: this.data.img,
+        name: this.data.name,
+        meal: selectedMeal,
+        day: selectedDay,
+        id: Number(this.$route.params.id),
+        ingredients: this.data.ingredients.map((ingredient) => ingredient.name),
+      });
+
+      console.log(this.weeklyMenu);
+    },
   },
   computed: {
     formattedSteps() {
       const steps = this.data.steps;
       if (steps) {
-        // Use a regular expression to split the text into an array of steps
-        return steps.split(/(?<=\.\s)(?!\()|(?<=\.\))\s/);
+        const breakSteps = steps.split(/(?<=\.\s)(?!\()|(?<=\.\))\s/);
+        const cleanedSteps = breakSteps
+          .map((step) => step.trim())
+          .filter((step) => !/^\d+\.$/.test(step) && !/STEP\s+\d+/.test(step));
+
+        return cleanedSteps;
       }
       return [];
     },
