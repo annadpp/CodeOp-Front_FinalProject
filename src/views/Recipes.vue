@@ -10,20 +10,22 @@
           <h3
             class="bg-orange h-8 w-full flex justify-center items-center text-border-lime text-2xl"
           >
-            Recipes ({{ totalRecipes }})
+            Recipes ({{ search ? filteredRecipes.length : data.length }})
           </h3>
         </div>
         <div
           class="grid grid-cols-2 h-[55vh] gap-5 overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime mt-6"
         >
           <Card
-            v-for="recipe in data"
+            v-for="recipe in search ? filteredRecipes : filteredCategories"
+            :key="recipe.id"
             heightcard="25"
             heightimg="15"
             heighttext="10"
             :id="recipe.id"
             :name="recipe.name"
             :img="recipe.img"
+            :category="recipe.category"
           />
         </div>
       </div>
@@ -35,7 +37,8 @@
       >
         <p>S E A R C H &nbsp&nbsp+ &nbsp&nbspF I L T E R</p>
         <input
-          class="border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[5vh]"
+          v-model="search"
+          class="border-black drop-shadow-[8px_8px_0px_#000000] p-2 w-full h-[5vh]"
           type="text"
         />
       </div>
@@ -47,7 +50,7 @@
           <button
             class="bg-lime h-8 flex justify-center items-center text-border-orange text-xl w-1/2"
           >
-            Ingredient
+            Category
           </button>
 
           <button
@@ -57,11 +60,23 @@
           </button>
         </div>
 
-        <div class="flex gap-x-5 h-[55vh] justify-center items-center">
+        <div
+          class="grid grid-cols-2 gap-x-5 h-[50vh] justify-center items-center"
+        >
           <button
-            class="rounded-full border-2 border-black h-[5vh] w-1/2 hover:border-orange hover:text-orange"
+            v-for="category in dataCategories"
+            @click="handleCategories(category)"
+            :class="[
+              'rounded-full border-2 border-black h-[5vh] w-full hover:border-orange hover:text-orange',
+              { 'border-orange text-orange': selectedCategory === category },
+              {
+                'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300':
+                  selectedCategory && selectedCategory !== category,
+              },
+            ]"
+            :disabled="selectedCategory && selectedCategory !== category"
           >
-            button
+            {{ category }}
           </button>
         </div>
       </div>
@@ -79,12 +94,20 @@ export default {
   data() {
     return {
       data: [],
+      dataCategories: [],
       loading: false,
+      search: "",
+      selectedCategory: null,
+      activeCategory: true,
     };
   },
   setup() {},
   mounted() {
     this.getRecipes();
+    this.getCategories();
+  },
+  watch: {
+    data: "totalRecipes",
   },
   methods: {
     async getRecipes() {
@@ -101,10 +124,8 @@ export default {
           const response = await axios.get(apiUrl);
           this.handleResponse(response);
         } catch (error) {
-          console.error(
-            `No recipes with letter ${String.fromCharCode(letter)}`,
-            error
-          );
+          console.error`No recipes with letter ${String.fromCharCode(letter)}`,
+            error;
         }
       }
 
@@ -115,86 +136,57 @@ export default {
         name: recipe.strMeal,
         img: recipe.strMealThumb,
         id: recipe.idMeal,
+        category: recipe.strCategory,
       }));
-      this.data = this.data.concat(recipes); // Concatenate recipes for each letter
+      this.data = this.data.concat(recipes);
+    },
+    getCategories() {
+      this.loading = true;
+      const apiUrlCategories =
+        "https://www.themealdb.com/api/json/v1/1/categories.php";
+      axios
+        .get(apiUrlCategories)
+        .then(this.handleResponseCategories)
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    handleResponseCategories(response) {
+      this.dataCategories = response.data.categories.map(
+        (category) => category.strCategory
+      );
+    },
+    handleCategories(category) {
+      if (this.selectedCategory === category) {
+        this.selectedCategory = null;
+        this.activeCategory = true;
+      } else {
+        this.selectedCategory = category;
+        this.activeCategory = false;
+      }
     },
   },
   computed: {
     totalRecipes() {
-      return this.data.length + 1;
+      return this.data.length;
+    },
+    filteredRecipes() {
+      const input = this.search.toLowerCase();
+      return this.data.filter((recipe) =>
+        recipe.name.toLowerCase().includes(input)
+      );
+    },
+    filteredCategories() {
+      if (this.selectedCategory) {
+        const category = this.selectedCategory.toLowerCase();
+        return this.data.filter(
+          (recipe) => recipe.category.toLowerCase() === category
+        );
+      }
+      return this.data;
     },
   },
 };
 </script>
 
-<style>
-.text-border-lime {
-  text-shadow: rgb(208, 238, 82) 5px 0px 0px,
-    rgb(208, 238, 82) 4.90033px 0.993347px 0px,
-    rgb(208, 238, 82) 4.60531px 1.94709px 0px,
-    rgb(208, 238, 82) 4.12668px 2.82321px 0px,
-    rgb(208, 238, 82) 3.48353px 3.58678px 0px,
-    rgb(208, 238, 82) 2.70151px 4.20736px 0px,
-    rgb(208, 238, 82) 1.81179px 4.6602px 0px,
-    rgb(208, 238, 82) 0.849836px 4.92725px 0px,
-    rgb(208, 238, 82) -0.145998px 4.99787px 0px,
-    rgb(208, 238, 82) -1.13601px 4.86924px 0px,
-    rgb(208, 238, 82) -2.08073px 4.54649px 0px,
-    rgb(208, 238, 82) -2.94251px 4.04248px 0px,
-    rgb(208, 238, 82) -3.68697px 3.37732px 0px,
-    rgb(208, 238, 82) -4.28444px 2.57751px 0px,
-    rgb(208, 238, 82) -4.71111px 1.67494px 0px,
-    rgb(208, 238, 82) -4.94996px 0.7056px 0px,
-    rgb(208, 238, 82) -4.99147px -0.291871px 0px,
-    rgb(208, 238, 82) -4.83399px -1.27771px 0px,
-    rgb(208, 238, 82) -4.48379px -2.2126px 0px,
-    rgb(208, 238, 82) -3.95484px -3.05929px 0px,
-    rgb(208, 238, 82) -3.26822px -3.78401px 0px,
-    rgb(208, 238, 82) -2.4513px -4.35788px 0px,
-    rgb(208, 238, 82) -1.53666px -4.75801px 0px,
-    rgb(208, 238, 82) -0.560763px -4.96845px 0px,
-    rgb(208, 238, 82) 0.437495px -4.98082px 0px,
-    rgb(208, 238, 82) 1.41831px -4.79462px 0px,
-    rgb(208, 238, 82) 2.34258px -4.41727px 0px,
-    rgb(208, 238, 82) 3.17346px -3.86382px 0px,
-    rgb(208, 238, 82) 3.87783px -3.15633px 0px,
-    rgb(208, 238, 82) 4.4276px -2.32301px 0px,
-    rgb(208, 238, 82) 4.80085px -1.39708px 0px,
-    rgb(208, 238, 82) 4.98271px -0.415447px 0px;
-}
-
-.text-border-orange {
-  text-shadow: rgb(253, 95, 9) 5px 0px 0px,
-    rgb(253, 95, 9) 4.90033px 0.993347px 0px,
-    rgb(253, 95, 9) 4.60531px 1.94709px 0px,
-    rgb(253, 95, 9) 4.12668px 2.82321px 0px,
-    rgb(253, 95, 9) 3.48353px 3.58678px 0px,
-    rgb(253, 95, 9) 2.70151px 4.20736px 0px,
-    rgb(253, 95, 9) 1.81179px 4.6602px 0px,
-    rgb(253, 95, 9) 0.849836px 4.92725px 0px,
-    rgb(253, 95, 9) -0.145998px 4.99787px 0px,
-    rgb(253, 95, 9) -1.13601px 4.86924px 0px,
-    rgb(253, 95, 9) -2.08073px 4.54649px 0px,
-    rgb(253, 95, 9) -2.94251px 4.04248px 0px,
-    rgb(253, 95, 9) -3.68697px 3.37732px 0px,
-    rgb(253, 95, 9) -4.28444px 2.57751px 0px,
-    rgb(253, 95, 9) -4.71111px 1.67494px 0px,
-    rgb(253, 95, 9) -4.94996px 0.7056px 0px,
-    rgb(253, 95, 9) -4.99147px -0.291871px 0px,
-    rgb(253, 95, 9) -4.83399px -1.27771px 0px,
-    rgb(253, 95, 9) -4.48379px -2.2126px 0px,
-    rgb(253, 95, 9) -3.95484px -3.05929px 0px,
-    rgb(253, 95, 9) -3.26822px -3.78401px 0px,
-    rgb(253, 95, 9) -2.4513px -4.35788px 0px,
-    rgb(253, 95, 9) -1.53666px -4.75801px 0px,
-    rgb(253, 95, 9) -0.560763px -4.96845px 0px,
-    rgb(253, 95, 9) 0.437495px -4.98082px 0px,
-    rgb(253, 95, 9) 1.41831px -4.79462px 0px,
-    rgb(253, 95, 9) 2.34258px -4.41727px 0px,
-    rgb(253, 95, 9) 3.17346px -3.86382px 0px,
-    rgb(253, 95, 9) 3.87783px -3.15633px 0px,
-    rgb(253, 95, 9) 4.4276px -2.32301px 0px,
-    rgb(253, 95, 9) 4.80085px -1.39708px 0px,
-    rgb(253, 95, 9) 4.98271px -0.415447px 0px;
-}
-</style>
+<style></style>

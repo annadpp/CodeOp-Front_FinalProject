@@ -10,7 +10,7 @@
           <h4
             class="bg-lime h-8 w-full flex justify-center items-center text-border-orange text-xl"
           >
-            {{ data.mainIngredient }}
+            {{ data.category }}
           </h4>
           <h4
             class="bg-orange h-8 w-full flex justify-center items-center text-border-lime text-xl"
@@ -159,7 +159,7 @@ export default {
           img: recipe.strMealThumb,
           name: recipe.strMeal,
           ingredients: ingredients,
-          mainIngredient: recipe.strCategory,
+          category: recipe.strCategory,
           country: recipe.strArea,
           steps: recipe.strInstructions,
         };

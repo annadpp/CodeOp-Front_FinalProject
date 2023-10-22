@@ -32,6 +32,7 @@ export default {
     "id",
     "name",
     "img",
+    "category",
   ],
 };
 </script>
