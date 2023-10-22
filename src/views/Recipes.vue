@@ -10,14 +10,14 @@
           <h3
             class="bg-orange h-8 w-full flex justify-center items-center text-border-lime text-2xl"
           >
-            Recipes ({{ search ? filteredRecipes.length : data.length }})
+            Recipes ({{ search ? filteredRecipes.length : totalRecipes }})
           </h3>
         </div>
         <div
           class="grid grid-cols-2 h-[55vh] gap-5 overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime mt-6"
         >
           <Card
-            v-for="recipe in search ? filteredRecipes : filteredCategories"
+            v-for="recipe in search ? filteredRecipes : filtersRight"
             :key="recipe.id"
             heightcard="25"
             heightimg="15"
@@ -25,7 +25,6 @@
             :id="recipe.id"
             :name="recipe.name"
             :img="recipe.img"
-            :category="recipe.category"
           />
         </div>
       </div>
@@ -48,36 +47,79 @@
       >
         <div class="flex gap-x-5">
           <button
-            class="bg-lime h-8 flex justify-center items-center text-border-orange text-xl w-1/2"
+            :class="{
+              'bg-orange text-border-lime': showCategories,
+              'bg-lime text-border-orange': !showCategories,
+            }"
+            class="h-8 flex justify-center items-center text-xl w-1/2"
+            @click="
+              showCategories = true;
+              showCountries = false;
+              activeCountry = false;
+            "
           >
             Category
           </button>
 
           <button
-            class="bg-orange h-8 flex justify-center items-center text-border-lime text-xl w-1/2"
+            :class="{
+              'bg-orange text-border-lime': showCountries,
+              'bg-lime text-border-orange': !showCountries,
+            }"
+            class="h-8 flex justify-center items-center text-xl w-1/2"
+            @click="
+              showCategories = false;
+              showCountries = true;
+            "
           >
             Country
           </button>
         </div>
 
-        <div
-          class="grid grid-cols-2 gap-x-5 h-[50vh] justify-center items-center"
-        >
-          <button
-            v-for="category in dataCategories"
-            @click="handleCategories(category)"
-            :class="[
-              'rounded-full border-2 border-black h-[5vh] w-full hover:border-orange hover:text-orange',
-              { 'border-orange text-orange': selectedCategory === category },
-              {
-                'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300':
-                  selectedCategory && selectedCategory !== category,
-              },
-            ]"
-            :disabled="selectedCategory && selectedCategory !== category"
+        <div v-if="showCategories">
+          <div
+            class="grid grid-cols-2 gap-x-5 h-[50vh] justify-center items-center"
           >
-            {{ category }}
-          </button>
+            <button
+              v-for="category in dataCategories"
+              @click="handleCategories(category)"
+              :class="[
+                'rounded-full border-2 border-black h-[5vh] w-full',
+                { 'hover:border-orange hover:text-orange': !selectedCategory },
+                { 'border-orange text-orange': selectedCategory === category },
+                {
+                  'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300 cursor-no-drop	':
+                    selectedCategory && selectedCategory !== category,
+                },
+              ]"
+              :disabled="selectedCategory && selectedCategory !== category"
+            >
+              {{ category }}
+            </button>
+          </div>
+        </div>
+
+        <div v-else-if="showCountries">
+          <div
+            class="grid grid-cols-2 gap-x-5 h-[50vh] justify-center items-center"
+          >
+            <button
+              v-for="country in dataCountries"
+              @click="handleCountries(country)"
+              :class="[
+                'rounded-full border-2 border-black h-[5vh] w-full',
+                { 'hover:border-orange hover:text-orange': !selectedCountry },
+                { 'border-orange text-orange': selectedCountry === country },
+                {
+                  'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300 cursor-no-drop	':
+                    selectedCountry && selectedCountry !== country,
+                },
+              ]"
+              :disabled="selectedCountry && selectedCountry !== country"
+            >
+              {{ country }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -99,6 +141,26 @@ export default {
       search: "",
       selectedCategory: null,
       activeCategory: true,
+      selectedCountry: null,
+      activeCountry: true,
+      dataCountries: [
+        "French",
+        "Chinese",
+        "Greek",
+        "Indian",
+        "Italian",
+        "Japanese",
+        "Mexican",
+        "Moroccan",
+        "Russian",
+        "Argentinian",
+        "Vietnamese",
+        "Syrian",
+        "Spanish",
+        "Kenyan",
+      ],
+      showCategories: true,
+      showCountries: false,
     };
   },
   setup() {},
@@ -137,6 +199,7 @@ export default {
         img: recipe.strMealThumb,
         id: recipe.idMeal,
         category: recipe.strCategory,
+        country: recipe.strArea,
       }));
       this.data = this.data.concat(recipes);
     },
@@ -165,10 +228,22 @@ export default {
         this.activeCategory = false;
       }
     },
+    handleResponseCountries() {
+      this.dataCountries = response.data;
+    },
+    handleCountries(country) {
+      if (this.selectedCountry === country) {
+        this.selectedCountry = null;
+        this.activeCountry = true;
+      } else {
+        this.selectedCountry = country;
+        this.activeCountry = false;
+      }
+    },
   },
   computed: {
     totalRecipes() {
-      return this.data.length;
+      return this.data.length + 1;
     },
     filteredRecipes() {
       const input = this.search.toLowerCase();
@@ -184,6 +259,20 @@ export default {
         );
       }
       return this.data;
+    },
+    filteredCountries() {
+      if (this.selectedCountry) {
+        const country = this.selectedCountry.toLowerCase();
+        return this.data.filter(
+          (recipe) => recipe.country.toLowerCase() === country
+        );
+      }
+      return this.data;
+    },
+    filtersRight() {
+      return this.selectedCategory
+        ? this.filteredCategories
+        : this.filteredCountries;
     },
   },
 };
