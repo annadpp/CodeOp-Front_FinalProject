@@ -1,22 +1,46 @@
 <template>
   <div
-    class="h-[25vh] w-1/2 border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-background"
+    class="h-[20vh] w-1/2 border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-background"
   >
     <div
       class="flex border-b-2 w-full h-[5vh] border-black justify-center items-center"
     >
       {{ title }}
     </div>
-    <div class="h-[20vh] font-hand flex justify-center items-center">
-      <p>dafsdfasdfs</p>
+    <div class="h-[14vh] font-hand flex justify-center items-center mb-">
+      <router-link :to="`/recipes/${tomorrowsMealId}`">{{
+        scheduledMealHome(meal)
+      }}</router-link>
     </div>
   </div>
 </template>
 
 <script>
+import { useSchedule } from "../stores/schedule";
+
 export default {
   name: "CardSimple",
-  props: ["title"],
+  props: ["title", "day", "meal"],
+  setup() {
+    const scheduleStore = useSchedule();
+    return { scheduleStore };
+  },
+  data() {
+    return {
+      tomorrowsMealId: "",
+    };
+  },
+  methods: {
+    scheduledMealHome(meal) {
+      for (const item of this.scheduleStore.schedule) {
+        if (meal === item.meal && this.day === item.day) {
+          this.tomorrowsMealId = item.id;
+          return item.name;
+        }
+      }
+      return "NO MEAL";
+    },
+  },
 };
 </script>
 

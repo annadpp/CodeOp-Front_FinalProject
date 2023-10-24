@@ -204,14 +204,12 @@ export default {
       this.selectedMeal = document.getElementById("meal").value;
       this.selectedDay = document.getElementById("day").value;
 
-      const id = this.calculateMealId;
-
       this.scheduleStore.schedule.push({
         meal: this.selectedMeal,
         day: this.selectedDay,
         img: this.data.img,
         name: this.data.name,
-        url: Number(this.$route.params.id),
+        id: Number(this.$route.params.id),
         ingredients: this.data.ingredients.map((ingredient) => ingredient.name),
       });
 

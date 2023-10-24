@@ -12,9 +12,11 @@
     <div
       class="h-[18vh] w-[90%] border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-blueberry"
     >
-      <div class="h-[14.5vh] font-hand flex justify-center items-center">
-        <router-link :to="`/recipes/${url}`">{{
-          calculateMealId("Lunch")
+      <div
+        class="h-[14.5vh] font-hand flex justify-center items-center text-center text-lg px-5"
+      >
+        <router-link :to="`/recipes/${id}`">{{
+          scheduledMeal("Lunch")
         }}</router-link>
       </div>
       <button
@@ -31,9 +33,11 @@
     <div
       class="h-[18vh] w-[90%] border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-blueberry"
     >
-      <div class="h-[14.5vh] font-hand flex justify-center items-center">
-        <router-link :to="`/recipes/${url}`">{{
-          calculateMealId("Dinner")
+      <div
+        class="h-[14.5vh] font-hand flex justify-center items-center text-center text-lg px-5"
+      >
+        <router-link :to="`/recipes/${id}`">{{
+          scheduledMeal("Dinner")
         }}</router-link>
       </div>
       <button
@@ -53,7 +57,7 @@ export default {
   props: ["day"],
   data() {
     return {
-      url: "",
+      id: "",
     };
   },
   setup() {
@@ -61,10 +65,10 @@ export default {
     return { scheduleStore };
   },
   methods: {
-    calculateMealId(meal) {
+    scheduledMeal(meal) {
       for (const item of this.scheduleStore.schedule) {
         if (meal === item.meal && this.day === item.day) {
-          this.url = item.url;
+          this.id = item.id;
           return item.name;
         }
       }
