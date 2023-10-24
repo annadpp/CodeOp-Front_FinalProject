@@ -85,31 +85,22 @@
           <div class="col-span-1 flex flex-col h-[30vh] gap-y-5">
             <div class="h-[5vh] flex items-center">
               <h4
-                class="bg-lime h-8 w-full flex justify-center items-center text-border-orange text-xl"
-              >
-                Meal
-              </h4>
-            </div>
-
-            <div class="h-[5vh] flex items-center">
-              <h4
                 class="bg-orange h-8 w-full flex justify-center items-center text-border-lime text-xl"
               >
                 Day
+              </h4>
+            </div>
+            <div class="h-[5vh] flex items-center">
+              <h4
+                class="bg-lime h-8 w-full flex justify-center items-center text-border-orange text-xl"
+              >
+                Meal
               </h4>
             </div>
           </div>
 
           <div class="col-span-3 w-full flex flex-col justify-between h-[30vh]">
             <div class="flex flex-col gap-y-5">
-              <select
-                name="meal"
-                id="meal"
-                class="p-1 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[5vh]"
-              >
-                <option value="Lunch">Lunch</option>
-                <option value="Dinner">Dinner</option>
-              </select>
               <select
                 name="day"
                 id="day"
@@ -122,6 +113,15 @@
                 <option value="Friday">Friday</option>
                 <option value="Saturday">Saturday</option>
                 <option value="Sunday">Sunday</option>
+              </select>
+
+              <select
+                name="meal"
+                id="meal"
+                class="p-1 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[5vh]"
+              >
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
               </select>
             </div>
           </div>
@@ -140,6 +140,7 @@
 
 <script>
 import axios from "axios";
+import { useSchedule } from "../stores/schedule";
 
 export default {
   name: "Recipe",
@@ -149,7 +150,13 @@ export default {
       loading: false,
       closedForm: true,
       weeklyMenu: [],
+      selectedMeal: "",
+      selectedDay: "",
     };
+  },
+  setup() {
+    const scheduleStore = useSchedule();
+    return { scheduleStore };
   },
   created() {
     this.getRecipes();
@@ -194,19 +201,22 @@ export default {
       this.closedForm = !this.closedForm;
     },
     addToWeeklyMenu() {
-      const selectedMeal = document.getElementById("meal").value;
-      const selectedDay = document.getElementById("day").value;
+      this.selectedMeal = document.getElementById("meal").value;
+      this.selectedDay = document.getElementById("day").value;
 
-      this.weeklyMenu.push({
+      const id = this.calculateMealId;
+
+      this.scheduleStore.schedule.push({
+        meal: this.selectedMeal,
+        day: this.selectedDay,
         img: this.data.img,
         name: this.data.name,
-        meal: selectedMeal,
-        day: selectedDay,
-        id: Number(this.$route.params.id),
+        url: Number(this.$route.params.id),
         ingredients: this.data.ingredients.map((ingredient) => ingredient.name),
+        id: id,
       });
 
-      console.log(this.weeklyMenu);
+      console.log(this.scheduleStore.schedule);
     },
   },
   computed: {
@@ -221,6 +231,23 @@ export default {
         return cleanedSteps;
       }
       return [];
+    },
+    calculateMealId() {
+      const meals = ["Lunch", "Dinner"];
+      const days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ];
+      const mealIndex = meals.indexOf(this.selectedMeal);
+      const dayIndex = days.indexOf(this.selectedDay);
+
+      const mealId = mealIndex + dayIndex * meals.length;
+      return mealId;
     },
   },
 };
