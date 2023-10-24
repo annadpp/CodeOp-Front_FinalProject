@@ -5,22 +5,42 @@
     <div></div>
     <div class="flex justify-between items-center font-sans">
       <router-link to="/schedule"
-        ><button :class="{ 'bg-black text-background': menu === 'schedule' }">
+        ><button
+          :class="{
+            'bg-black text-background': this.$route.path === '/schedule',
+          }"
+          class="hover:underline"
+        >
           SCHEDULE
         </button></router-link
       >
-      <router-link to="/grocery"
-        ><button :class="{ 'bg-black text-background': menu === 'grocery' }">
+      <router-link to="/grocery">
+        <button
+          :class="{
+            'bg-black text-background': this.$route.path === '/grocery',
+          }"
+          class="hover:underline"
+        >
           GROCERY
-        </button></router-link
-      >
+        </button>
+      </router-link>
       <router-link to="/recipes"
-        ><button :class="{ 'bg-black text-background': menu === 'recipes' }">
+        ><button
+          :class="{
+            'bg-black text-background': this.$route.path === '/recipes',
+          }"
+          class="hover:underline"
+        >
           RECIPES
         </button></router-link
       >
       <router-link to="/"
-        ><button :class="{ 'bg-black text-background': menu === 'home' }">
+        ><button
+          :class="{
+            'bg-black text-background': this.$route.path === '/',
+          }"
+          class="hover:underline"
+        >
           HOME
         </button></router-link
       >
