@@ -213,7 +213,6 @@ export default {
         name: this.data.name,
         url: Number(this.$route.params.id),
         ingredients: this.data.ingredients.map((ingredient) => ingredient.name),
-        id: id,
       });
 
       console.log(this.scheduleStore.schedule);
@@ -231,23 +230,6 @@ export default {
         return cleanedSteps;
       }
       return [];
-    },
-    calculateMealId() {
-      const meals = ["Lunch", "Dinner"];
-      const days = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-      ];
-      const mealIndex = meals.indexOf(this.selectedMeal);
-      const dayIndex = days.indexOf(this.selectedDay);
-
-      const mealId = mealIndex + dayIndex * meals.length;
-      return mealId;
     },
   },
 };
