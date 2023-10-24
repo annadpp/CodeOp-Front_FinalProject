@@ -7,7 +7,9 @@
     </h3>
     <h3
       class="bg-lime h-8 w-full flex justify-center items-center text-border-orange text-xl"
-    ></h3>
+    >
+      {{ lunch }}
+    </h3>
 
     <div
       class="h-[18vh] w-[90%] border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-blueberry"
@@ -28,7 +30,9 @@
 
     <h3
       class="bg-lime h-8 w-full flex justify-center items-center text-border-orange text-xl"
-    ></h3>
+    >
+      {{ dinner }}
+    </h3>
 
     <div
       class="h-[18vh] w-[90%] border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-blueberry"
@@ -54,7 +58,7 @@ import { useSchedule } from "../stores/schedule";
 
 export default {
   name: "DailySchedule",
-  props: ["day"],
+  props: ["day", "lunch", "dinner"],
   data() {
     return {
       id: "",
@@ -64,6 +68,7 @@ export default {
     const scheduleStore = useSchedule();
     return { scheduleStore };
   },
+
   methods: {
     scheduledMeal(meal) {
       for (const item of this.scheduleStore.schedule) {

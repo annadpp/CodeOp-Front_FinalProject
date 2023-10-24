@@ -7,7 +7,9 @@
     >
       {{ title }}
     </div>
-    <div class="h-[14vh] font-hand flex justify-center items-center mb-">
+    <div
+      class="h-[14vh] font-hand flex justify-center text-center items-center p-5"
+    >
       <router-link :to="`/recipes/${tomorrowsMealId}`">{{
         scheduledMealHome(meal)
       }}</router-link>

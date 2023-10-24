@@ -12,6 +12,8 @@
             day="Tuesday"
           /><DailySchedule day="Wednesday" /><DailySchedule
             day="Thursday"
+            lunch="Lunch"
+            dinner="Dinner"
           /><DailySchedule day="Friday" /><DailySchedule
             day="Saturday"
           /><DailySchedule day="Sunday" />

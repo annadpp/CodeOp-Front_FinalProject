@@ -1,6 +1,6 @@
 <template>
-  <div class="grid grid-cols-7 justify-center items-center">
-    <div class="grid col-span-4 h-[85vh] border-black border-r-2 p-5">
+  <div class="grid grid-cols-8 justify-center items-center">
+    <div class="grid col-span-5 h-[85vh] border-black border-r-2 p-5">
       <div class="grid row-span-2 items-center h-[17vh]">
         <h2>Grocery list</h2>
       </div>

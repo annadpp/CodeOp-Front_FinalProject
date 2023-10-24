@@ -1,6 +1,6 @@
 <template>
-  <div class="grid grid-cols-7 justify-center items-center">
-    <div class="grid col-span-4 h-[85vh] border-black border-r-2 p-5">
+  <div class="grid grid-cols-8 justify-center items-center">
+    <div class="grid col-span-5 h-[85vh] border-black border-r-2 p-5">
       <div class="grid row-span-2 items-center h-[17vh]">
         <h2>What shall I eat?</h2>
       </div>
@@ -86,6 +86,8 @@
 <script>
 import Card from "../components/Card.vue";
 import CardSimple from "../components/CardSimple.vue";
+import { useSchedule } from "../stores/schedule";
+import { getSchedule } from "../firebase";
 
 const daysOfWeek = [
   "Sunday",
@@ -99,6 +101,15 @@ const daysOfWeek = [
 
 export default {
   components: { Card, CardSimple },
+  setup() {
+    const scheduleStore = useSchedule();
+    return { scheduleStore };
+  },
+  mounted() {
+    getSchedule().then((schedule) => {
+      this.scheduleStore.schedule = schedule;
+    }); // Get info from Firebase -> careful! async function in Firebase.js
+  },
   computed: {
     formattedDate() {
       const months = [

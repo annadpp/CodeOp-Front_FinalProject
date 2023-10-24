@@ -21,7 +21,7 @@
       </div>
     </div>
   </div>
-  <div class="grid grid-cols-7">
+  <div class="grid grid-cols-8">
     <div class="grid col-span-3 h-[68vh] border-black border-r-2 p-5 gap-y-5">
       <img
         class="object-cover w-full"
@@ -55,7 +55,7 @@
       </button>
     </div>
 
-    <div class="grid col-span-4 h-[68vh] p-5">
+    <div class="grid col-span-5 h-[68vh] p-5">
       <p v-if="closedForm">
         H O W &nbsp&nbspT O &nbsp&nbspC O O K&nbsp&nbsp I T
       </p>
@@ -141,6 +141,7 @@
 <script>
 import axios from "axios";
 import { useSchedule } from "../stores/schedule";
+import { updateSchedule } from "../firebase";
 
 export default {
   name: "Recipe",
@@ -213,7 +214,7 @@ export default {
         ingredients: this.data.ingredients.map((ingredient) => ingredient.name),
       });
 
-      console.log(this.scheduleStore.schedule);
+      updateSchedule(this.scheduleStore.schedule);
     },
   },
   computed: {
