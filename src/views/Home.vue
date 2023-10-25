@@ -87,6 +87,7 @@
 import Card from "../components/Card.vue";
 import CardSimple from "../components/CardSimple.vue";
 import { useSchedule } from "../stores/schedule";
+
 import { getSchedule } from "../firebase";
 
 const daysOfWeek = [

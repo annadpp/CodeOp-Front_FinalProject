@@ -24,10 +24,15 @@
       class="flex items-center justify-center bg-blueberry w-full font-hand text-xl"
       :style="'height: ' + heighttext + 'vh'"
     >
-      <router-link v-if="meal" :to="`/recipes/${todaysMealId}`">{{
-        scheduledMealHome(meal)
+      <router-link
+        v-if="meal"
+        :to="`/recipes/${todaysMealId}`"
+        class="text-2xl hover:underline"
+        >{{ scheduledMealHome(meal) }}</router-link
+      >
+      <router-link v-else :to="`/recipes/${id}`" class="hover:underline">{{
+        name
       }}</router-link>
-      <router-link v-else :to="`/recipes/${id}`">{{ name }}</router-link>
     </div>
   </section>
 </template>

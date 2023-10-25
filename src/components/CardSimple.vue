@@ -10,9 +10,11 @@
     <div
       class="h-[14vh] font-hand flex justify-center text-center items-center p-5"
     >
-      <router-link :to="`/recipes/${tomorrowsMealId}`">{{
-        scheduledMealHome(meal)
-      }}</router-link>
+      <router-link
+        :to="`/recipes/${tomorrowsMealId}`"
+        class="text-lg hover:underline"
+        >{{ scheduledMealHome(meal) }}</router-link
+      >
     </div>
   </div>
 </template>

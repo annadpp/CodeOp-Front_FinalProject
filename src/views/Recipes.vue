@@ -130,6 +130,7 @@
 <script>
 import axios from "axios";
 import Card from "../components/Card.vue";
+import { useSchedule } from "../stores/schedule";
 
 export default {
   name: "Recipes",
@@ -164,10 +165,14 @@ export default {
       showCountries: false,
     };
   },
-  setup() {},
+  setup() {
+    const scheduleStore = useSchedule();
+    return { scheduleStore };
+  },
   mounted() {
     this.getRecipes();
     this.getCategories();
+    this.scheduleStore.handleInfo = "";
   },
   watch: {
     data: "totalRecipes",
