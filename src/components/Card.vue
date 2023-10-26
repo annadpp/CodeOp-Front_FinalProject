@@ -1,6 +1,6 @@
 <template>
   <section
-    class="flex flex-col justify-between items-center w-full"
+    class="flex flex-col justify-between items-center w-full text-xl"
     :style="'max-height: ' + heightcard + 'vh'"
   >
     <h5 v-if="title" class="flex my-4">{{ title }}</h5>
@@ -27,12 +27,15 @@
       <router-link
         v-if="meal"
         :to="`/recipes/${todaysMealId}`"
-        class="text-2xl hover:underline"
+        class="text-2xl hover:underline p-5 text-center"
         >{{ scheduledMealHome(meal) }}</router-link
       >
-      <router-link v-else :to="`/recipes/${id}`" class="hover:underline">{{
-        name
-      }}</router-link>
+      <router-link
+        v-else
+        :to="`/recipes/${id}`"
+        class="hover:underline p-5 text-center"
+        >{{ name }}</router-link
+      >
     </div>
   </section>
 </template>

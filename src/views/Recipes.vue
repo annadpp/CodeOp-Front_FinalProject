@@ -16,7 +16,7 @@
           </h3>
         </div>
         <div
-          class="grid grid-cols-2 h-[55vh] gap-5 overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime mt-6"
+          class="grid grid-cols-2 h-[52vh] gap-5 overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
         >
           <Card
             v-for="recipe in search ? filteredRecipes : filtersRight"
@@ -93,6 +93,7 @@
                     selectedCategory && selectedCategory !== category,
                 },
               ]"
+              class="bg-background"
               :disabled="selectedCategory && selectedCategory !== category"
             >
               {{ category }}
@@ -116,6 +117,7 @@
                     selectedCountry && selectedCountry !== country,
                 },
               ]"
+              class="bg-background"
               :disabled="selectedCountry && selectedCountry !== country"
             >
               {{ country }}

@@ -1,12 +1,12 @@
 <template>
-  <div class="grid grid-cols-8 items-center h-[17vh] pt-8 px-5">
-    <div class="col-span-5 leading-[3rem]">
-      <h2>{{ data.name }}</h2>
+  <div class="grid grid-cols-10 items-center h-[17vh] pt-8 px-5">
+    <div class="col-span-8 leading-[2.6rem]">
+      <h2 class="text-[2.8rem]">{{ data.name }}</h2>
     </div>
-    <div class="col-span-3">
+    <div class="col-span-2">
       <div class="flex gap-x-5">
-        <p class="text-6xl flex justify-end items-end text-right w-2/3">*</p>
-        <div class="flex flex-col items-end gap-y-2 w-1/3">
+        <p class="text-6xl flex justify-end items-end text-left w-1/3">*</p>
+        <div class="flex flex-col items-end gap-y-2 w-2/3">
           <h4
             class="bg-lime h-8 w-full flex justify-center items-center text-border-orange text-xl"
           >
@@ -36,7 +36,7 @@
         class="overflow-auto scrollbar-thin scrollbar-thumb-lime scrollbar-track-orange h-[20vh] w-full grid grid-cols-2 gap-2 content-start"
       >
         <div
-          v-for="ingredient in this.data.ingredients"
+          v-for="ingredient in data.ingredients"
           class="flex justify-center items-center bg-blueberry h-[3vh] w-full"
         >
           <p class="font-hand">
@@ -80,57 +80,85 @@
             <p class="text-border-orange hover:text-2xl">X</p>
           </button>
         </div>
-
-        <div class="grid grid-cols-4 gap-x-5 h-[25vh] w-[98%] mt-[7vh]">
-          <div class="col-span-1 flex flex-col h-[30vh] gap-y-5">
-            <div class="h-[5vh] flex items-center">
-              <h4
-                class="bg-orange h-8 w-full flex justify-center items-center text-border-lime text-xl"
-              >
-                Day
-              </h4>
+        <div v-if="!sent">
+          <div class="grid grid-cols-4 gap-x-5 h-[30vh] w-[98%] mt-[7vh]">
+            <div class="col-span-1 flex flex-col h-[30vh] gap-y-5">
+              <div class="h-[5vh] flex items-center">
+                <h4
+                  class="bg-orange h-8 w-full flex justify-center items-center text-border-lime text-xl"
+                >
+                  Day
+                </h4>
+              </div>
+              <div class="h-[5vh] flex items-center">
+                <h4
+                  class="bg-lime h-8 w-full flex justify-center items-center text-border-orange text-xl"
+                >
+                  Meal
+                </h4>
+              </div>
             </div>
-            <div class="h-[5vh] flex items-center">
-              <h4
-                class="bg-lime h-8 w-full flex justify-center items-center text-border-orange text-xl"
-              >
-                Meal
-              </h4>
-            </div>
-          </div>
 
-          <div class="col-span-3 w-full flex flex-col justify-between h-[30vh]">
-            <div class="flex flex-col gap-y-5">
-              <select
-                name="day"
-                id="day"
-                class="p-1 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[5vh]"
-              >
-                <option value="Monday">Monday</option>
-                <option value="Tuesday">Tuesday</option>
-                <option value="Wednesday">Wednesday</option>
-                <option value="Thursday">Thursday</option>
-                <option value="Friday">Friday</option>
-                <option value="Saturday">Saturday</option>
-                <option value="Sunday">Sunday</option>
-              </select>
+            <div
+              class="col-span-3 w-full flex flex-col justify-between h-[30vh]"
+            >
+              <div class="flex flex-col gap-y-5">
+                <select
+                  name="day"
+                  id="day"
+                  class="p-1 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[5vh]"
+                  v-model="selectedDay"
+                >
+                  <option disabled value="">Select a day</option>
+                  <option value="Monday">Monday</option>
+                  <option value="Tuesday">Tuesday</option>
+                  <option value="Wednesday">Wednesday</option>
+                  <option value="Thursday">Thursday</option>
+                  <option value="Friday">Friday</option>
+                  <option value="Saturday">Saturday</option>
+                  <option value="Sunday">Sunday</option>
+                </select>
 
-              <select
-                name="meal"
-                id="meal"
-                class="p-1 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[5vh]"
-              >
-                <option value="Lunch">Lunch</option>
-                <option value="Dinner">Dinner</option>
-              </select>
+                <select
+                  name="meal"
+                  id="meal"
+                  class="p-1 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[5vh]"
+                  v-model="selectedMeal"
+                >
+                  <option disabled value="">Select a meal</option>
+                  <option value="Lunch">Lunch</option>
+                  <option value="Dinner">Dinner</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
+        <div v-else class="flex justify-center items-center h-[37vh]">
+          <p class="mb-10 text-2xl text-center">
+            <span class="text-border-orange bg-lime py-2 px-5">{{
+              data.name
+            }}</span>
+            <br />
+            <span class="inline-block font-hand text-4xl my-3">added on</span
+            ><br />
+            <span class="text-border-lime bg-orange py-2 px-5"
+              >{{ selectedDay }} {{ selectedMeal }}</span
+            >
+          </p>
+        </div>
         <button
+          v-if="!sent"
           @click.prevent="addToWeeklyMenu"
-          class="mt-6 rounded-full border-2 border-black h-[5vh] w-full hover:border-orange hover:text-orange"
+          class="rounded-full border-2 border-black h-[5vh] w-full hover:border-orange hover:text-orange"
         >
           Add to weekly menu
+        </button>
+        <button
+          v-else
+          @click.prevent="addToWeeklyMenu"
+          class="rounded-full border-2 border-black h-[5vh] w-full hover:border-orange hover:text-orange"
+        >
+          <router-link :to="`/schedule`">Check full menu</router-link>
         </button>
       </form>
       <!-- ADD WEEKLY CARD -->
@@ -147,12 +175,20 @@ export default {
   name: "Recipe",
   data() {
     return {
-      data: [],
+      data: {
+        img: "",
+        name: "",
+        ingredients: [],
+        category: "",
+        country: "",
+        steps: "",
+      },
       loading: false,
       closedForm: true,
       weeklyMenu: [],
       selectedMeal: "",
       selectedDay: "",
+      sent: false,
     };
   },
   setup() {
@@ -200,11 +236,9 @@ export default {
     },
     toggleVisibility() {
       this.closedForm = !this.closedForm;
+      this.sent = false;
     },
     addToWeeklyMenu() {
-      this.selectedMeal = document.getElementById("meal").value;
-      this.selectedDay = document.getElementById("day").value;
-
       this.scheduleStore.schedule.push({
         meal: this.selectedMeal,
         day: this.selectedDay,
@@ -215,6 +249,7 @@ export default {
       });
 
       updateSchedule(this.scheduleStore.schedule);
+      this.sent = true;
     },
   },
   computed: {
