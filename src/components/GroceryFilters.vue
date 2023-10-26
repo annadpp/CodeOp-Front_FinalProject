@@ -89,7 +89,6 @@ export default {
       const filteredIngredients = this.groceryStore.filteredIngredients;
 
       for (const groceryItem of groceryList) {
-        // Check if there's a match in removedIngredients
         const isMatch = this.groceryStore.removedIngredients.some(
           (removedItem) => {
             return (
@@ -101,15 +100,12 @@ export default {
         );
 
         if (!isMatch) {
-          // If there's no match in removedIngredients, proceed to the next check
           const matchingFiltered = filteredIngredients.find((filteredItem) => {
             return groceryItem.ingredient === filteredItem.ingredient;
           });
           if (matchingFiltered) {
-            // If the name is already in filteredIngredients, update the id
             matchingFiltered.id = groceryItem.id;
           } else {
-            // If the name is not in filteredIngredients, add it
             filteredIngredients.push({
               ingredient: groceryItem.ingredient,
               id: groceryItem.id,
@@ -120,9 +116,7 @@ export default {
         }
       }
 
-      // Update the filteredIngredients in your grocery store
       this.groceryStore.filteredIngredients = filteredIngredients;
-      console.log("These are the filtered ingredients", filteredIngredients);
     },
   },
 };

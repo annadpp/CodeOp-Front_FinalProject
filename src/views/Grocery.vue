@@ -23,11 +23,19 @@
           @submit.prevent="addExistingProduct"
         >
           <select
-            name="cars"
-            id="cars"
+            name="existingProduct"
+            id="existingProduct"
+            v-model="existingProduct.name"
             class="p-1 mt-4 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[5vh]"
           >
-            <option value="xxxx">xxxx</option>
+            <option disabled value="">Select a product</option>
+            <option
+              v-for="ingredient in this.groceryStore.commonIngredients"
+              :value="ingredient.name"
+              :key="ingredient.name"
+            >
+              {{ ingredient.name }}
+            </option>
           </select>
           <button
             class="mt-6 rounded-full border-2 border-black h-[5vh] w-full bg-background hover:border-orange hover:text-orange"
@@ -92,22 +100,49 @@ export default {
         name: "",
         category: "",
       },
+      existingProduct: {
+        name: "",
+      },
     };
   },
   methods: {
     addNewProduct() {
+      const isProductAlreadyAdded = this.groceryStore.filteredIngredients.some(
+        (item) => item.ingredient === this.existingProduct.name
+      );
+
       if (
         this.newProduct.name &&
         this.newProduct.category &&
-        !this.groceryStore.newProducts.some(
+        !this.groceryStore.commonIngredients.some(
           (item) =>
             item.name === this.newProduct.name &&
             item.category === this.newProduct.category
         )
       ) {
-        this.groceryStore.newProducts.push(this.newProduct);
-        console.log(this.groceryStore.newProducts);
+        this.groceryStore.commonIngredients.push(this.newProduct);
+        if (
+          !this.groceryStore.filteredIngredients.some(
+            (item) => item.ingredient === this.existingProduct.name
+          )
+        ) {
+          this.groceryStore.filteredIngredients.push({
+            ingredient: this.newProduct.name,
+            category: this.newProduct.category,
+          });
+        }
         this.newProduct = {};
+      }
+    },
+    addExistingProduct() {
+      const isProductAlreadyAdded = this.groceryStore.filteredIngredients.some(
+        (item) => item.ingredient === this.existingProduct.name
+      );
+
+      if (!isProductAlreadyAdded) {
+        this.groceryStore.filteredIngredients.push({
+          ingredient: this.existingProduct.name,
+        });
       }
     },
   },
