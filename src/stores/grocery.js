@@ -6,5 +6,6 @@ export const useGrocery = defineStore("grocery", {
     removedIngredients: [],
     counter: 0,
     filteredIngredients: [],
+    newProducts: [],
   }),
 });
