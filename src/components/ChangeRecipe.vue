@@ -94,7 +94,11 @@
 
 <script>
 import { useSchedule } from "../stores/schedule";
-import { updateSchedule } from "../firebase";
+import {
+  updateRemovedIngredients,
+  updateFilteredIngredients,
+  updateSchedule,
+} from "../firebase";
 
 export default {
   name: "ChangeRecipe",
