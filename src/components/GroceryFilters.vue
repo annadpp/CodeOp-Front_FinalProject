@@ -2,52 +2,18 @@
   <div class="grid h-[65vh] border-black">
     <div class="grid grid-cols-4 h-[5vh] gap-x-5 mb-5">
       <button
-        @click="selectCategory('All')"
+        v-for="category in categoryOptions"
+        :key="category"
+        @click="selectCategory(category)"
         :class="{
-          'bg-orange': selectedCategory === 'All',
-          'text-border-lime': selectedCategory === 'All',
-          'bg-lime': selectedCategory !== 'All',
-          'text-border-orange': selectedCategory !== 'All',
+          'bg-orange': selectedCategory === category,
+          'text-border-lime': selectedCategory === category,
+          'bg-lime': selectedCategory !== category,
+          'text-border-orange': selectedCategory !== category,
         }"
         class="h-8 w-full flex justify-center items-center text-2xl"
       >
-        All
-      </button>
-      <button
-        @click="selectCategory('Food')"
-        :class="{
-          'bg-orange': selectedCategory === 'Food',
-          'text-border-lime': selectedCategory === 'Food',
-          'bg-lime': selectedCategory !== 'Food',
-          'text-border-orange': selectedCategory !== 'Food',
-        }"
-        class="h-8 w-full flex justify-center items-center text-2xl"
-      >
-        Food
-      </button>
-      <button
-        @click="selectCategory('Cleaning')"
-        :class="{
-          'bg-orange': selectedCategory === 'Cleaning',
-          'text-border-lime': selectedCategory === 'Cleaning',
-          'bg-lime': selectedCategory !== 'Cleaning',
-          'text-border-orange': selectedCategory !== 'Cleaning',
-        }"
-        class="h-8 w-full flex justify-center items-center text-2xl"
-      >
-        Cleaning
-      </button>
-      <button
-        @click="selectCategory('Others')"
-        :class="{
-          'bg-orange': selectedCategory === 'Others',
-          'text-border-lime': selectedCategory === 'Others',
-          'bg-lime': selectedCategory !== 'Others',
-          'text-border-orange': selectedCategory !== 'Others',
-        }"
-        class="h-8 w-full flex justify-center items-center text-2xl"
-      >
-        Others
+        {{ category }}
       </button>
     </div>
     <div
@@ -85,12 +51,17 @@ export default {
   data() {
     return {
       selectedCategory: "All",
+      categoryOptions: ["All", "Food", "Cleaning", "Others"],
     };
   },
   computed: {
     filteredItems() {
       if (this.selectedCategory === "All") {
         return this.groceryStore.filteredIngredients;
+      } else if (this.selectedCategory === "Food") {
+        return this.groceryStore.filteredIngredients.filter(
+          (item) => item.category === "Food" || !item.category
+        );
       } else {
         return this.groceryStore.filteredIngredients.filter(
           (item) => item.category === this.selectedCategory
