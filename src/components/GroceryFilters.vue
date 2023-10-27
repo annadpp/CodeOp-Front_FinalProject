@@ -46,6 +46,8 @@
 import { useSchedule } from "../stores/schedule";
 import { useGrocery } from "../stores/grocery";
 import { getSchedule } from "../firebase";
+import { getFilteredIngredients } from "../firebase";
+import { getRemovedIngredients } from "../firebase";
 import { updateRemovedIngredients } from "../firebase";
 import { updateFilteredIngredients } from "../firebase";
 
@@ -58,7 +60,12 @@ export default {
     return { scheduleStore, groceryStore };
   },
   mounted() {
-    console.log("Component mounted");
+    getFilteredIngredients().then((filteredIngredients) => {
+      this.groceryStore.filteredIngredients = filteredIngredients;
+    });
+    getRemovedIngredients().then((removedIngredients) => {
+      this.groceryStore.removedIngredients = removedIngredients;
+    });
     getSchedule()
       .then((schedule) => {
         this.scheduleStore.schedule = schedule;
