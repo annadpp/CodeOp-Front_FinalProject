@@ -88,8 +88,6 @@ import Card from "../components/Card.vue";
 import CardSimple from "../components/CardSimple.vue";
 import { useSchedule } from "../stores/schedule";
 
-import { getSchedule } from "../firebase";
-
 const daysOfWeek = [
   "Sunday",
   "Monday",
@@ -105,11 +103,6 @@ export default {
   setup() {
     const scheduleStore = useSchedule();
     return { scheduleStore };
-  },
-  mounted() {
-    getSchedule().then((schedule) => {
-      this.scheduleStore.schedule = schedule;
-    }); // Get info from Firebase -> careful! async function in Firebase.js
   },
   computed: {
     formattedDate() {

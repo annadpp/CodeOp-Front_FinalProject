@@ -84,6 +84,11 @@
 import GroceryFilters from "../components/GroceryFilters.vue";
 import { useSchedule } from "../stores/schedule";
 import { useGrocery } from "../stores/grocery";
+import { getRemovedIngredients } from "../firebase";
+import { getCommonIngredients } from "../firebase";
+import { getFilteredIngredients } from "../firebase";
+import { updateFilteredIngredients } from "../firebase";
+import { updateCommonIngredients } from "../firebase";
 
 export default {
   name: "Grocery",
@@ -93,6 +98,17 @@ export default {
     const groceryStore = useGrocery();
 
     return { scheduleStore, groceryStore };
+  },
+  mounted() {
+    getFilteredIngredients().then((filteredIngredients) => {
+      this.groceryStore.filteredIngredients = filteredIngredients;
+    });
+    getRemovedIngredients().then((removedIngredients) => {
+      this.groceryStore.removedIngredients = removedIngredients;
+    });
+    getCommonIngredients().then((commonIngredients) => {
+      this.groceryStore.commonIngredients = commonIngredients;
+    });
   },
   data() {
     return {
@@ -121,6 +137,7 @@ export default {
         )
       ) {
         this.groceryStore.commonIngredients.push(this.newProduct);
+        updateCommonIngredients(this.groceryStore.commonIngredients);
         if (
           !this.groceryStore.filteredIngredients.some(
             (item) => item.ingredient === this.existingProduct.name
@@ -130,6 +147,7 @@ export default {
             ingredient: this.newProduct.name,
             category: this.newProduct.category,
           });
+          updateFilteredIngredients(this.groceryStore.filteredIngredients);
         }
         this.newProduct = {};
       }
@@ -143,6 +161,7 @@ export default {
         this.groceryStore.filteredIngredients.push({
           ingredient: this.existingProduct.name,
         });
+        updateFilteredIngredients(this.groceryStore.filteredIngredients);
       }
     },
   },

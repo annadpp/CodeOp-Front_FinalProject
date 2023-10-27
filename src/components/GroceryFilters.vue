@@ -45,6 +45,9 @@
 <script>
 import { useSchedule } from "../stores/schedule";
 import { useGrocery } from "../stores/grocery";
+import { getSchedule } from "../firebase";
+import { updateRemovedIngredients } from "../firebase";
+import { updateFilteredIngredients } from "../firebase";
 
 export default {
   name: "Grocery Filters",
@@ -52,11 +55,18 @@ export default {
   setup() {
     const scheduleStore = useSchedule();
     const groceryStore = useGrocery();
-
     return { scheduleStore, groceryStore };
   },
-  created() {
-    this.getIngredients();
+  mounted() {
+    console.log("Component mounted");
+    getSchedule()
+      .then((schedule) => {
+        this.scheduleStore.schedule = schedule;
+      })
+      .then(() => {
+        // Call getIngredients() after both data fetch operations are complete
+        this.getIngredients();
+      });
   },
   methods: {
     getIngredients() {
@@ -82,6 +92,8 @@ export default {
         this.groceryStore.filteredIngredients.splice(index, 1);
 
         this.groceryStore.removedIngredients.push(ingredientToRemove);
+        updateRemovedIngredients(this.groceryStore.removedIngredients);
+        updateFilteredIngredients(this.groceryStore.filteredIngredients);
       }
     },
     filterIngredients() {
@@ -115,7 +127,6 @@ export default {
           }
         }
       }
-
       this.groceryStore.filteredIngredients = filteredIngredients;
     },
   },
