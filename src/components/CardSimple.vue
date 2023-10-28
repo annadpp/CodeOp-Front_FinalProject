@@ -1,14 +1,14 @@
 <template>
   <div
-    class="h-[20vh] w-1/2 border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-background"
+    class="h-[14vh] xl:h-[20vh] w-1/2 border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-background mb-10 xl:mb-0"
   >
     <div
-      class="flex border-b-2 w-full h-[5vh] border-black justify-center items-center"
+      class="flex border-b-2 w-full h-[3vh] xl:h-[5vh] border-black justify-center items-center"
     >
       {{ title }}
     </div>
     <div
-      class="h-[14vh] font-hand flex justify-center text-center items-center p-5"
+      class="h-[10vh] xl:h-[14vh] font-hand flex justify-center text-center items-center p-5"
     >
       <router-link
         :to="`/recipes/${tomorrowsMealId}`"

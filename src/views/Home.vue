@@ -1,19 +1,33 @@
 <template>
-  <div class="grid grid-cols-8 justify-center items-center">
-    <div class="grid col-span-5 h-[85vh] border-black border-r-2 p-5">
-      <div class="grid row-span-2 items-center h-[17vh]">
-        <h2>What shall I eat?</h2>
+  <div class="grid grid-cols-1 xl:grid-cols-8 justify-center items-center">
+    <div
+      class="grid col-span-1 xl:col-span-5 xl:h-[85vh] xl:border-black xl:border-r-2 xl:p-5"
+    >
+      <div class="grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5">
+        <h2 class="text-4xl xl:text-6xl">What shall I eat?</h2>
       </div>
 
-      <div class="grid h-[65vh] border-black">
+      <div
+        class="flex xl:hidden justify-center gap-x-5 w-full px-8 border-black border-y-2 mb-10"
+      >
+        <div
+          class="flex flex-col justify-center text-left text-xl h-[10vh] xl:h-[20vh]"
+          v-html="formattedDate"
+        ></div>
+        <div class="text-5xl flex items-center">
+          <p>*</p>
+        </div>
+      </div>
+
+      <div class="grid xl:h-[65vh] border-black px-5 xl:px-0">
         <div class="flex h-[5vh]">
           <h3
-            class="bg-orange h-8 w-full flex justify-center items-center text-border-lime text-2xl"
+            class="bg-orange h-7 xl:h-8 w-full flex justify-center items-center text-border-lime text-xl xl:text-2xl"
           >
             Today
           </h3>
         </div>
-        <div class="h-[60vh] flex gap-x-5">
+        <div class="h-[57vh] xl:h-[60vh] flex flex-col xl:flex-row gap-x-5">
           <Card
             heightcard="55"
             heightimg="30"
@@ -34,8 +48,8 @@
       </div>
     </div>
 
-    <div class="grid col-span-3 h-[85vh]">
-      <div class="flex justify-center gap-x-5 w-full px-8">
+    <div class="grid col-span-3 h-[40vh] xl:h-[85vh]">
+      <div class="hidden xl:flex justify-center gap-x-5 w-full px-8">
         <div
           class="flex flex-col justify-center text-[1.8rem] h-[20vh]"
           v-html="formattedDate"
@@ -46,23 +60,23 @@
       </div>
 
       <div
-        class="flex flex-col p-5 items-center gap-y-5 h-[25vh] justify-center border-black border-y-2"
+        class="flex flex-col p-5 items-center gap-y-2 xl:gap-y-5 xl:h-[25vh] justify-center border-black border-y-2"
       >
         <button
-          class="rounded-full border-2 border-black h-[5vh] w-full hover:border-orange hover:text-orange"
+          class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
         >
           <router-link :to="`/recipes`">Browse recipes</router-link>
         </button>
         <button
-          class="rounded-full border-2 border-black h-[5vh] w-full hover:border-orange hover:text-orange"
+          class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
         >
           <router-link :to="`/schedule`">Check full menu</router-link>
         </button>
       </div>
 
-      <div class="flex flex-col justify-around h-[38vh] p-5 pb-8">
+      <div class="flex flex-col justify-around h-[30vh] xl:h-[38vh] p-5 pb-4">
         <h3
-          class="bg-lime h-8 w-full flex justify-center items-center text-border-orange text-xl"
+          class="bg-lime h-6 xl:h-8 w-full flex justify-center items-center text-border-orange text-lg xl:text-xl"
         >
           Tomorrow
         </h3>
@@ -87,6 +101,7 @@
 import Card from "../components/Card.vue";
 import CardSimple from "../components/CardSimple.vue";
 import { useSchedule } from "../stores/schedule";
+import { getSchedule } from "../firebase";
 
 const daysOfWeek = [
   "Sunday",
@@ -103,6 +118,11 @@ export default {
   setup() {
     const scheduleStore = useSchedule();
     return { scheduleStore };
+  },
+  mounted() {
+    getSchedule().then((schedule) => {
+      this.scheduleStore.schedule = schedule;
+    }); // Get info from Firebase -> careful! async function in Firebase.js
   },
   computed: {
     formattedDate() {

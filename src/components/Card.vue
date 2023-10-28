@@ -1,6 +1,6 @@
 <template>
   <section
-    class="flex flex-col justify-between items-center w-full text-xl"
+    class="flex flex-col justify-between items-center w-full text-md xl:text-xl"
     :style="'max-height: ' + heightcard + 'vh'"
   >
     <h5 v-if="title" class="flex my-4">{{ title }}</h5>
@@ -8,26 +8,26 @@
       <img
         v-if="meal"
         class="object-cover w-full"
-        :style="'height: ' + heightimg + 'vh'"
+        :style="'height: ' + adjustedImg + 'vh'"
         :src="todaysMealImg"
         alt=""
       />
       <img
         v-else
         class="object-cover w-full"
-        :style="'height: ' + heightimg + 'vh'"
+        :style="'height: ' + adjustedImg + 'vh'"
         :src="img"
         alt=""
       />
     </div>
     <div
       class="flex items-center justify-center bg-blueberry w-full font-hand text-xl"
-      :style="'height: ' + heighttext + 'vh'"
+      :style="'height: ' + adjustedText + 'vh'"
     >
       <router-link
         v-if="meal"
         :to="`/recipes/${todaysMealId}`"
-        class="text-2xl hover:underline p-5 text-center"
+        class="text-xl xl:text-2xl hover:underline p-5 text-center"
         >{{ scheduledMealHome(meal) }}</router-link
       >
       <router-link
@@ -61,10 +61,17 @@ export default {
     const scheduleStore = useSchedule();
     return { scheduleStore };
   },
+  mounted() {
+    window.addEventListener("resize", this.handleWindowResize);
+    this.handleWindowResize();
+  },
   data() {
     return {
       todaysMealId: "",
       todaysMealImg: "",
+      screenWidth: window.innerWidth,
+      adjustedImg: 0,
+      adjustedText: 0,
     };
   },
   methods: {
@@ -77,6 +84,16 @@ export default {
         }
       }
       return "NO MEAL";
+    },
+    handleWindowResize() {
+      this.screenWidth = window.innerWidth;
+      if (this.screenWidth > 1280) {
+        this.adjustedImg = this.heightimg;
+        this.adjustedText = this.heighttext;
+      } else {
+        this.adjustedImg = this.heightimg - 18;
+        this.adjustedText = this.heighttext - 12;
+      }
     },
   },
 };

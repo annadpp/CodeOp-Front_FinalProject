@@ -1,14 +1,20 @@
 <template>
-  <div class="grid grid-cols-8 justify-center items-center">
-    <div class="grid col-span-5 h-[85vh] border-black border-r-2 p-5">
-      <div class="grid row-span-2 items-center h-[17vh]">
-        <h2>What could I eat?</h2>
+  <div class="grid grid-cols-1 xl:grid-cols-8 justify-center items-center">
+    <div class="grid xl:hidden items-center h-[15vh] p-5">
+      <h2 class="text-4xl xl:text-6xl">What could I eat?</h2>
+    </div>
+    <div
+      class="grid order-2 xl:order-1 col-span-1 xl:col-span-5 h-[67vh] xl:h-[85vh] xl:border-black xl:border-r-2 xl:p-5"
+    >
+      <div
+        class="hidden xl:grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5"
+      >
+        <h2 class="text-4xl xl:text-6xl">What could I eat?</h2>
       </div>
-
-      <div class="grid h-[65vh] border-black">
+      <div class="grid h-[65vh] px-5 pt-8 xl:p-0">
         <div class="flex h-[5vh]">
           <h3
-            class="bg-orange h-8 w-full flex justify-center items-center text-border-lime text-2xl"
+            class="bg-orange h-7 xl:h-8 w-full flex justify-center items-center text-border-lime text-xl xl:text-2xl"
           >
             Recipes ({{
               search ? filteredRecipes.length : filtersRight.length
@@ -16,7 +22,7 @@
           </h3>
         </div>
         <div
-          class="grid grid-cols-2 h-[52vh] gap-5 overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
+          class="grid grid-cols-2 h-[52vh] gap-3 xl:gap-5 overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
         >
           <Card
             v-for="recipe in search ? filteredRecipes : filtersRight"
@@ -32,20 +38,31 @@
       </div>
     </div>
 
-    <div class="grid col-span-3 h-[85vh]">
+    <div
+      class="grid order-1 xl:order-2 col-span-1 border-black border-y-2 xl:border-none xl:col-span-3 xl:h-[85vh]"
+    >
       <div
         class="flex flex-col justify-center items-center h-[20vh] gap-x-5 w-full px-8 gap-y-5"
       >
         <p>S E A R C H &nbsp&nbsp+ &nbsp&nbspF I L T E R</p>
         <input
           v-model="search"
-          class="border-black drop-shadow-[8px_8px_0px_#000000] p-2 w-full h-[5vh]"
+          class="border-black drop-shadow-[8px_8px_0px_#000000] p-2 w-full h-[4vh] xl:h-[5vh]"
           type="text"
         />
+        <div class="xl:hidden flex justify-end w-full mt-1">
+          <button
+            @click="toggleFilter"
+            class="item-right rounded-full border-2 border-black h-[4vh] w-1/2 hover:border-orange hover:text-orange"
+          >
+            Advanced filter
+          </button>
+        </div>
       </div>
 
       <div
-        class="flex flex-col justify-around border-black border-t-2 h-[65vh] p-5"
+        v-if="showFilter"
+        class="flex flex-col justify-around border-black border-t-2 h-[50vh] xl:h-[65vh] p-5"
       >
         <div class="flex gap-x-5">
           <button
@@ -79,15 +96,19 @@
 
         <div v-if="showCategories">
           <div
-            class="grid grid-cols-2 gap-x-5 h-[50vh] justify-center items-center"
+            class="grid grid-cols-2 gap-x-3 xl:gap-x-5 h-[40vh] xl:h-[50vh] justify-center items-center"
           >
             <button
               v-for="category in dataCategories"
               @click="handleCategories(category)"
               :class="[
-                'rounded-full border-2 border-black h-[5vh] w-full',
-                { 'hover:border-orange hover:text-orange': !selectedCategory },
-                { 'border-orange text-orange': selectedCategory === category },
+                'rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full',
+                {
+                  'hover:border-orange hover:text-orange': !selectedCategory,
+                },
+                {
+                  'border-orange text-orange': selectedCategory === category,
+                },
                 {
                   'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300 cursor-no-drop	':
                     selectedCategory && selectedCategory !== category,
@@ -103,13 +124,13 @@
 
         <div v-else-if="showCountries">
           <div
-            class="grid grid-cols-2 gap-x-5 h-[50vh] justify-center items-center"
+            class="grid grid-cols-2 gap-x-3 xl:gap-x-5 h-[40vh] xl:h-[50vh] justify-center items-center"
           >
             <button
               v-for="country in dataCountries"
               @click="handleCountries(country)"
               :class="[
-                'rounded-full border-2 border-black h-[5vh] w-full',
+                'rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full',
                 { 'hover:border-orange hover:text-orange': !selectedCountry },
                 { 'border-orange text-orange': selectedCountry === country },
                 {
@@ -131,12 +152,14 @@
 
 <script>
 import axios from "axios";
+import { MqResponsive } from "vue3-mq";
 import Card from "../components/Card.vue";
 import { useSchedule } from "../stores/schedule";
 
 export default {
   name: "Recipes",
-  components: { Card },
+  components: { MqResponsive, Card },
+  inject: ["mq"],
   data() {
     return {
       data: [],
@@ -165,6 +188,8 @@ export default {
       activeCountry: true,
       showCategories: true,
       showCountries: false,
+      showFilter: true,
+      screenWidth: window.innerWidth,
     };
   },
   setup() {
@@ -175,6 +200,8 @@ export default {
     this.getRecipes();
     this.getCategories();
     this.scheduleStore.handleInfo = "";
+    window.addEventListener("resize", this.handleWindowResize);
+    this.handleWindowResize();
   },
   watch: {
     data: "totalRecipes",
@@ -266,6 +293,17 @@ export default {
     switchCountries() {
       this.showCategories = false;
       this.showCountries = true;
+    },
+    toggleFilter() {
+      this.showFilter = !this.showFilter;
+    },
+    handleWindowResize() {
+      this.screenWidth = window.innerWidth;
+      if (this.screenWidth > 1280) {
+        this.showFilter = true;
+      } else {
+        this.showFilter = false;
+      }
     },
   },
   computed: {
