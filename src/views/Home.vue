@@ -20,7 +20,7 @@
       </div>
 
       <div class="grid xl:h-[65vh] border-black px-5 xl:px-0">
-        <div class="flex h-[5vh]">
+        <div class="flex h-[3vh] xl:h-[5vh]">
           <h3
             class="bg-orange h-7 xl:h-8 w-full flex justify-center items-center text-border-lime text-xl xl:text-2xl"
           >

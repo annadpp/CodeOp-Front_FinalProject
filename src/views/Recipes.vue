@@ -42,7 +42,7 @@
       class="grid order-1 xl:order-2 col-span-1 border-black border-y-2 xl:border-none xl:col-span-3 xl:h-[85vh]"
     >
       <div
-        class="flex flex-col justify-center items-center h-[20vh] gap-x-5 w-full px-8 gap-y-5"
+        class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5"
       >
         <p>S E A R C H &nbsp&nbsp+ &nbsp&nbspF I L T E R</p>
         <input
@@ -152,14 +152,12 @@
 
 <script>
 import axios from "axios";
-import { MqResponsive } from "vue3-mq";
 import Card from "../components/Card.vue";
 import { useSchedule } from "../stores/schedule";
 
 export default {
   name: "Recipes",
-  components: { MqResponsive, Card },
-  inject: ["mq"],
+  components: { Card },
   data() {
     return {
       data: [],
@@ -204,7 +202,6 @@ export default {
     this.handleWindowResize();
   },
   watch: {
-    data: "totalRecipes",
     search: function () {
       this.selectedCountry = null;
       this.selectedCategory = null;

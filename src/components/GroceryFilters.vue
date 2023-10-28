@@ -1,6 +1,8 @@
 <template>
-  <div class="grid h-[65vh] border-black">
-    <div class="grid grid-cols-4 h-[5vh] gap-x-5 mb-5">
+  <div class="grid xl:h-[65vh] border-black p-5 xl:p-0">
+    <div
+      class="grid grid-cols-2 xl:grid-cols-4 xl:h-[5vh] pt-5 xl:pt-0 gap-3 xl:gap-y-0 xl:gap-x-5 mb-5"
+    >
       <button
         v-for="category in categoryOptions"
         :key="category"
@@ -11,7 +13,7 @@
           'bg-lime': selectedCategory !== category,
           'text-border-orange': selectedCategory !== category,
         }"
-        class="h-8 w-full flex justify-center items-center text-2xl"
+        class="h-7 xl:h-8 w-full flex justify-center items-center text-xl xl:text-2xl"
       >
         {{ category }}
       </button>
@@ -22,12 +24,12 @@
       <div
         v-for="item in filteredItems"
         :key="item.id"
-        class="flex items-center justify-between px-5 bg-blueberry h-[5vh] w-full"
+        class="flex items-center justify-between px-5 bg-blueberry h-[4vh] xl:h-[5vh] w-full"
       >
         <p class="font-hand text-xl">{{ item.ingredient }}</p>
         <button
           @click="removeIngredient(item)"
-          class="rounded-full border-2 border-black h-[5vh] w-[10vw] bg-background hover:border-orange hover:text-orange"
+          class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-[20vw] xl:w-[10vw] bg-background hover:border-orange hover:text-orange"
         >
           Remove
         </button>

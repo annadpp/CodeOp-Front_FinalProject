@@ -1,7 +1,7 @@
 <template>
   <section
     class="flex flex-col justify-between items-center w-full text-md xl:text-xl"
-    :style="'max-height: ' + heightcard + 'vh'"
+    :style="'max-height: ' + adjustedCard + 'vh'"
   >
     <h5 v-if="title" class="flex my-4">{{ title }}</h5>
     <div class="flex items-center justify-center w-full">
@@ -72,6 +72,7 @@ export default {
       screenWidth: window.innerWidth,
       adjustedImg: 0,
       adjustedText: 0,
+      adjustedCard: 0,
     };
   },
   methods: {
@@ -90,9 +91,11 @@ export default {
       if (this.screenWidth > 1280) {
         this.adjustedImg = this.heightimg;
         this.adjustedText = this.heighttext;
+        this.adjustedCard = this.heightcard;
       } else {
-        this.adjustedImg = this.heightimg - 18;
+        this.adjustedImg = this.heightimg;
         this.adjustedText = this.heighttext - 12;
+        this.adjustedCard = this.heightcard;
       }
     },
   },

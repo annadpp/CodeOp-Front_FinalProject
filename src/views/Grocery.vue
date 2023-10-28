@@ -1,24 +1,38 @@
 <template>
-  <div class="grid grid-cols-8 justify-center items-center">
-    <div class="grid col-span-5 h-[85vh] border-black border-r-2 p-5">
-      <div class="grid row-span-2 items-center h-[17vh]">
-        <h2>Grocery list</h2>
+  <div class="grid grid-cols-1 xl:grid-cols-8 justify-center items-center">
+    <div
+      class="grid col-span-1 xl:col-span-5 xl:h-[85vh] xl:border-black xl:border-r-2 xl:p-5"
+    >
+      <div class="grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5">
+        <h2 class="text-4xl xl:text-6xl">Grocery List</h2>
       </div>
-      <GroceryFilters />
+      <GroceryFilters class="hidden xl:flex xl:flex-col" />
     </div>
 
-    <div class="grid col-span-3 h-[85vh]">
-      <div class="flex justify-center gap-x-5 w-full px-8">
+    <!--FILTERS-->
+    <div class="col-span-3 xl:h-[85vh]">
+      <div
+        class="flex justify-center gap-x-5 w-full px-8 border-black border-t-2 xl:border-none"
+      >
         <div class="flex flex-col justify-center text-[1.8rem] h-[10vh]">
           <p>WEEK <span class="font-hand">2</span></p>
+        </div>
+        <div class="text-5xl flex items-center">
+          <p>*</p>
         </div>
       </div>
 
       <div
-        class="flex flex-col justify-center items-center gap-y-5 border-black border-y-2 h-[35vh] p-10"
+        class="flex flex-col justify-center items-center gap-y-5 border-black border-y-2 xl:h-[35vh] p-5 xl:p-10"
       >
-        <p>A D D &nbsp&nbspE X I S T I N G &nbsp&nbspP R O D U C T</p>
+        <p>
+          A D D &nbsp&nbspE X I S T I N G &nbsp&nbspP R O D U C T
+          <button @click="toggleFormExistingVisibility" class="xl:hidden">
+            <i class="fa-solid fa-caret-down"></i>
+          </button>
+        </p>
         <form
+          v-if="formExistingVisible"
           class="flex flex-col w-full gap-y-5"
           @submit.prevent="addExistingProduct"
         >
@@ -26,7 +40,7 @@
             name="existingProduct"
             id="existingProduct"
             v-model="existingProduct.name"
-            class="p-1 mt-4 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[5vh]"
+            class="p-1 mt-1 xl:mt-4 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[4vh] xl:h-[5vh]"
           >
             <option disabled value="">Select a product</option>
             <option
@@ -38,22 +52,29 @@
             </option>
           </select>
           <button
-            class="mt-6 rounded-full border-2 border-black h-[5vh] w-full bg-background hover:border-orange hover:text-orange"
+            class="mt-3 xl:mt-6 rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full bg-background hover:border-orange hover:text-orange"
           >
             Add existing product
           </button>
         </form>
       </div>
+
       <div
-        class="flex flex-col p-10 items-center gap-y-5 h-[40vh] justify-center"
+        class="flex flex-col p-5 xl:p-10 items-center gap-y-5 xl:h-[40vh] justify-center border-black border-b-2 xl:border-none"
       >
-        <p>A D D &nbsp&nbspN E W &nbsp&nbspP R O D U C T</p>
+        <p>
+          A D D &nbsp&nbspN E W &nbsp&nbspP R O D U C T
+          <button @click="toggleFormNewVisibility" class="xl:hidden">
+            <i class="fa-solid fa-caret-down"></i>
+          </button>
+        </p>
         <form
+          v-if="formNewVisible"
           class="flex flex-col w-full gap-y-5"
           @submit.prevent="addNewProduct"
         >
           <input
-            class="p-2 mt-4 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[5vh]"
+            class="p-2 mt-1 xl:mt-4 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[4vh] xl:h-[5vh]"
             type="text"
             placeholder="Add a new product"
             v-model="newProduct.name"
@@ -61,7 +82,7 @@
           <select
             name="newProduct"
             id="newProduct"
-            class="p-1 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[5vh]"
+            class="p-1 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[4vh] xl:h-[5vh]"
             v-model="newProduct.category"
           >
             <option disabled value="">Select a category</option>
@@ -70,13 +91,15 @@
             <option value="Others">Others</option>
           </select>
           <button
-            class="mt-6 rounded-full border-2 border-black h-[5vh] w-full bg-background hover:border-orange hover:text-orange"
+            class="mt-2 xl:mt-6 rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full bg-background hover:border-orange hover:text-orange"
           >
             Add new product
           </button>
         </form>
       </div>
     </div>
+
+    <GroceryFilters class="xl:hidden" />
   </div>
 </template>
 
@@ -84,9 +107,7 @@
 import GroceryFilters from "../components/GroceryFilters.vue";
 import { useSchedule } from "../stores/schedule";
 import { useGrocery } from "../stores/grocery";
-// import { getRemovedIngredients } from "../firebase";
 import { getCommonIngredients } from "../firebase";
-// import { getFilteredIngredients } from "../firebase";
 import { updateFilteredIngredients } from "../firebase";
 import { updateCommonIngredients } from "../firebase";
 
@@ -100,15 +121,11 @@ export default {
     return { scheduleStore, groceryStore };
   },
   mounted() {
-    // getFilteredIngredients().then((filteredIngredients) => {
-    //   this.groceryStore.filteredIngredients = filteredIngredients;
-    // });
-    // getRemovedIngredients().then((removedIngredients) => {
-    //   this.groceryStore.removedIngredients = removedIngredients;
-    // });
     getCommonIngredients().then((commonIngredients) => {
       this.groceryStore.commonIngredients = commonIngredients;
     });
+    window.addEventListener("resize", this.handleWindowResize);
+    this.handleWindowResize();
   },
   data() {
     return {
@@ -119,6 +136,8 @@ export default {
       existingProduct: {
         name: "",
       },
+      formExistingVisible: false,
+      formNewVisible: false,
     };
   },
   methods: {
@@ -164,10 +183,25 @@ export default {
         updateFilteredIngredients(this.groceryStore.filteredIngredients);
       }
     },
+    toggleFormExistingVisibility() {
+      this.formExistingVisible = !this.formExistingVisible;
+    },
+
+    toggleFormNewVisibility() {
+      this.formNewVisible = !this.formNewVisible;
+    },
+    handleWindowResize() {
+      this.screenWidth = window.innerWidth;
+      if (this.screenWidth > 1280) {
+        this.formExistingVisible = true;
+        this.formNewVisible = true;
+      } else {
+        this.formExistingVisible = false;
+        this.formNewVisible = false;
+      }
+    },
   },
 };
 </script>
-
-<style></style>
 
 <style></style>
