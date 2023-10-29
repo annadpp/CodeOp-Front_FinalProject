@@ -13,13 +13,13 @@
           'bg-lime': selectedCategory !== category,
           'text-border-orange': selectedCategory !== category,
         }"
-        class="h-7 xl:h-8 w-full flex justify-center items-center text-xl xl:text-2xl"
+        class="h-6 xl:h-8 w-full flex justify-center items-center text-lg xl:text-xl"
       >
         {{ category }}
       </button>
     </div>
     <div
-      class="h-[52vh] flex flex-col gap-y-2 justify-start overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime mb-8"
+      class="h-[38vh] xl:h-[52vh] flex flex-col gap-y-2 justify-start overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime mb-16 xl:mb-8"
     >
       <div
         v-for="item in filteredItems"

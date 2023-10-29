@@ -93,7 +93,7 @@ export default {
         this.adjustedText = this.heighttext;
         this.adjustedCard = this.heightcard;
       } else {
-        this.adjustedImg = this.heightimg;
+        this.adjustedImg = this.heightimg - 18;
         this.adjustedText = this.heighttext - 12;
         this.adjustedCard = this.heightcard;
       }

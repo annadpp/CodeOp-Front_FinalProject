@@ -1,10 +1,16 @@
 <template>
-  <div class="grid grid-cols-1 xl:grid-cols-8 justify-center items-center">
+  <div
+    class="absolute z-0 w-full xl:static top-[10vh] grid grid-cols-1 xl:grid-cols-8 justify-center items-center"
+  >
     <div
       class="grid col-span-1 xl:col-span-5 xl:h-[85vh] xl:border-black xl:border-r-2 xl:p-5"
     >
-      <div class="grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5">
-        <h2 class="text-4xl xl:text-6xl">Grocery List</h2>
+      <div
+        class="grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5 xl:p-0"
+      >
+        <h2 class="text-5xl xl:text-7xl font-hand text-center xl:text-left">
+          Grocery List
+        </h2>
       </div>
       <GroceryFilters class="hidden xl:flex xl:flex-col" />
     </div>
@@ -27,8 +33,16 @@
       >
         <p>
           A D D &nbsp&nbspE X I S T I N G &nbsp&nbspP R O D U C T
-          <button @click="toggleFormExistingVisibility" class="xl:hidden">
-            <i class="fa-solid fa-caret-down"></i>
+          <button
+            @click="toggleFormExistingVisibility"
+            class="xl:hidden inline-block"
+          >
+            <span v-if="!formExistingVisible"
+              ><i class="fa-solid fa-caret-down"></i
+            ></span>
+            <span v-if="formExistingVisible"
+              ><i class="fa-solid fa-caret-up"></i
+            ></span>
           </button>
         </p>
         <form
@@ -65,7 +79,12 @@
         <p>
           A D D &nbsp&nbspN E W &nbsp&nbspP R O D U C T
           <button @click="toggleFormNewVisibility" class="xl:hidden">
-            <i class="fa-solid fa-caret-down"></i>
+            <span v-if="!formNewVisible"
+              ><i class="fa-solid fa-caret-down"></i
+            ></span>
+            <span v-if="formNewVisible"
+              ><i class="fa-solid fa-caret-up"></i
+            ></span>
           </button>
         </p>
         <form

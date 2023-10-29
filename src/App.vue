@@ -1,15 +1,18 @@
 <template>
-  <div class="bg-background">
-    <img
-      class="absolute right-0 bottom-0 z-0"
-      src="./assets/background-shadow.png"
-      alt=""
-    />
-    <Header menu="home" />
-    <div class="z-10 relative">
+  <div>
+    <Header menu="home" class="z-100 fixed" />
+    <div class="fixed bg-background w-full h-full">
+      <img
+        class="absolute right-0 bottom-0"
+        src="./assets/background-shadow.png"
+        alt=""
+      />
+    </div>
+    <div class="z-0 relative bg-transparent">
       <router-view></router-view>
     </div>
-    <Footer class="z-10 relative" />
+
+    <Footer class="fixed bottom-0 z-20" />
   </div>
 </template>
 
@@ -60,7 +63,6 @@ h2 {
     rgb(208, 238, 82) 4.4276px -2.32301px 0px,
     rgb(208, 238, 82) 4.80085px -1.39708px 0px,
     rgb(208, 238, 82) 4.98271px -0.415447px 0px;
-  text-transform: uppercase;
 }
 
 .text-border-orange {
@@ -96,6 +98,5 @@ h2 {
     rgb(253, 95, 9) 4.4276px -2.32301px 0px,
     rgb(253, 95, 9) 4.80085px -1.39708px 0px,
     rgb(253, 95, 9) 4.98271px -0.415447px 0px;
-  text-transform: uppercase;
 }
 </style>

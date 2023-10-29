@@ -1,10 +1,16 @@
 <template>
-  <div class="grid grid-cols-1 xl:grid-cols-8 justify-center items-center">
+  <div
+    class="absolute z-0 w-full xl:static top-[10vh] grid grid-cols-1 xl:grid-cols-8 justify-center items-center"
+  >
     <div
       class="grid col-span-1 xl:col-span-5 xl:h-[85vh] xl:border-black xl:border-r-2 xl:p-5"
     >
-      <div class="grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5">
-        <h2 class="text-4xl xl:text-6xl">What shall I eat?</h2>
+      <div
+        class="grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5 xl:p-0"
+      >
+        <h2 class="text-5xl xl:text-7xl font-hand text-center xl:text-left">
+          What shall I eat?
+        </h2>
       </div>
 
       <div
@@ -22,7 +28,7 @@
       <div class="grid xl:h-[65vh] border-black px-5 xl:px-0">
         <div class="flex h-[3vh] xl:h-[5vh]">
           <h3
-            class="bg-orange h-7 xl:h-8 w-full flex justify-center items-center text-border-lime text-xl xl:text-2xl"
+            class="bg-orange text-border-lime h-6 xl:h-8 w-full flex justify-center items-center text-lg xl:text-xl"
           >
             Today
           </h3>
@@ -48,7 +54,7 @@
       </div>
     </div>
 
-    <div class="grid col-span-3 h-[40vh] xl:h-[85vh]">
+    <div class="grid col-span-3 xl:h-[85vh]">
       <div class="hidden xl:flex justify-center gap-x-5 w-full px-8">
         <div
           class="flex flex-col justify-center text-[1.8rem] h-[20vh]"
@@ -74,9 +80,11 @@
         </button>
       </div>
 
-      <div class="flex flex-col justify-around h-[30vh] xl:h-[38vh] p-5 pb-4">
+      <div
+        class="flex flex-col justify-around h-[30vh] xl:h-[38vh] p-5 mb-5 xl:pb-4"
+      >
         <h3
-          class="bg-lime h-6 xl:h-8 w-full flex justify-center items-center text-border-orange text-lg xl:text-xl"
+          class="bg-orange text-border-lime h-6 xl:h-8 w-full flex justify-center items-center text-lg xl:text-xl"
         >
           Tomorrow
         </h3>
