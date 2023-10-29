@@ -1,16 +1,24 @@
 <template>
-  <div class="justify-center items-center">
-    <div class="h-[85vh] border-black p-5">
+  <div
+    class="absolute z-0 w-full xl:static top-[10vh] justify-center items-center"
+  >
+    <div class="xl:h-[85vh] border-black xl:p-5">
       <div class="grid row-span-2 items-center h-[17vh]">
-        <h2>Weekly schedule</h2>
+        <h2 class="text-5xl xl:text-7xl font-hand text-center xl:text-left">
+          Weekly schedule
+        </h2>
       </div>
 
       <div
         class="h-[65vh] border-black"
         :class="{ 'opacity-20': showChangeRecipe }"
       >
-        <div class="h-[3vh] gap-x-5 mb-3 text-right">WEEK 2</div>
-        <div class="h-[56vh] grid grid-cols-7">
+        <div
+          class="h-[3vh] gap-x-5 py-6 xl:py-0 mb-4 text-right border-black border-t-2 xl:border-none px-5 xl:px-0"
+        >
+          WEEK 2
+        </div>
+        <div class="h-[56vh] grid grid-cols-1 xl:grid-cols-7">
           <DailySchedule
             v-for="(day, i) in daysOfWeek"
             :key="day"

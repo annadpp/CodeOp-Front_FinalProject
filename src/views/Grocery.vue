@@ -205,7 +205,6 @@ export default {
     toggleFormExistingVisibility() {
       this.formExistingVisible = !this.formExistingVisible;
     },
-
     toggleFormNewVisibility() {
       this.formNewVisible = !this.formNewVisible;
     },
