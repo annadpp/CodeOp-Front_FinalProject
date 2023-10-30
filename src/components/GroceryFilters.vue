@@ -15,7 +15,13 @@
         }"
         class="h-6 xl:h-8 w-full flex justify-center items-center text-lg xl:text-xl"
       >
-        {{ category }}
+        <span
+          :class="{
+            'rotate-[-8deg]': selectedCategory !== category,
+            'rotate-[8deg]': selectedCategory === category,
+          }"
+          >{{ category }}</span
+        >
       </button>
     </div>
     <div
@@ -29,7 +35,7 @@
         <p class="font-hand text-xl">{{ item.ingredient }}</p>
         <button
           @click="removeIngredient(item)"
-          class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-[20vw] xl:w-[10vw] bg-background hover:border-orange hover:text-orange"
+          class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-[7rem] xl:w-[10vw] bg-background hover:border-orange hover:text-orange"
         >
           Remove
         </button>

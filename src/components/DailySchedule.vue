@@ -6,7 +6,7 @@
       <h3
         class="bg-orange h-6 xl:h-8 w-full xl:w-[95%] flex justify-center items-center text-border-lime text-lg xl:text-xl pl-10 xl:pl-0"
       >
-        {{ day }}
+        <span class="rotate-[8deg]">{{ day }}</span>
       </h3>
       <button @click="toggleDayVisibility">
         <span v-if="dayVisible"
@@ -28,7 +28,7 @@
         <h3
           class="bg-lime h-6 xl:h-8 w-full flex justify-center text-border-orange text-xl"
         >
-          {{ lunch }}
+          <span class="rotate-[-8deg]">{{ lunch }}</span>
         </h3>
 
         <div
@@ -36,14 +36,14 @@
             'bg-blueberry': scheduledMeal('Lunch') !== 'NO MEAL',
             'bg-background': scheduledMeal('Lunch') === 'NO MEAL',
           }"
-          class="h-[18vh] w-[93%] xl:w-[90%] border-2 border-black drop-shadow-[8px_8px_0px_#000000] mt-5 xl:mb-8"
+          class="h-[18vh] w-[93%] xl:w-[90%] border-2 border-black drop-shadow-[8px_8px_0px_#000000] mr-2 mt-5 xl:mb-8"
         >
           <div
             class="h-[14.5vh] font-hand flex justify-center items-center text-center text-lg px-5"
           >
             <router-link
               :to="`/recipes/${getItemId('Lunch')}`"
-              class="hover:underline leading-6"
+              class="hover:underline leading-4"
               :class="{ 'text-xl': scheduledMeal('Lunch') !== 'NO MEAL' }"
               >{{ scheduledMeal("Lunch") }}</router-link
             >
@@ -61,7 +61,7 @@
         <h3
           class="bg-lime h-6 xl:h-8 w-full flex justify-center text-border-orange text-xl"
         >
-          {{ dinner }}
+          <span class="rotate-[-8deg]">{{ dinner }}</span>
         </h3>
 
         <div
@@ -76,7 +76,7 @@
           >
             <router-link
               :to="`/recipes/${getItemId('Dinner')}`"
-              class="hover:underline leading-6"
+              class="hover:underline leading-4"
               :class="{ 'text-xl': scheduledMeal('Dinner') !== 'NO MEAL' }"
               >{{ scheduledMeal("Dinner") }}</router-link
             >

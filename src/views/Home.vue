@@ -28,9 +28,9 @@
       <div class="grid xl:h-[65vh] border-black px-5 xl:px-0">
         <div class="flex h-[3vh] xl:h-[5vh]">
           <h3
-            class="bg-orange text-border-lime h-6 xl:h-8 w-full flex justify-center items-center text-lg xl:text-xl"
+            class="bg-lime text-border-orange h-6 xl:h-8 w-full flex justify-center items-center text-lg xl:text-2xl"
           >
-            Today
+            <span class="rotate-[8deg]">Today</span>
           </h3>
         </div>
         <div class="h-[57vh] xl:h-[60vh] flex flex-col xl:flex-row gap-x-5">
@@ -84,9 +84,9 @@
         class="flex flex-col justify-around h-[30vh] xl:h-[38vh] p-5 mb-5 xl:pb-4"
       >
         <h3
-          class="bg-orange text-border-lime h-6 xl:h-8 w-full flex justify-center items-center text-lg xl:text-xl"
+          class="bg-orange text-border-lime h-6 xl:h-8 w-full flex justify-center items-center text-lg xl:text-2xl"
         >
-          Tomorrow
+          <span class="rotate-[-8deg]">Tomorrow</span>
         </h3>
         <div class="flex gap-x-5 w-[98%]">
           <CardSimple

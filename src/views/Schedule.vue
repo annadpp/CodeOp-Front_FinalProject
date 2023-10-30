@@ -2,7 +2,7 @@
   <div
     class="absolute z-0 w-full xl:static top-[10vh] justify-center items-center"
   >
-    <div class="xl:h-[85vh] border-black xl:p-5">
+    <div class="xl:h-[85vh] border-black xl:p-5 xl:mb-0">
       <div class="grid row-span-2 items-center h-[17vh]">
         <h2 class="text-5xl xl:text-7xl font-hand text-center xl:text-left">
           Weekly schedule
@@ -18,7 +18,7 @@
         >
           WEEK 2
         </div>
-        <div class="h-[56vh] grid grid-cols-1 xl:grid-cols-7">
+        <div class="xl:h-[56vh] grid grid-cols-1 xl:grid-cols-7 pb-12 xl:pb-0">
           <DailySchedule
             v-for="(day, i) in daysOfWeek"
             :key="day"

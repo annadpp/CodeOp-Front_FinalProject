@@ -18,11 +18,12 @@
         </button>
       </div>
       <div
-        v-if="menuOpen"
+        v-if="screenWidth > 1280 || menuOpen"
         class="absolute xl:static w-full xl:w-auto top-[10vh] left-0 px-5 py-10 xl:p-0 items-end flex flex-col xl:flex-row text-background xl:text-black bg-black xl:bg-background gap-5"
       >
         <router-link to="/schedule"
           ><button
+            @click="toggleMenuVisibility"
             :class="{
               'bg-background text-black xl:bg-black xl:text-background':
                 this.$route.path === '/schedule',
@@ -34,6 +35,7 @@
         >
         <router-link to="/grocery">
           <button
+            @click="toggleMenuVisibility"
             :class="{
               'bg-background text-black xl:bg-black xl:text-background':
                 this.$route.path === '/grocery',
@@ -45,6 +47,7 @@
         </router-link>
         <router-link to="/recipes"
           ><button
+            @click="toggleMenuVisibility"
             :class="{
               'bg-background text-black xl:bg-black xl:text-background':
                 this.$route.path === '/recipes',
@@ -56,6 +59,7 @@
         >
         <router-link to="/"
           ><button
+            @click="toggleMenuVisibility"
             :class="{
               'bg-background text-black xl:bg-black xl:text-background':
                 this.$route.path === '/',
@@ -73,11 +77,10 @@
 <script>
 export default {
   name: "Header",
-  props: ["menu"],
   data() {
     return {
-      menuOpen: true,
-      screenWidth: window.innerWidth, // Define screenWidth in data
+      menuOpen: false,
+      screenWidth: window.innerWidth,
     };
   },
   mounted() {

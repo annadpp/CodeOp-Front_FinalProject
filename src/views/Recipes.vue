@@ -22,9 +22,11 @@
           <h3
             class="bg-orange h-7 xl:h-8 w-full flex justify-center items-center text-border-lime text-xl xl:text-2xl"
           >
-            Recipes ({{
-              search ? filteredRecipes.length : filtersRight.length
-            }})
+            <span class="rotate-[8deg]"
+              >Recipes ({{
+                search ? filteredRecipes.length : filtersRight.length
+              }})</span
+            >
           </h3>
         </div>
         <div
@@ -76,13 +78,19 @@
               'bg-orange text-border-lime': showCategories,
               'bg-lime text-border-orange': !showCategories,
             }"
-            class="h-8 flex justify-center items-center text-xl w-1/2"
+            class="h-6 xl:h-8 flex justify-center items-center text-xl w-1/2"
             @click="
               showCategories = true;
               showCountries = false;
             "
           >
-            Category
+            <span
+              :class="{
+                'rotate-[-8deg]': !showCategories,
+                'rotate-[8deg]': showCategories,
+              }"
+              >Category</span
+            >
           </button>
 
           <button
@@ -90,13 +98,19 @@
               'bg-orange text-border-lime': showCountries,
               'bg-lime text-border-orange': !showCountries,
             }"
-            class="h-8 flex justify-center items-center text-xl w-1/2"
+            class="h-6 xl:h-8 flex justify-center items-center text-xl w-1/2"
             @click="
               showCategories = false;
               showCountries = true;
             "
           >
-            Country
+            <span
+              :class="{
+                'rotate-[-8deg]': !showCountries,
+                'rotate-[8deg]': showCountries,
+              }"
+              >Country</span
+            >
           </button>
         </div>
 
