@@ -7,11 +7,12 @@
     <div class="flex items-center justify-center w-full">
       <img
         v-if="meal"
-        class="object-cover w-full"
         :style="'height: ' + adjustedImg + 'vh'"
-        :src="todaysMealImg"
+        :class="['w-full', todaysMealImg ? 'object-cover' : 'object-contain']"
+        :src="todaysMealImg || defaultImage"
         alt=""
       />
+
       <img
         v-else
         class="object-cover w-full"
@@ -42,6 +43,7 @@
 
 <script>
 import { useSchedule } from "../stores/schedule";
+import defaultImage from "../assets/hungry-cat.png";
 
 export default {
   name: "Card",
@@ -61,10 +63,6 @@ export default {
     const scheduleStore = useSchedule();
     return { scheduleStore };
   },
-  mounted() {
-    window.addEventListener("resize", this.handleWindowResize);
-    this.handleWindowResize();
-  },
   data() {
     return {
       todaysMealId: "",
@@ -74,6 +72,15 @@ export default {
       adjustedText: 0,
       adjustedCard: 0,
     };
+  },
+  computed: {
+    defaultImage() {
+      return defaultImage;
+    },
+  },
+  mounted() {
+    window.addEventListener("resize", this.handleWindowResize);
+    this.handleWindowResize();
   },
   methods: {
     scheduledMealHome(meal) {

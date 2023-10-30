@@ -5,7 +5,7 @@
     >
       <div class="xl:col-span-8 leading-[2.6rem]">
         <h2
-          class="text-3xl xl:text-5xl font-hand text-center xl:text-left leading-7"
+          class="text-xl xl:text-4xl text-center xl:text-left leading-6 px-5 xl:p-0"
         >
           {{ data.name }}
         </h2>

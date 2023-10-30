@@ -2,7 +2,9 @@
   <header
     class="fixed w-full z-10 xl:static grid grid-cols-2 border-black border-b-2 px-5 h-[10vh] bg-background"
   >
-    <div></div>
+    <div>
+      <img class="h-[7vh]" src="../assets/cat.png" alt="" />
+    </div>
     <div
       class="flex flex-col xl:flex-row justify-center xl:justify-end xl:items-center font-sans"
     >

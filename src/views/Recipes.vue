@@ -3,9 +3,7 @@
     class="absolute z-0 w-full xl:static top-[10vh] grid grid-cols-1 xl:grid-cols-8 justify-center items-center"
   >
     <div class="grid xl:hidden items-center h-[15vh] p-5">
-      <h2 class="text-5xl xl:text-7xl font-hand text-center xl:text-left">
-        What could I eat?
-      </h2>
+      <h2 class="text-4xl xl:text-left">What could I eat?</h2>
     </div>
     <div
       class="grid order-2 xl:order-1 col-span-1 xl:col-span-5 h-[67vh] xl:h-[85vh] xl:border-black xl:border-r-2 xl:p-5"
@@ -13,9 +11,7 @@
       <div
         class="hidden xl:grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5 xl:p-0"
       >
-        <h2 class="text-5xl xl:text-7xl font-hand text-center xl:text-left">
-          What could I eat?
-        </h2>
+        <h2 class="text-6xl text-center xl:text-left">What could I eat?</h2>
       </div>
       <div class="grid h-[65vh] px-5 pt-8 xl:p-0">
         <div class="flex h-[5vh]">

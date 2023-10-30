@@ -8,7 +8,7 @@
       <div
         class="grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5 xl:p-0"
       >
-        <h2 class="text-5xl xl:text-7xl font-hand text-center xl:text-left">
+        <h2 class="text-4xl xl:text-6xl text-center xl:text-left">
           What shall I eat?
         </h2>
       </div>

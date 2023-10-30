@@ -107,6 +107,7 @@ export default {
   },
   setup() {
     const scheduleStore = useSchedule();
+
     return { scheduleStore };
   },
   mounted() {

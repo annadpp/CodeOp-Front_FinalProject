@@ -8,7 +8,7 @@
       <div
         class="grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5 xl:p-0"
       >
-        <h2 class="text-5xl xl:text-7xl font-hand text-center xl:text-left">
+        <h2 class="text-4xl xl:text-6xl text-center xl:text-left">
           Grocery List
         </h2>
       </div>
@@ -20,7 +20,7 @@
       <div
         class="flex justify-center gap-x-5 w-full px-8 border-black border-t-2 xl:border-none"
       >
-        <div class="flex flex-col justify-center text-[1.8rem] h-[10vh]">
+        <div class="flex flex-col justify-center text-[1.3rem] h-[10vh]">
           <p>WEEK <span class="font-hand">2</span></p>
         </div>
         <div class="text-5xl flex items-center">

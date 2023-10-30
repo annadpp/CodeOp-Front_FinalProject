@@ -20,10 +20,14 @@
         </button>
       </div>
 
-      <div class="grid xl:grid-cols-3 mb-10">
-        <div
-          class="flex flex-col xl:col-span-2 items-center xl:items-start xl:mb-0"
-        >
+      <div
+        class="grid mb-10"
+        :class="{
+          'xl:flex justify-center': this.scheduleStore.handleInfo === '',
+          'xl:grid-cols-3 ': this.scheduleStore.handleInfo !== '',
+        }"
+      >
+        <div class="flex flex-col xl:col-span-2 xl:mb-0">
           <router-link
             v-if="this.scheduleStore.handleInfo !== ''"
             :to="`/recipes/${this.scheduleStore.handleInfo.id}`"
@@ -31,7 +35,10 @@
           >
             {{ this.scheduleStore.handleInfo.name }}
           </router-link>
-          <div v-else class="font-hand text-3xl mb-10">
+          <div
+            v-else
+            class="flex justify-start font-hand text-3xl mb-10 w-full"
+          >
             <p>NO MEAL</p>
           </div>
           <img
@@ -42,8 +49,8 @@
           />
           <img
             v-else
-            class="hidden xl:flex flex-col object-cover w-full mb-12 h-[17vh]"
-            src=""
+            class="hidden xl:flex flex-col object-contain mb-12 h-[17vh]"
+            src="../assets/hungry-cat.png"
             alt=""
           />
           <!--  -->
@@ -81,8 +88,8 @@
             />
             <img
               v-else
-              class="xl:hidden flex-col object-cover w-full mb-12 h-[13vh] xl:h-[17vh]"
-              src=""
+              class="xl:hidden flex-col object-contain w-full mb-12 h-[13vh] xl:h-[17vh]"
+              src="../assets/hungry-cat.png"
               alt=""
             />
           </div>
@@ -114,11 +121,8 @@
 
 <script>
 import { useSchedule } from "../stores/schedule";
-import {
-  updateRemovedIngredients,
-  updateFilteredIngredients,
-  updateSchedule,
-} from "../firebase";
+import { getSchedule } from "../firebase";
+import { updateSchedule } from "../firebase";
 
 export default {
   name: "ChangeRecipe",
@@ -128,6 +132,11 @@ export default {
   setup() {
     const scheduleStore = useSchedule();
     return { scheduleStore };
+  },
+  mounted() {
+    getSchedule().then((schedule) => {
+      this.scheduleStore.schedule = schedule;
+    }); // Get info from Firebase -> careful! async function in Firebase.js
   },
   methods: {
     closeForm() {
