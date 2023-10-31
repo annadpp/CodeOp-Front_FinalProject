@@ -2,12 +2,25 @@
   <header
     class="fixed w-full z-10 xl:static grid grid-cols-2 border-black border-b-2 px-5 h-[10vh] bg-background"
   >
-    <div>
-      <img class="h-[7vh]" src="../assets/cat.png" alt="" />
+    <!--MENU LOGO -> randomized-->
+    <div class="h-full relative xl:ml-[2vw]">
+      <p
+        class="hidden sm:flex absolute font-hand sm:text-xl md:text-2xl sm:w-[300px] md:w-[325px] top-[3vh] sm:pl-[15vw] md:pl-[105px]"
+        :class="randomBgColor"
+      >
+        Meal Planning App
+      </p>
+      <img
+        class="h-[8vh] sm:h-[9vh] absolute bottom-[-2px] sm:pl-5"
+        :src="randomImgSource"
+        alt=""
+      />
     </div>
+
     <div
       class="flex flex-col xl:flex-row justify-center xl:justify-end xl:items-center font-sans"
     >
+      <!--MOBILE MENU BASE-->
       <div
         class="fixed top-5 right-5 flex xl:hidden justify-end items-center font-sans"
       >
@@ -19,6 +32,8 @@
           <p v-if="menuOpen">CLOSE</p>
         </button>
       </div>
+
+      <!--DESKTOP MENU + MOBILE MENU OPEN -> closes menu on click + router-link to different sections-->
       <div
         v-if="screenWidth > 1280 || menuOpen"
         class="absolute xl:static w-full xl:w-auto top-[10vh] left-0 px-5 py-10 xl:p-0 items-end flex flex-col xl:flex-row text-background xl:text-black bg-black xl:bg-background gap-5"
@@ -77,18 +92,33 @@
 </template>
 
 <script>
+import logo1 from "../assets/logo1.png";
+import logo2 from "../assets/logo2.png";
+import logo3 from "../assets/logo3.png";
+import logo4 from "../assets/logo4.png";
+
 export default {
   name: "Header",
   data() {
     return {
       menuOpen: false,
       screenWidth: window.innerWidth,
+      bgColors: ["bg-lime", "bg-orange", "bg-blueberry"],
+      imgSources: [logo1, logo2, logo3, logo4],
+      randomBgColor: "",
+      randomImgSource: "",
     };
   },
   mounted() {
+    //Gets random background and image for logo on load
+    this.setRandomBg();
+    this.setRandomImg();
+
+    //Gets screen size info + starts on load
     window.addEventListener("resize", this.handleWindowResize);
     this.handleWindowResize();
   },
+  //Method description on name
   methods: {
     toggleMenuVisibility() {
       this.menuOpen = !this.menuOpen;
@@ -100,6 +130,14 @@ export default {
       } else {
         this.menuOpen = false;
       }
+    },
+    setRandomBg() {
+      this.randomBgColor =
+        this.bgColors[Math.floor(Math.random() * this.bgColors.length)];
+    },
+    setRandomImg() {
+      this.randomImgSource =
+        this.imgSources[Math.floor(Math.random() * this.imgSources.length)];
     },
   },
 };

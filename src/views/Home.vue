@@ -2,9 +2,11 @@
   <div
     class="absolute z-0 w-full xl:static top-[10vh] grid grid-cols-1 xl:grid-cols-8 justify-center items-center"
   >
+    <!--GRID RIGHT-->
     <div
       class="grid col-span-1 xl:col-span-5 xl:h-[85vh] xl:border-black xl:border-r-2 xl:p-5"
     >
+      <!--TITLE-->
       <div
         class="grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5 xl:p-0"
       >
@@ -25,27 +27,23 @@
         </div>
       </div>
 
+      <!--TODAY MEAL SCHEDULE-->
       <div class="grid xl:h-[65vh] border-black px-5 xl:px-0">
         <div class="flex h-[3vh] xl:h-[5vh]">
           <h3
-            class="bg-lime text-border-orange h-6 xl:h-8 w-full flex justify-center items-center text-lg xl:text-2xl"
+            class="bg-lime text-border-orange h-6 sm:h-7 xl:h-8 w-full flex justify-center items-center text-lg sm:text-xl md:text-2xl"
           >
             <span class="rotate-[8deg]">Today</span>
           </h3>
         </div>
-        <div class="h-[57vh] xl:h-[60vh] flex flex-col xl:flex-row gap-x-5">
+        <div
+          class="h-[57vh] sm:h-[52vh] xl:h-[60vh] flex flex-col sm:flex-row gap-x-5"
+        >
+          <!--LUNCH CARD-->
+          <Card title="L U N C H" :day="getFormattedDayToday()" meal="Lunch" />
+          <!--DINNER CARD-->
           <Card
-            heightcard="55"
-            heightimg="30"
-            heighttext="20"
-            title="L U N C H"
-            :day="getFormattedDayToday()"
-            meal="Lunch"
-          />
-          <Card
-            heightcard="55"
-            heightimg="30"
-            heighttext="20"
+            class="mt-5 sm:mt-0"
             title="D I N N E R"
             :day="getFormattedDayToday()"
             meal="Dinner"
@@ -54,6 +52,7 @@
       </div>
     </div>
 
+    <!--GRID LEFT-->
     <div class="grid col-span-3 xl:h-[85vh]">
       <div class="hidden xl:flex justify-center gap-x-5 w-full px-8">
         <div
@@ -65,6 +64,32 @@
         </div>
       </div>
 
+      <!--TOMORROW MEAL SCHEDULE-->
+      <div
+        class="flex flex-col justify-around h-[30vh] xl:h-[38vh] p-5 mb-5 xl:pb-4 border-black border-t-2"
+      >
+        <h3
+          class="bg-orange text-border-lime h-6 sm:h-7 xl:h-8 w-full flex justify-center items-center text-lg sm:text-xl md:text-2xl"
+        >
+          <span class="rotate-[-8deg]">Tomorrow</span>
+        </h3>
+        <!--LUNCH CARD-->
+        <div class="flex gap-x-5 w-[98%]">
+          <CardSimple
+            title="L U N C H"
+            :day="getFormattedDayTomorrow()"
+            meal="Lunch"
+          />
+          <!--DINNER CARD-->
+          <CardSimple
+            title="D I N N E R"
+            :day="getFormattedDayTomorrow()"
+            meal="Dinner"
+          />
+        </div>
+      </div>
+
+      <!--BUTTONS -> router-link to Recipes + Schedule-->
       <div
         class="flex flex-col p-5 items-center gap-y-2 xl:gap-y-5 xl:h-[25vh] justify-center border-black border-y-2"
       >
@@ -78,28 +103,6 @@
         >
           <router-link :to="`/schedule`">Check full menu</router-link>
         </button>
-      </div>
-
-      <div
-        class="flex flex-col justify-around h-[30vh] xl:h-[38vh] p-5 mb-5 xl:pb-4"
-      >
-        <h3
-          class="bg-orange text-border-lime h-6 xl:h-8 w-full flex justify-center items-center text-lg xl:text-2xl"
-        >
-          <span class="rotate-[-8deg]">Tomorrow</span>
-        </h3>
-        <div class="flex gap-x-5 w-[98%]">
-          <CardSimple
-            title="L U N C H"
-            :day="getFormattedDayTomorrow()"
-            meal="Lunch"
-          />
-          <CardSimple
-            title="D I N N E R"
-            :day="getFormattedDayTomorrow()"
-            meal="Dinner"
-          />
-        </div>
       </div>
     </div>
   </div>
@@ -124,15 +127,18 @@ const daysOfWeek = [
 export default {
   components: { Card, CardSimple },
   setup() {
+    //Gets info from Pinia scheduleStore
     const scheduleStore = useSchedule();
     return { scheduleStore };
   },
   mounted() {
+    //Gets info from Firebase -> async function in firebase.js
     getSchedule().then((schedule) => {
       this.scheduleStore.schedule = schedule;
-    }); // Get info from Firebase -> careful! async function in Firebase.js
+    });
   },
   computed: {
+    //Computed description on name
     formattedDate() {
       const months = [
         "January",
@@ -159,6 +165,7 @@ export default {
           <p>${dayOfMonth} <span class="font-hand">${month.toUpperCase()}</span> '${yearLastTwoDigits}</p>`;
     },
   },
+  //Method description on name
   methods: {
     getFormattedDayToday() {
       const currentDate = new Date();

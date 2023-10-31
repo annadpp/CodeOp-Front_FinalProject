@@ -12,6 +12,7 @@
           CURRENT MEAL <span class="text-6xl"> *</span>
         </h3>
 
+        <!--BUTTON CLOSE FORM -> emits to Recipe-->
         <button
           class="flex flex-row items-center justify-center h-[35px] w-[40px] bg-lime"
           @click="closeForm"
@@ -20,6 +21,7 @@
         </button>
       </div>
 
+      <!--CURENT MEAL INFORMATION -> receives info from Pinia scheduleStore-->
       <div
         class="grid mb-10"
         :class="{
@@ -27,6 +29,7 @@
           'xl:grid-cols-3 ': this.scheduleStore.handleInfo !== '',
         }"
       >
+        <!--CURRENT MEAL NAME/NO MEAL-->
         <div class="flex flex-col xl:col-span-2 xl:mb-0">
           <router-link
             v-if="this.scheduleStore.handleInfo !== ''"
@@ -53,9 +56,9 @@
             src="../assets/hungry-cat.png"
             alt=""
           />
-          <!--  -->
         </div>
 
+        <!--DAY/MEAL/IMAGE-->
         <div
           :class="{
             'grid-cols-1': this.scheduleStore.handleInfo === '',
@@ -96,7 +99,9 @@
         </div>
       </div>
 
+      <!--BUTTONS-->
       <div class="flex flex-col xl:flex-row gap-3 xl:gap-5">
+        <!--router-link to Recipes-->
         <button
           class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
         >
@@ -107,6 +112,7 @@
             <p v-else>Go to recipes & change meal</p></router-link
           >
         </button>
+        <!--Removes recipe -> emits to Recipe + deletes from Schedule-->
         <button
           v-if="this.scheduleStore.handleInfo !== ''"
           @click="removeRecipe(this.scheduleStore.handleInfo.id)"
@@ -130,13 +136,15 @@ export default {
     closedForm: Boolean,
   },
   setup() {
+    //Gets info from Pinia scheduleStore
     const scheduleStore = useSchedule();
     return { scheduleStore };
   },
   mounted() {
+    //Gets info from Firebase -> async function in firebase.js
     getSchedule().then((schedule) => {
       this.scheduleStore.schedule = schedule;
-    }); // Get info from Firebase -> careful! async function in Firebase.js
+    });
   },
   methods: {
     closeForm() {

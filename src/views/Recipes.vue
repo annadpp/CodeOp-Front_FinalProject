@@ -57,7 +57,7 @@
         <div class="xl:hidden flex justify-end w-full mt-1">
           <button
             @click="toggleFilter"
-            class="item-right rounded-full border-2 border-black h-[4vh] w-1/2 hover:border-orange hover:text-orange"
+            class="item-right rounded-full border-2 border-black h-[4vh] w-2/3 sm:w-2/5 hover:border-orange hover:text-orange"
           >
             Advanced filter
           </button>
