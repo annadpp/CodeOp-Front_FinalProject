@@ -25,13 +25,13 @@
 
     <!--MEAL NAME BLOCK-->
     <div
-      class="flex items-center justify-center bg-blueberry w-full font-hand text-xl"
+      class="flex items-center justify-center bg-blueberry w-full font-hand text-xl leading-4 sm:leading-5"
       :class="{
         'h-[8vh] sm:h-[16vh] xl:h-[20vh]': meal,
         'h-[10vh] sm:h-[8vh] xl:h-[10vh]': !meal,
       }"
     >
-      <!--Depends on lunch/dinner info (Home/meal) or no info (Recipes/!meal)-->
+      <!--Depends on lunch/dinner info (Home/meal) or no info (Recipes/!meal) -> router-link depending on API's recipe id-->
       <router-link
         :to="meal ? `/recipes/${todaysMealId}` : `/recipes/${id}`"
         :class="[
@@ -52,7 +52,6 @@ import defaultImage from "../assets/hungry-cat.png";
 
 export default {
   name: "Card",
-
   props: [
     //Props passed for meal info
     "title",

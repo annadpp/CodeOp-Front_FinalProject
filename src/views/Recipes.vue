@@ -13,7 +13,7 @@
       >
         <h2 class="text-6xl text-center xl:text-left">What could I eat?</h2>
       </div>
-      <div class="grid h-[65vh] px-5 pt-8 xl:p-0">
+      <div class="grid xl:h-[65vh] px-5 pt-8 xl:p-0">
         <div class="flex h-[5vh]">
           <h3
             class="bg-orange h-7 xl:h-8 w-full flex justify-center items-center text-border-lime text-xl xl:text-2xl"
@@ -26,7 +26,7 @@
           </h3>
         </div>
         <div
-          class="grid grid-cols-2 h-[52vh] gap-3 xl:gap-5 overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
+          class="grid grid-cols-2 h-[48vh] mb-14 xl:mb-0 xl:h-[52vh] gap-3 xl:gap-5 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
         >
           <Card
             v-for="recipe in search ? filteredRecipes : filtersRight"

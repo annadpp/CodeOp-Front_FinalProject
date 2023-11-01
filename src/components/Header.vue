@@ -1,9 +1,9 @@
 <template>
   <header
-    class="fixed w-full z-10 xl:static grid grid-cols-2 border-black border-b-2 px-5 h-[10vh] bg-background"
+    class="fixed w-full z-10 xl:static grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 border-black border-b-2 px-5 h-[10vh] bg-background"
   >
     <!--MENU LOGO -> randomized-->
-    <div class="h-full relative xl:ml-[2vw]">
+    <div class="h-full relative lg:ml-[2vw]">
       <p
         class="hidden sm:flex absolute font-hand sm:text-xl md:text-2xl sm:w-[300px] md:w-[325px] top-[3vh] sm:pl-[15vw] md:pl-[105px]"
         :class="randomBgColor"
@@ -18,11 +18,11 @@
     </div>
 
     <div
-      class="flex flex-col xl:flex-row justify-center xl:justify-end xl:items-center font-sans"
+      class="flex flex-col xl:flex-row justify-center xl:justify-end lg:items-end xl:items-center font-sans lg:col-span-2 xl:col-span-1"
     >
       <!--MOBILE MENU BASE-->
       <div
-        class="fixed top-5 right-5 flex xl:hidden justify-end items-center font-sans"
+        class="fixed top-5 right-5 flex lg:hidden justify-end items-center font-sans"
       >
         <button
           @click="toggleMenuVisibility"
@@ -35,14 +35,14 @@
 
       <!--DESKTOP MENU + MOBILE MENU OPEN -> closes menu on click + router-link to different sections-->
       <div
-        v-if="screenWidth > 1280 || menuOpen"
-        class="absolute xl:static w-full xl:w-auto top-[10vh] left-0 px-5 py-10 xl:p-0 items-end flex flex-col xl:flex-row text-background xl:text-black bg-black xl:bg-background gap-5"
+        v-if="screenWidth > 1024 || menuOpen"
+        class="absolute lg:static w-full lg:w-auto top-[10vh] left-0 px-5 py-10 lg:p-0 items-end flex flex-col lg:flex-row text-background lg:text-black bg-black lg:bg-background gap-5"
       >
         <router-link to="/schedule"
           ><button
             @click="toggleMenuVisibility"
             :class="{
-              'bg-background text-black xl:bg-black xl:text-background':
+              'bg-background text-black lg:bg-black lg:text-background':
                 this.$route.path === '/schedule',
             }"
             class="hover:underline"
@@ -54,7 +54,7 @@
           <button
             @click="toggleMenuVisibility"
             :class="{
-              'bg-background text-black xl:bg-black xl:text-background':
+              'bg-background text-black lg:bg-black lg:text-background':
                 this.$route.path === '/grocery',
             }"
             class="hover:underline"
@@ -66,7 +66,7 @@
           ><button
             @click="toggleMenuVisibility"
             :class="{
-              'bg-background text-black xl:bg-black xl:text-background':
+              'bg-background text-black lg:bg-black lg:text-background':
                 this.$route.path === '/recipes',
             }"
             class="hover:underline"
@@ -78,7 +78,7 @@
           ><button
             @click="toggleMenuVisibility"
             :class="{
-              'bg-background text-black xl:bg-black xl:text-background':
+              'bg-background text-black lg:bg-black lg:text-background':
                 this.$route.path === '/',
             }"
             class="hover:underline"
@@ -125,7 +125,7 @@ export default {
     },
     handleWindowResize() {
       this.screenWidth = window.innerWidth;
-      if (this.screenWidth > 1280) {
+      if (this.screenWidth > 1024) {
         this.menuOpen = true;
       } else {
         this.menuOpen = false;

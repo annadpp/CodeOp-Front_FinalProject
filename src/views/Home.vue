@@ -54,6 +54,7 @@
 
     <!--GRID LEFT-->
     <div class="grid col-span-3 xl:h-[85vh]">
+      <!--TODAY'S DATE-->
       <div class="hidden xl:flex justify-center gap-x-5 w-full px-8">
         <div
           class="flex flex-col justify-center text-[1.8rem] h-[20vh]"
@@ -66,7 +67,7 @@
 
       <!--TOMORROW MEAL SCHEDULE-->
       <div
-        class="flex flex-col justify-around h-[30vh] xl:h-[38vh] p-5 mb-5 xl:pb-4 border-black border-t-2"
+        class="flex flex-col justify-around h-[30vh] xl:h-[38vh] p-5 xl:mb-5 xl:pb-4 border-black border-t-2"
       >
         <h3
           class="bg-orange text-border-lime h-6 sm:h-7 xl:h-8 w-full flex justify-center items-center text-lg sm:text-xl md:text-2xl"
@@ -91,7 +92,7 @@
 
       <!--BUTTONS -> router-link to Recipes + Schedule-->
       <div
-        class="flex flex-col p-5 items-center gap-y-2 xl:gap-y-5 xl:h-[25vh] justify-center border-black border-y-2"
+        class="flex flex-col p-5 items-center gap-y-2 xl:gap-y-5 xl:h-[25vh] justify-center border-black border-t-2 mb-12 xl:mb-0"
       >
         <button
           class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
