@@ -63,6 +63,7 @@ export default {
     };
   },
   computed: {
+    //Filters for buttons All/Food/Cleaning/Others -> on click, displays only the items with requested category
     filteredItems() {
       if (this.selectedCategory === "All") {
         return this.groceryStore.filteredIngredients;
@@ -78,11 +79,13 @@ export default {
     },
   },
   setup() {
+    //Gets info from Pinia scheduleStore + groceryStore
     const scheduleStore = useSchedule();
     const groceryStore = useGrocery();
     return { scheduleStore, groceryStore };
   },
   mounted() {
+    //Gets info from Firebase -> async function in firebase.js
     getFilteredIngredients().then((filteredIngredients) => {
       this.groceryStore.filteredIngredients = filteredIngredients;
     });
@@ -98,6 +101,7 @@ export default {
       });
   },
   methods: {
+    //Gets ingredients from the meals in the schedule and passes their info to groceryList array
     getIngredients() {
       for (const item of this.scheduleStore.schedule) {
         for (let ingredient of item.ingredients) {
@@ -110,7 +114,61 @@ export default {
           });
         }
       }
+      //Calls filterIngredients (explained below)
       this.filterIngredients();
+    },
+    filterIngredients() {
+      for (const groceryItem of this.groceryStore.groceryList) {
+        //FILTERS IF INGREDIENT IN BLACKLIST (removedIngredients) -> We don't want to add an ingredient that has been previously removed
+        //Checks if there is a match between any "groceryItem" ingredient/meal/day and any their counterparts in "removedIngredients" (we want to know if the user has deleted the ingredients so they won't appear again)
+        const isMatch = this.groceryStore.removedIngredients.some(
+          (removedItem) => {
+            return (
+              groceryItem.ingredient === removedItem.ingredient &&
+              groceryItem.meal === removedItem.meal &&
+              groceryItem.day === removedItem.day
+            );
+          }
+        );
+
+        if (!isMatch) {
+          //If there is no match -> checks if there's a matching ingredient in "filteredIngredients" (we want to know whether to update ID or to add new ingredient)
+          const matchingFiltered = this.groceryStore.filteredIngredients.find(
+            (filteredItem) => {
+              return groceryItem.ingredient === filteredItem.ingredient;
+            }
+          );
+          if (matchingFiltered) {
+            //UPDATES ID
+            //If there's a match -> updates the "id" of the matching "filteredItem" with "groceryItem.id" (gets the highest ID number so if it's deleted all instances of the ingredient disappear)
+            matchingFiltered.id = groceryItem.id;
+          } else {
+            //ALL FILTERS PASSED -> PASSES INFORMATION TO FILTEREDINGREDIENTS
+            //If there's no match  -> adds a new item to "filteredIngredients" (FILTERED INGREDIENTS WILL PROVIDE FINAL INFORMATION)
+            this.groceryStore.filteredIngredients.push({
+              ingredient: groceryItem.ingredient,
+              id: groceryItem.id,
+              meal: groceryItem.meal,
+              day: groceryItem.day,
+              name: groceryItem.name,
+            });
+          }
+        }
+      }
+      //Calls scheduleUpdates (explained below)
+      this.scheduleUpdates();
+    },
+    scheduleUpdates() {
+      //Checks if name of ingredient in filtered is in groceryList ingredients list -> Works for deleted recipes from Schedule
+      this.groceryStore.filteredIngredients =
+        this.groceryStore.filteredIngredients.filter((item) => {
+          for (let groceryItem of this.groceryStore.groceryList) {
+            if (item.name === groceryItem.name || item.name === undefined) {
+              return true; //Keeps the item if its name matches any in the grocery list (or there is no name)
+            }
+          }
+          return false; //Removes the item if its name doesn't match any in the grocery list
+        });
     },
     removeIngredient(ingredientToRemove) {
       const index = this.groceryStore.filteredIngredients.findIndex(
@@ -125,39 +183,7 @@ export default {
         updateFilteredIngredients(this.groceryStore.filteredIngredients);
       }
     },
-    filterIngredients() {
-      const groceryList = this.groceryStore.groceryList;
-      const filteredIngredients = this.groceryStore.filteredIngredients;
-
-      for (const groceryItem of groceryList) {
-        const isMatch = this.groceryStore.removedIngredients.some(
-          (removedItem) => {
-            return (
-              groceryItem.ingredient === removedItem.ingredient &&
-              groceryItem.meal === removedItem.meal &&
-              groceryItem.day === removedItem.day
-            );
-          }
-        );
-
-        if (!isMatch) {
-          const matchingFiltered = filteredIngredients.find((filteredItem) => {
-            return groceryItem.ingredient === filteredItem.ingredient;
-          });
-          if (matchingFiltered) {
-            matchingFiltered.id = groceryItem.id;
-          } else {
-            filteredIngredients.push({
-              ingredient: groceryItem.ingredient,
-              id: groceryItem.id,
-              meal: groceryItem.meal,
-              day: groceryItem.day,
-            });
-          }
-        }
-      }
-      this.groceryStore.filteredIngredients = filteredIngredients;
-    },
+    //Assigns the value of the category parameter to the selectedCategory
     selectCategory(category) {
       this.selectedCategory = category;
     },
