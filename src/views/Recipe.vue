@@ -3,6 +3,7 @@
     <div
       class="grid xl:grid-cols-10 items-center h-[15vh] xl:h-[17vh] pt-8 xl:px-5 xl:mb-2"
     >
+      <!--RECIPE NAME -> data from API-->
       <div class="xl:col-span-8 leading-[2.6rem]">
         <h2
           class="text-xl xl:text-4xl text-center xl:text-left leading-6 px-5 xl:p-0"
@@ -10,6 +11,7 @@
           {{ data.name }}
         </h2>
       </div>
+      <!--RECIPE INFO (category + country) DESKTOP-> data from API-->
       <div class="xl:col-span-2">
         <div class="gap-x-5 hidden xl:flex">
           <p class="text-6xl flex justify-end items-end text-left w-1/3">*</p>
@@ -36,6 +38,7 @@
         <div
           class="grid grid-cols-2 xl:flex px-5 xl:px-0 my-5 xl:my-0 gap-x-5 xl:gap-x-0"
         >
+          <!--IMG styles change on open/closed "add to weekly menu" form-->
           <img
             class="flex object-cover w-full"
             :src="data.img"
@@ -44,6 +47,7 @@
               closedForm ? 'h-[15vh] xl:h-[25vh]' : 'h-[15vh] xl:h-[55vh]'
             "
           />
+          <!--RECIPE INFO (category + country) MOBILE-->
           <div
             class="gap-x-5 xl:hidden flex flex-col justify-center items-end xl:justify-end xl:items-end"
           >
@@ -65,12 +69,14 @@
           </div>
         </div>
 
+        <!--RECIPE INFO (ingredients) -> data info from API-->
         <div
           class="order-2 border-black border-y-2 xl:border-none"
           :class="{ 'border-none': !closedForm }"
         >
           <p v-if="closedForm" class="px-5 my-5 xl:mb-5 xl:mt-0 xl:px-0">
             I N G R E D I E N T S
+            <!--Button open filter ingredients MOBILE-->
             <button @click="toggleIngredientsVisibility" class="xl:hidden">
               <span v-if="!ingredientsVisible"
                 ><i class="fa-solid fa-caret-down"></i
@@ -81,10 +87,12 @@
             </button>
           </p>
 
+          <!--Ingredients div only displayed when filter on-->
           <div
             v-if="closedForm && ingredientsVisible"
             class="overflow-auto scrollbar-thin scrollbar-thumb-lime scrollbar-track-orange xl:h-[20vh] w-full grid xl:grid-cols-2 gap-2 content-start pb-5 xl:pb-0 px-5 xl:px-0"
           >
+            <!--Loops on info from API to get ingredient info-->
             <div
               v-for="ingredient in data.ingredients"
               class="flex justify-center items-center bg-blueberry h-[3vh] w-full"
@@ -97,6 +105,7 @@
           </div>
         </div>
 
+        <!--Button add to weekly menu only displayed if filter on-->
         <div
           class="order-1 xl:order-3 border-black border-t-2 xl:border-none p-5 xl:p-0"
           :class="{ 'hidden, p-0': !closedForm }"
@@ -128,17 +137,19 @@
           </li>
         </ol>
 
-        <!-- ADD WEEKLY CARD -->
+        <!--ADD WEEKLY CARD-->
         <form
           v-else
           class="h-[48vh] xl:h-[58vh] w-full p-5 border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-blueberry"
         >
           <div class="h-[10vh] flex items-start justify-end">
+            <!--Close add to weekly button-->
             <button @click="toggleVisibility" class="h-[40px] w-[40px] bg-lime">
               <p class="text-border-orange hover:text-2xl">X</p>
             </button>
           </div>
 
+          <!--SELECT MEAL/DAY VALUES -> shown if information not sent-->
           <div v-if="!sent">
             <div
               class="grid grid-cols-4 gap-x-5 h-[18vh] xl:h-[30vh] w-[98%] xl:mt-[7vh]"
@@ -195,6 +206,7 @@
             </div>
           </div>
 
+          <!--RECIPE ADDED INFO (name, day, meal)-> Shown if information sent-->
           <div v-else class="flex justify-center items-center xl:h-[37vh]">
             <p
               class="mb-10 text-lg xl:text-2xl text-center leading-8 xl:leading-10"
@@ -211,6 +223,9 @@
               >
             </p>
           </div>
+
+          <!--BUTTONS BOTTOM-->
+          <!--Add to weekly menu -> if info not sent-->
           <button
             v-if="!sent"
             @click.prevent="addToWeeklyMenu"
@@ -218,6 +233,7 @@
           >
             Add to weekly menu
           </button>
+          <!--Check full menu -> if info sent-->
           <button
             v-else
             @click.prevent="addToWeeklyMenu"
@@ -241,6 +257,7 @@ export default {
   name: "Recipe",
   data() {
     return {
+      //Stores info gotten from API
       data: {
         img: "",
         name: "",
@@ -249,6 +266,7 @@ export default {
         country: "",
         steps: "",
       },
+      //Other values needed for functions
       loading: false,
       closedForm: true,
       weeklyMenu: [],
@@ -259,6 +277,7 @@ export default {
     };
   },
   setup() {
+    //Gets info from Pinia scheduleStore
     const scheduleStore = useSchedule();
     return { scheduleStore };
   },
@@ -270,17 +289,23 @@ export default {
     this.handleWindowResize();
   },
   methods: {
-    async getRecipes() {
+    //Used to get recipes info from API based on params.id received from Recipes
+    getRecipes() {
       this.loading = true;
       const idRecipe = Number(this.$route.params.id);
       const apiUrl = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idRecipe}`;
-      try {
-        const response = await axios.get(apiUrl);
-        this.handleResponse(response);
-      } catch (error) {
-        console.error(`Error fetching recipe:`, error);
-      }
-      this.loading = false;
+
+      axios
+        .get(apiUrl)
+        .then((response) => {
+          this.handleResponse(response);
+        })
+        .catch((error) => {
+          console.error(`Error fetching recipe:`, error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     handleResponse(response) {
       const recipe = response.data.meals[0];
@@ -294,7 +319,7 @@ export default {
             measure: measure,
           });
         }
-
+        //Info from API we're storing/using
         this.data = {
           img: recipe.strMealThumb,
           name: recipe.strMeal,
@@ -306,19 +331,43 @@ export default {
       }
     },
     toggleVisibility() {
+      //Toggles closedForm to open/close add recipe form + changes sent status
       this.closedForm = !this.closedForm;
       this.sent = false;
     },
     addToWeeklyMenu() {
-      this.scheduleStore.schedule.push({
-        meal: this.selectedMeal,
-        day: this.selectedDay,
-        img: this.data.img,
-        name: this.data.name,
-        id: Number(this.$route.params.id),
-        ingredients: this.data.ingredients.map((ingredient) => ingredient.name),
-      });
+      //Find an existing recipe in schedule that matches the day + meal of current recipe by checking the index.
+      const existing = this.scheduleStore.schedule.findIndex(
+        (recipe) =>
+          recipe.day === this.selectedDay && recipe.meal === this.selectedMeal
+      );
 
+      if (existing !== -1) {
+        //If an entry for the same day and meal already exists, updates it (we just want one recipe per meal/day)
+        this.scheduleStore.schedule[existing] = {
+          meal: this.selectedMeal,
+          day: this.selectedDay,
+          img: this.data.img,
+          name: this.data.name,
+          id: Number(this.$route.params.id),
+          ingredients: this.data.ingredients.map(
+            (ingredient) => ingredient.name
+          ),
+        };
+      } else {
+        //If no entry exists for the same day and meal, adds a new entry
+        this.scheduleStore.schedule.push({
+          meal: this.selectedMeal,
+          day: this.selectedDay,
+          img: this.data.img,
+          name: this.data.name,
+          id: Number(this.$route.params.id),
+          ingredients: this.data.ingredients.map(
+            (ingredient) => ingredient.name
+          ),
+        });
+      }
+      //Once filtering and adding is done, updates schedule array in Pinia
       updateSchedule(this.scheduleStore.schedule);
       this.sent = true;
     },
@@ -326,6 +375,7 @@ export default {
       this.ingredientsVisible = !this.ingredientsVisible;
     },
     handleWindowResize() {
+      //Needed to close ingredients div on MOBILE (open default in DESKTOP)
       this.screenWidth = window.innerWidth;
       if (this.screenWidth > 1280) {
         this.ingredientsVisible = true;
@@ -336,6 +386,7 @@ export default {
   },
   computed: {
     formattedSteps() {
+      //Regex to give recipe steps consistency
       const steps = this.data.steps;
       if (steps) {
         const breakSteps = steps.split(/(?<=\.\s)(?!\()|(?<=\.\))\s/);
