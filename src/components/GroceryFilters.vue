@@ -54,12 +54,12 @@ import { updateRemovedIngredients } from "../firebase";
 import { updateFilteredIngredients } from "../firebase";
 
 export default {
-  name: "Grocery Filters",
-  components: {},
+  name: "GroceryFilters",
   data() {
     return {
       selectedCategory: "All",
       categoryOptions: ["All", "Food", "Cleaning", "Others"],
+      loading: false,
     };
   },
   computed: {
@@ -84,20 +84,54 @@ export default {
     const groceryStore = useGrocery();
     return { scheduleStore, groceryStore };
   },
+  async beforeRouteUpdate() {
+    //Will be used for loaders
+    this.loading = true;
+
+    try {
+      //Fetches updated ingredients, removed items, and schedule data from Firebase and assigns it to Pinia when the route changes
+      this.groceryStore.filteredIngredients = await getFilteredIngredients();
+      this.groceryStore.removedIngredients = await getRemovedIngredients();
+      this.scheduleStore.schedule = await getSchedule();
+
+      //Clears groceryList and refilters ingredients and schedule updates by running methods
+      this.groceryStore.groceryList = [];
+      this.getIngredients();
+      this.filterIngredients();
+      this.scheduleUpdates();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+
+    this.loading = false;
+  },
+
   mounted() {
-    //Gets info from Firebase -> async function in firebase.js
-    getFilteredIngredients().then((filteredIngredients) => {
-      this.groceryStore.filteredIngredients = filteredIngredients;
-    });
-    getRemovedIngredients().then((removedIngredients) => {
-      this.groceryStore.removedIngredients = removedIngredients;
-    });
-    getSchedule()
-      .then((schedule) => {
+    this.loading = true;
+
+    //Fetches initial data from Firebase and updates Pinia when the component is mounted
+    Promise.all([
+      getFilteredIngredients(),
+      getRemovedIngredients(),
+      getSchedule(),
+    ])
+      .then(([filteredIngredients, removedIngredients, schedule]) => {
+        // Updates the store data with fetched initial data
+        this.groceryStore.filteredIngredients = filteredIngredients;
+        this.groceryStore.removedIngredients = removedIngredients;
         this.scheduleStore.schedule = schedule;
-      })
-      .then(() => {
+
+        //Clears groceryList and refilters ingredients and schedule updates by running methods
+        this.groceryStore.groceryList = [];
         this.getIngredients();
+        this.filterIngredients();
+        this.scheduleUpdates();
+      })
+      .catch((error) => {
+        console.error("Error fetching initial data:", error);
+      })
+      .finally(() => {
+        this.loading = false;
       });
   },
   methods: {
@@ -114,8 +148,6 @@ export default {
           });
         }
       }
-      //Calls filterIngredients (explained below)
-      this.filterIngredients();
     },
     filterIngredients() {
       for (const groceryItem of this.groceryStore.groceryList) {
@@ -155,8 +187,6 @@ export default {
           }
         }
       }
-      //Calls scheduleUpdates (explained below)
-      this.scheduleUpdates();
     },
     scheduleUpdates() {
       //Checks if name of ingredient in filtered is in groceryList ingredients list -> Works for deleted recipes from Schedule
