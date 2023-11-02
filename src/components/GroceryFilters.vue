@@ -190,12 +190,14 @@ export default {
     },
     scheduleUpdates() {
       //Checks if name of ingredient in filtered is in groceryList ingredients list -> Works for deleted recipes from Schedule
+      const groceryItemNames = this.groceryStore.groceryList.map(
+        (item) => item.name
+      );
+
       this.groceryStore.filteredIngredients =
         this.groceryStore.filteredIngredients.filter((item) => {
-          for (let groceryItem of this.groceryStore.groceryList) {
-            if (item.name === groceryItem.name || item.name === undefined) {
-              return true; //Keeps the item if its name matches any in the grocery list (or there is no name)
-            }
+          if (item.name === undefined || groceryItemNames.includes(item.name)) {
+            return true; //Keeps the item if its name matches any in the grocery list (or there is no name)
           }
           return false; //Removes the item if its name doesn't match any in the grocery list
         });
