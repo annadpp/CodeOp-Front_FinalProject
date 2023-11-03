@@ -14,7 +14,7 @@
         Meal Planning App
       </p>
       <img
-        class="h-[8vh] sm:h-[9vh] absolute bottom-[-2px] sm:pl-5"
+        class="h-[8vh] sm:h-[9vh] absolute bottom-[-6px] sm:pl-5"
         :src="randomImgSource"
         alt=""
       />
@@ -43,7 +43,7 @@
       >
         <div class="lg:hidden flex items-center">
           <p
-            class="hidden sm:flex absolute font-hand sm:text-xl md:text-2xl sm:w-[350px] sm:pl-[2.5vw] top-[7.5vh] rotate-180"
+            class="hidden sm:flex absolute font-hand sm:text-xl md:text-2xl sm:w-[350px] sm:pl-[2.5vw] top-[7.5vh] rotate-180 text-black"
             :class="randomBgColor"
           >
             Meal Planning App

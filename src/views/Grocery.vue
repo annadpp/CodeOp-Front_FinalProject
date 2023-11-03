@@ -56,6 +56,7 @@
             name="existingProduct"
             id="existingProduct"
             v-model="existingProduct.name"
+            @change="updateCategory"
             class="p-1 mt-1 xl:mt-4 border-black drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8] w-full h-[4vh] xl:h-[5vh] dark:bg-stone-900"
           >
             <option disabled value="">Select a product</option>
@@ -95,7 +96,7 @@
           @submit.prevent="addNewProduct"
         >
           <input
-            class="p-2 mt-1 xl:mt-4 border-black drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8] w-full h-[4vh] xl:h-[5vh] dark:bg-stone-900"
+            class="p-2 mt-1 xl:mt-4 border-black drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8] w-full h-[4vh] xl:h-[5vh] dark:bg-stone-900 placeholder-black dark:placeholder-background"
             type="text"
             placeholder="Add a new product"
             v-model="newProduct.name"
@@ -156,6 +157,7 @@ export default {
       },
       existingProduct: {
         name: "",
+        category: "",
       },
       formExistingVisible: false,
       formNewVisible: false,
@@ -192,16 +194,34 @@ export default {
         this.newProduct = {};
       }
     },
-    addExistingProduct() {
-      const isProductAlreadyAdded = this.groceryStore.filteredIngredients.some(
-        (item) => item.ingredient === this.existingProduct.name
+    updateCategory() {
+      const selectedProduct = this.groceryStore.commonIngredients.find(
+        (ingredient) => ingredient.name === this.existingProduct.name
       );
+      if (selectedProduct) {
+        this.existingProduct.category = selectedProduct.category;
+      } else {
+        this.existingProduct.category = "";
+      }
+    },
+    addExistingProduct() {
+      if (this.existingProduct.name) {
+        const isProductAlreadyAdded =
+          this.groceryStore.filteredIngredients.some(
+            (item) =>
+              item.ingredient === this.existingProduct.name &&
+              item.category === this.existingProduct.category
+          );
 
-      if (!isProductAlreadyAdded) {
-        this.groceryStore.filteredIngredients.push({
-          ingredient: this.existingProduct.name,
-        });
-        updateFilteredIngredients(this.groceryStore.filteredIngredients);
+        if (!isProductAlreadyAdded) {
+          this.groceryStore.filteredIngredients.push({
+            ingredient: this.existingProduct.name,
+            category: this.existingProduct.category,
+          });
+          updateFilteredIngredients(this.groceryStore.filteredIngredients);
+        }
+
+        this.existingProduct = { name: "", category: "" }; // Reset existingProduct for the next entry
       }
     },
     toggleFormExistingVisibility() {
