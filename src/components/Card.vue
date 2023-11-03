@@ -6,7 +6,7 @@
     }"
   >
     <!--LUNCH/DINNER-->
-    <h5 v-if="title" class="flex my-4">{{ title }}</h5>
+    <h5 v-if="title" class="flex my-4 dark:text-background">{{ title }}</h5>
     <!--MEAL IMAGE-->
     <div class="flex items-center justify-center w-full">
       <!--Depends on lunch/dinner info (Home/meal) or no info (Recipes/!meal)-->
@@ -25,7 +25,7 @@
 
     <!--MEAL NAME BLOCK-->
     <div
-      class="flex items-center justify-center bg-blueberry w-full font-hand text-xl leading-4 sm:leading-5"
+      class="flex items-center justify-center bg-blueberry w-full font-hand text-xl leading-4 sm:leading-5 dark:text-background"
       :class="{
         'h-[8vh] sm:h-[16vh] xl:h-[20vh]': meal,
         'h-[10vh] sm:h-[8vh] xl:h-[10vh]': !meal,

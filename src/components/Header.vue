@@ -1,9 +1,12 @@
 <template>
   <header
-    class="fixed w-full z-10 xl:static grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 border-black border-b-2 px-5 h-[10vh] bg-background"
+    class="fixed w-full z-10 xl:static grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 border-black dark:border-background border-b-2 px-5 h-[10vh] bg-background dark:bg-stone-950"
   >
     <!--MENU LOGO -> randomized-->
-    <div class="h-full relative lg:ml-[2vw]">
+    <div
+      v-if="!menuOpen || this.screenWidth > 1024"
+      class="h-full relative lg:ml-[2vw]"
+    >
       <p
         class="hidden sm:flex absolute font-hand sm:text-xl md:text-2xl sm:w-[300px] md:w-[325px] top-[3vh] sm:pl-[15vw] md:pl-[105px]"
         :class="randomBgColor"
@@ -26,7 +29,7 @@
       >
         <button
           @click="toggleMenuVisibility"
-          class="bg-black text-background hover:underline"
+          class="bg-black dark:bg-background text-background dark:text-slate-950 hover:underline"
         >
           <p v-if="!menuOpen">MENU</p>
           <p v-if="menuOpen">CLOSE</p>
@@ -36,56 +39,71 @@
       <!--DESKTOP MENU + MOBILE MENU OPEN -> closes menu on click + router-link to different sections-->
       <div
         v-if="screenWidth > 1024 || menuOpen"
-        class="absolute lg:static w-full lg:w-auto top-[10vh] left-0 px-5 py-10 lg:p-0 items-end flex flex-col lg:flex-row text-background lg:text-black bg-black lg:bg-background gap-5"
+        class="absolute grid grid-cols-2 lg:static w-full lg:w-auto top-[10vh] left-0 px-5 py-10 lg:p-0 items-end lg:flex flex-col lg:flex-row text-background dark:text-stone-950 lg:text-black dark:lg:text-background bg-black dark:bg-background lg:bg-background dark:lg:bg-stone-950 gap-5"
       >
-        <router-link to="/schedule"
-          ><button
-            @click="toggleMenuVisibility"
-            :class="{
-              'bg-background text-black lg:bg-black lg:text-background':
-                this.$route.path === '/schedule',
-            }"
-            class="hover:underline"
+        <div class="lg:hidden flex items-center">
+          <p
+            class="hidden sm:flex absolute font-hand sm:text-xl md:text-2xl sm:w-[350px] sm:pl-[2.5vw] top-[7.5vh] rotate-180"
+            :class="randomBgColor"
           >
-            SCHEDULE
-          </button></router-link
-        >
-        <router-link to="/grocery">
-          <button
-            @click="toggleMenuVisibility"
-            :class="{
-              'bg-background text-black lg:bg-black lg:text-background':
-                this.$route.path === '/grocery',
-            }"
-            class="hover:underline"
+            Meal Planning App
+          </p>
+          <img
+            class="h-[15vh] absolute top-[-10px] sm:pl-5 rotate-180"
+            :src="randomImgSource"
+            alt=""
+          />
+        </div>
+        <div class="flex flex-col items-end lg:flex-row">
+          <router-link to="/schedule"
+            ><button
+              @click="toggleMenuVisibility"
+              :class="{
+                'bg-background dark:bg-stone-950 text-black dark:text-background lg:bg-black dark:lg:bg-background lg:text-background dark:lg:text-stone-950':
+                  this.$route.path === '/schedule',
+              }"
+              class="hover:underline"
+            >
+              SCHEDULE
+            </button></router-link
           >
-            GROCERY
-          </button>
-        </router-link>
-        <router-link to="/recipes"
-          ><button
-            @click="toggleMenuVisibility"
-            :class="{
-              'bg-background text-black lg:bg-black lg:text-background':
-                this.$route.path === '/recipes',
-            }"
-            class="hover:underline"
+          <router-link to="/grocery">
+            <button
+              @click="toggleMenuVisibility"
+              :class="{
+                'bg-background dark:bg-stone-950 text-black dark:text-background lg:bg-black dark:lg:bg-background lg:text-background dark:lg:text-stone-950':
+                  this.$route.path === '/grocery',
+              }"
+              class="hover:underline"
+            >
+              GROCERY
+            </button>
+          </router-link>
+          <router-link to="/recipes"
+            ><button
+              @click="toggleMenuVisibility"
+              :class="{
+                'bg-background dark:bg-stone-950 text-black dark:text-background lg:bg-black dark:lg:bg-background lg:text-background dark:lg:text-stone-950':
+                  this.$route.path === '/recipes',
+              }"
+              class="hover:underline"
+            >
+              RECIPES
+            </button></router-link
           >
-            RECIPES
-          </button></router-link
-        >
-        <router-link to="/"
-          ><button
-            @click="toggleMenuVisibility"
-            :class="{
-              'bg-background text-black lg:bg-black lg:text-background':
-                this.$route.path === '/',
-            }"
-            class="hover:underline"
+          <router-link to="/"
+            ><button
+              @click="toggleMenuVisibility"
+              :class="{
+                'bg-background dark:bg-stone-950 text-black dark:text-background lg:bg-black dark:lg:bg-background lg:text-background dark:lg:text-stone-950':
+                  this.$route.path === '/',
+              }"
+              class="hover:underline"
+            >
+              HOME
+            </button></router-link
           >
-            HOME
-          </button></router-link
-        >
+        </div>
       </div>
     </div>
   </header>

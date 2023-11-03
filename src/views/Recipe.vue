@@ -6,7 +6,7 @@
       <!--RECIPE NAME -> data from API-->
       <div class="xl:col-span-8 leading-[2.6rem]">
         <h2
-          class="text-xl xl:text-4xl text-center xl:text-left leading-6 px-5 xl:p-0"
+          class="text-xl xl:text-4xl text-center xl:text-left leading-6 px-5 xl:p-0 dark:text-background"
         >
           {{ data.name }}
         </h2>
@@ -33,7 +33,7 @@
 
     <div class="grid xl:grid-cols-8">
       <div
-        class="grid xl:col-span-3 xl:h-[68vh] border-black border-t-2 xl:border-t-0 xl:border-r-2 xl:p-5 xl:gap-y-5"
+        class="grid xl:col-span-3 xl:h-[68vh] border-black dark:border-background border-t-2 xl:border-t-0 xl:border-r-2 xl:p-5 xl:gap-y-5"
       >
         <div
           class="grid grid-cols-2 xl:flex px-5 xl:px-0 my-5 xl:my-0 gap-x-5 xl:gap-x-0"
@@ -71,10 +71,13 @@
 
         <!--RECIPE INFO (ingredients) -> data info from API-->
         <div
-          class="order-2 border-black border-y-2 xl:border-none"
+          class="order-2 border-black dark:border-background border-y-2 xl:border-none"
           :class="{ 'border-none': !closedForm }"
         >
-          <p v-if="closedForm" class="px-5 my-5 xl:mb-5 xl:mt-0 xl:px-0">
+          <p
+            v-if="closedForm"
+            class="px-5 my-5 xl:mb-5 xl:mt-0 xl:px-0 dark:text-background"
+          >
             I N G R E D I E N T S
             <!--Button open filter ingredients MOBILE-->
             <button @click="toggleIngredientsVisibility" class="xl:hidden">
@@ -113,14 +116,16 @@
           <button
             v-if="closedForm"
             @click="toggleVisibility"
-            class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange xl:mb-5"
+            class="rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange xl:mb-5"
           >
             Add to weekly menu
           </button>
         </div>
       </div>
 
-      <div class="grid xl:col-span-5 h-[60vh] xl:h-[68vh] p-5 mb-10">
+      <div
+        class="grid xl:col-span-5 h-[60vh] xl:h-[68vh] p-5 mb-10 dark:text-background"
+      >
         <p v-if="closedForm">
           H O W &nbsp&nbspT O &nbsp&nbspC O O K&nbsp&nbsp I T
         </p>
@@ -130,7 +135,7 @@
 
         <ol
           v-if="closedForm"
-          class="list-decimal h-[43vh] xl:h-[55vh] overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime w-[98%] pl-10 pr-4 pt-8 pb-6 xl:pl-16 xl:pr-10 xl:pt-10 xl:pb-8 font-hand text-lg border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-background"
+          class="list-decimal h-[43vh] xl:h-[55vh] overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime w-[98%] pl-10 pr-4 pt-8 pb-6 xl:pl-16 xl:pr-10 xl:pt-10 xl:pb-8 font-hand text-lg border-2 border-black dark:border-background drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8] bg-background dark:bg-stone-950"
         >
           <li v-for="(step, i) in formattedSteps" :key="i" class="mb-3">
             {{ step }}
@@ -138,14 +143,14 @@
         </ol>
 
         <!--ADD WEEKLY CARD-->
-        <form
+        <div
           v-else
-          class="h-[48vh] xl:h-[58vh] w-full p-5 border-2 border-black drop-shadow-[8px_8px_0px_#000000] bg-blueberry"
+          class="h-[48vh] xl:h-[58vh] w-full p-5 border-2 border-black dark:border-background drop-shadow-[8px_8px_0px_#000000] bg-blueberry"
         >
           <div class="h-[10vh] flex items-start justify-end">
             <!--Close add to weekly button-->
             <button @click="toggleVisibility" class="h-[40px] w-[40px] bg-lime">
-              <p class="text-border-orange hover:text-2xl">X</p>
+              <p class="text-border-orange hover:text-2xl text-black">X</p>
             </button>
           </div>
 
@@ -154,7 +159,7 @@
             <div
               class="grid grid-cols-4 gap-x-5 h-[18vh] xl:h-[30vh] w-[98%] xl:mt-[7vh]"
             >
-              <div class="col-span-1 flex flex-col gap-y-5">
+              <div class="col-span-1 flex flex-col gap-y-5 text-black">
                 <div class="h-[4vh] xl:h-[5vh] flex items-center">
                   <h4
                     class="bg-orange h-8 w-full flex justify-center items-center text-border-lime text-xl"
@@ -178,7 +183,7 @@
                   <select
                     name="day"
                     id="day"
-                    class="p-1 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[4vh] xl:h-[5vh]"
+                    class="p-1 border-black dark:border-background drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8] w-full h-[4vh] xl:h-[5vh] dark:bg-stone-950"
                     v-model="selectedDay"
                   >
                     <option disabled value="">Select a day</option>
@@ -194,7 +199,7 @@
                   <select
                     name="meal"
                     id="meal"
-                    class="p-1 border-black drop-shadow-[8px_8px_0px_#000000] w-full h-[4vh] xl:h-[5vh]"
+                    class="p-1 border-black drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8] w-full h-[4vh] xl:h-[5vh] dark:bg-stone-950"
                     v-model="selectedMeal"
                   >
                     <option disabled value="">Select a meal</option>
@@ -211,14 +216,14 @@
             <p
               class="mb-10 text-lg xl:text-2xl text-center leading-8 xl:leading-10"
             >
-              <span class="text-border-orange bg-lime py-2 px-5">{{
+              <span class="text-border-orange bg-lime py-2 px-5 text-black">{{
                 data.name
               }}</span>
               <br />
               <span class="inline-block font-hand text-xl xl:text-xl my-3"
                 >added on</span
               ><br />
-              <span class="text-border-lime bg-orange py-2 px-5"
+              <span class="text-border-lime bg-orange py-2 px-5 text-black"
                 >{{ selectedDay }} {{ selectedMeal }}</span
               >
             </p>
@@ -229,7 +234,7 @@
           <button
             v-if="!sent"
             @click.prevent="addToWeeklyMenu"
-            class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+            class="rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
           >
             Add to weekly menu
           </button>
@@ -237,11 +242,11 @@
           <button
             v-else
             @click.prevent="addToWeeklyMenu"
-            class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+            class="rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
           >
             <router-link :to="`/schedule`">Check full menu</router-link>
           </button>
-        </form>
+        </div>
         <!-- ADD WEEKLY CARD -->
       </div>
     </div>

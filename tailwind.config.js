@@ -7,7 +7,7 @@ export default {
         background: "#F2EEE8",
         orange: "#FD5F09",
         lime: "#D0EE52",
-        blueberry: "#B3A1CD",
+        blueberry: "#A48EC4",
       },
       fontFamily: {
         hand: ['"Mansalva"', "sans-serif"],

@@ -4,7 +4,9 @@
   >
     <div class="xl:h-[85vh] border-black xl:p-5 xl:mb-0">
       <div class="grid row-span-2 items-center h-[17vh]">
-        <h2 class="text-4xl xl:text-6xl text-center xl:text-left">
+        <h2
+          class="text-4xl xl:text-6xl text-center xl:text-left dark:text-background"
+        >
           Weekly schedule
         </h2>
       </div>

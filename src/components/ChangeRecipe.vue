@@ -2,13 +2,14 @@
   <div
     :class="{
       'bg-blueberry': this.scheduleStore.handleInfo !== '',
-      'bg-background': this.scheduleStore.handleInfo === '',
+      'bg-background dark:bg-stone-950 dark:text-background':
+        this.scheduleStore.handleInfo === '',
     }"
-    class="fixed p-8 top-[30vh] left-[10vw] w-[80vw] h-[60vh] border-2 border-black drop-shadow-[8px_8px_0px_#000000]"
+    class="fixed p-8 top-[30vh] left-[10vw] w-[80vw] h-[60vh] border-2 border-black dark:border-background drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8]"
   >
     <div class="h-full flex flex-col justify-center">
       <div class="flex justify-between">
-        <h3 class="h-[10vh] flex text-2xl">
+        <h3 class="h-[10vh] flex text-2xl dark:text-background">
           CURRENT MEAL <span class="text-6xl"> *</span>
         </h3>
 
@@ -17,7 +18,7 @@
           class="flex flex-row items-center justify-center h-[35px] w-[40px] bg-lime"
           @click="closeForm"
         >
-          <p class="text-border-orange hover:text-2xl">X</p>
+          <p class="text-border-orange hover:text-2xl dark:text-black">X</p>
         </button>
       </div>
 
@@ -34,7 +35,7 @@
           <router-link
             v-if="this.scheduleStore.handleInfo !== ''"
             :to="`/recipes/${this.scheduleStore.handleInfo.id}`"
-            class="font-hand text-3xl mb-10 hover:underline"
+            class="font-hand text-3xl mb-10 hover:underline dark:text-background"
           >
             {{ this.scheduleStore.handleInfo.name }}
           </router-link>
@@ -100,10 +101,12 @@
       </div>
 
       <!--BUTTONS-->
-      <div class="flex flex-col xl:flex-row gap-3 xl:gap-5">
+      <div
+        class="flex flex-col xl:flex-row gap-3 xl:gap-5 dark:text-background"
+      >
         <!--router-link to Recipes-->
         <button
-          class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+          class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
         >
           <router-link :to="`/recipes`"
             ><p v-if="this.scheduleStore.handleInfo === ''">
@@ -116,7 +119,7 @@
         <button
           v-if="this.scheduleStore.handleInfo !== ''"
           @click="removeRecipe(this.scheduleStore.handleInfo.id)"
-          class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+          class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
         >
           Delete meal
         </button>

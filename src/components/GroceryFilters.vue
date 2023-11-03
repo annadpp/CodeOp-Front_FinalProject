@@ -30,12 +30,12 @@
       <div
         v-for="item in filteredItems"
         :key="item.id"
-        class="flex items-center justify-between px-5 bg-blueberry h-[4vh] xl:h-[5vh] w-full"
+        class="flex items-center justify-between px-5 bg-blueberry h-[4vh] xl:h-[5vh] w-full dark:text-background"
       >
         <p class="font-hand text-xl">{{ item.ingredient }}</p>
         <button
           @click="removeIngredient(item)"
-          class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-[7rem] xl:w-[10vw] bg-background hover:border-orange hover:text-orange"
+          class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-[7rem] xl:w-[10vw] text-sm xl:text-md bg-background dark:bg-stone-950 dark:text-background hover:border-orange hover:text-orange"
         >
           Remove
         </button>

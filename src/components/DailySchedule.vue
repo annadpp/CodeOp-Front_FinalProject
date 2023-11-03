@@ -1,8 +1,8 @@
 <template>
   <div
-    class="flex flex-col w-full justify between items-center gap-y-4 px-5 py-8 xl:p-0 border-black border-t-2 xl:border-none"
+    class="flex flex-col w-full justify between items-center gap-y-4 px-5 py-8 xl:p-0 border-black dark:border-background border-t-2 xl:border-none"
   >
-    <div class="w-full flex">
+    <div class="w-full flex justify-center">
       <h3
         class="bg-orange h-6 xl:h-8 w-full xl:w-[95%] flex justify-center items-center text-border-lime text-lg xl:text-xl pl-10 xl:pl-0"
       >
@@ -34,12 +34,13 @@
         <div
           :class="{
             'bg-blueberry': scheduledMeal('Lunch') !== 'NO MEAL',
-            'bg-background': scheduledMeal('Lunch') === 'NO MEAL',
+            'bg-background dark:bg-stone-950':
+              scheduledMeal('Lunch') === 'NO MEAL',
           }"
-          class="h-[18vh] w-[93%] xl:w-[90%] border-2 border-black drop-shadow-[8px_8px_0px_#000000] mr-2 mt-5 xl:mb-8"
+          class="h-[18vh] w-[93%] xl:w-[90%] border-2 border-black dark:border-background drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8] dark:text-background mr-2 mt-5 xl:mb-8"
         >
           <div
-            class="h-[14.5vh] font-hand flex justify-center items-center text-center text-lg px-5"
+            class="h-[14.5vh] font-hand flex justify-center items-center text-center text-lg px-5 dark:text-background"
           >
             <router-link
               :to="`/recipes/${getItemId('Lunch')}`"
@@ -49,7 +50,7 @@
             >
           </div>
           <button
-            class="flex w-full h-[3.1vh] border-black border-t-2 justify-center items-center hover:bg-black hover:text-background"
+            class="flex w-full h-[3.1vh] border-black dark:border-background border-t-2 justify-center items-center hover:bg-black hover:text-background dark:hover:bg-background dark:hover:text-black"
             @click="showChangeRecipeForm('Lunch')"
           >
             C H A N G E
@@ -67,9 +68,10 @@
         <div
           :class="{
             'bg-blueberry': scheduledMeal('Dinner') !== 'NO MEAL',
-            'bg-background': scheduledMeal('Dinner') === 'NO MEAL',
+            'bg-background dark:bg-stone-950':
+              scheduledMeal('Dinner') === 'NO MEAL',
           }"
-          class="h-[18vh] w-[93%] xl:w-[90%] border-2 border-black drop-shadow-[8px_8px_0px_#000000] mr-2 mt-5"
+          class="h-[18vh] w-[93%] xl:w-[90%] border-2 border-black dark:border-background drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8] dark:text-background mr-2 mt-5"
         >
           <div
             class="h-[14.5vh] font-hand flex justify-center items-center text-center text-lg px-5"
@@ -82,7 +84,7 @@
             >
           </div>
           <button
-            class="flex w-full h-[3.1vh] border-black border-t-2 justify-center items-center hover:bg-black hover:text-background"
+            class="flex w-full h-[3.1vh] border-black dark:border-background border-t-2 justify-center items-center hover:bg-black hover:text-background dark:hover:bg-background dark:hover:text-black"
             @click="showChangeRecipeForm('Dinner')"
           >
             C H A N G E

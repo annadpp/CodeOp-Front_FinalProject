@@ -1,9 +1,9 @@
 <template>
   <div>
     <Header menu="home" class="z-100 fixed" />
-    <div class="fixed bg-background w-full h-full">
+    <div class="fixed bg-background dark:bg-stone-950 w-full h-full">
       <img
-        class="absolute right-0 bottom-0"
+        class="absolute right-0 bottom-0 dark:hidden"
         src="./assets/background-shadow.png"
         alt=""
       />

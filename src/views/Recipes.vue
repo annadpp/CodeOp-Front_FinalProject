@@ -3,15 +3,21 @@
     class="absolute z-0 w-full xl:static top-[10vh] grid grid-cols-1 xl:grid-cols-8 justify-center items-center"
   >
     <div class="grid xl:hidden items-center h-[15vh] p-5">
-      <h2 class="text-4xl xl:text-left">What could I eat?</h2>
+      <h2 class="text-4xl xl:text-left text-black dark:text-background">
+        What could I eat?
+      </h2>
     </div>
     <div
-      class="grid order-2 xl:order-1 col-span-1 xl:col-span-5 h-[67vh] xl:h-[85vh] xl:border-black xl:border-r-2 xl:p-5"
+      class="grid order-2 xl:order-1 col-span-1 xl:col-span-5 h-[67vh] xl:h-[85vh] xl:border-black dark:xl:border-background xl:border-r-2 xl:p-5"
     >
       <div
         class="hidden xl:grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5 xl:p-0"
       >
-        <h2 class="text-6xl text-center xl:text-left">What could I eat?</h2>
+        <h2
+          class="text-6xl text-center xl:text-left text-black dark:text-background"
+        >
+          What could I eat?
+        </h2>
       </div>
       <div class="grid xl:h-[65vh] px-5 pt-8 xl:p-0">
         <div class="flex h-[5vh]">
@@ -46,18 +52,18 @@
       class="grid order-1 xl:order-2 col-span-1 border-black border-y-2 xl:border-none xl:col-span-3 xl:h-[85vh]"
     >
       <div
-        class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5"
+        class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5 dark:text-background"
       >
         <p>S E A R C H &nbsp&nbsp+ &nbsp&nbspF I L T E R</p>
         <input
           v-model="search"
-          class="border-black drop-shadow-[8px_8px_0px_#000000] p-2 w-full h-[4vh] xl:h-[5vh]"
+          class="border-black dark:bg-stone-900 dark:text-background drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8] p-2 w-full h-[4vh] xl:h-[5vh]"
           type="text"
         />
         <div class="xl:hidden flex justify-end w-full mt-1">
           <button
             @click="toggleFilter"
-            class="item-right rounded-full border-2 border-black h-[4vh] w-2/3 sm:w-2/5 hover:border-orange hover:text-orange"
+            class="item-right rounded-full border-2 border-black dark:border-background h-[4vh] w-2/3 sm:w-2/5 hover:border-orange hover:text-orange"
           >
             Advanced filter
           </button>
@@ -66,7 +72,7 @@
 
       <div
         v-if="showFilter"
-        class="flex flex-col justify-around border-black border-t-2 h-[50vh] xl:h-[65vh] p-5"
+        class="flex flex-col justify-around border-black dark:border-background border-t-2 h-[50vh] xl:h-[65vh] p-5"
       >
         <div class="flex gap-x-5">
           <button
@@ -118,7 +124,7 @@
               v-for="category in dataCategories"
               @click="handleCategories(category)"
               :class="[
-                'rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full',
+                'rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full',
                 {
                   'hover:border-orange hover:text-orange': !selectedCategory,
                 },
@@ -130,7 +136,7 @@
                     selectedCategory && selectedCategory !== category,
                 },
               ]"
-              class="bg-background"
+              class="bg-background dark:bg-stone-950"
               :disabled="selectedCategory && selectedCategory !== category"
             >
               {{ category }}
@@ -146,7 +152,7 @@
               v-for="country in dataCountries"
               @click="handleCountries(country)"
               :class="[
-                'rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full',
+                'rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full',
                 { 'hover:border-orange hover:text-orange': !selectedCountry },
                 { 'border-orange text-orange': selectedCountry === country },
                 {
@@ -154,7 +160,7 @@
                     selectedCountry && selectedCountry !== country,
                 },
               ]"
-              class="bg-background"
+              class="bg-background dark:bg-stone-950"
               :disabled="selectedCountry && selectedCountry !== country"
             >
               {{ country }}

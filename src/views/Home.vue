@@ -4,19 +4,22 @@
   >
     <!--GRID RIGHT-->
     <div
-      class="grid col-span-1 xl:col-span-5 xl:h-[85vh] xl:border-black xl:border-r-2 xl:p-5"
+      class="grid col-span-1 xl:col-span-5 xl:h-[85vh] xl:border-black dark:xl:border-background xl:border-r-2 xl:p-5"
     >
       <!--TITLE-->
       <div
         class="grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5 xl:p-0"
       >
-        <h2 class="text-4xl xl:text-6xl text-center xl:text-left">
+        <h2
+          class="text-4xl xl:text-6xl text-center xl:text-left dark:text-background"
+        >
           What shall I eat?
         </h2>
       </div>
 
+      <!--TODAY'S DATE-->
       <div
-        class="flex xl:hidden justify-center gap-x-5 w-full px-8 border-black border-y-2 mb-10"
+        class="flex xl:hidden justify-center gap-x-5 w-full px-8 border-black dark:border-background border-y-2 mb-10 dark:text-background"
       >
         <div
           class="flex flex-col justify-center text-left text-xl h-[10vh] xl:h-[20vh]"
@@ -28,7 +31,9 @@
       </div>
 
       <!--TODAY MEAL SCHEDULE-->
-      <div class="grid xl:h-[65vh] border-black px-5 xl:px-0">
+      <div
+        class="grid xl:h-[65vh] border-black dark:border-background px-5 xl:px-0"
+      >
         <div class="flex h-[3vh] xl:h-[5vh]">
           <h3
             class="bg-lime text-border-orange h-6 sm:h-7 xl:h-8 w-full flex justify-center items-center text-lg sm:text-xl md:text-2xl"
@@ -52,10 +57,12 @@
       </div>
     </div>
 
-    <!--GRID LEFT-->
+    <!--GRID RIGHT-->
     <div class="grid col-span-3 xl:h-[85vh]">
       <!--TODAY'S DATE-->
-      <div class="hidden xl:flex justify-center gap-x-5 w-full px-8">
+      <div
+        class="hidden xl:flex justify-center gap-x-5 w-full px-8 dark:text-background"
+      >
         <div
           class="flex flex-col justify-center text-[1.8rem] h-[20vh]"
           v-html="formattedDate"
@@ -67,7 +74,7 @@
 
       <!--TOMORROW MEAL SCHEDULE-->
       <div
-        class="flex flex-col justify-around h-[30vh] xl:h-[38vh] p-5 xl:mb-5 xl:pb-4 border-black border-t-2"
+        class="flex flex-col justify-around h-[30vh] xl:h-[38vh] p-5 xl:mb-5 xl:pb-4 border-black dark:border-background border-t-2"
       >
         <h3
           class="bg-orange text-border-lime h-6 sm:h-7 xl:h-8 w-full flex justify-center items-center text-lg sm:text-xl md:text-2xl"
@@ -92,15 +99,15 @@
 
       <!--BUTTONS -> router-link to Recipes + Schedule-->
       <div
-        class="flex flex-col p-5 items-center gap-y-2 xl:gap-y-5 xl:h-[25vh] justify-center border-black border-t-2 mb-12 xl:mb-0"
+        class="flex flex-col p-5 items-center gap-y-2 xl:gap-y-5 xl:h-[25vh] justify-center border-black dark:border-background border-t-2 mb-12 xl:mb-0 dark:text-background"
       >
         <button
-          class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+          class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
         >
           <router-link :to="`/recipes`">Browse recipes</router-link>
         </button>
         <button
-          class="rounded-full border-2 border-black h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+          class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
         >
           <router-link :to="`/schedule`">Check full menu</router-link>
         </button>
