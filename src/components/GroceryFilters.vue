@@ -216,7 +216,7 @@ export default {
         });
     },
     removeIngredient(ingredientToRemove) {
-      // Find the index based on ingredient and category
+      // Find the index based on ingredient and category, so all ingredients are correctly deleted
       const index = this.groceryStore.filteredIngredients.findIndex(
         (item) =>
           item.ingredient === ingredientToRemove.ingredient &&

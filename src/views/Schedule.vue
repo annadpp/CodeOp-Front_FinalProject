@@ -18,7 +18,7 @@
         <div
           class="h-[3vh] gap-x-5 py-6 xl:py-0 mb-4 text-right border-black border-t-2 xl:border-none px-5 xl:px-0"
         >
-          WEEK 2
+          WEEK {{ dateStore.currentWeekOfYear }}
         </div>
         <div class="xl:h-[56vh] grid grid-cols-1 xl:grid-cols-7 pb-12 xl:pb-0">
           <DailySchedule
@@ -42,6 +42,7 @@
 import DailySchedule from "../components/DailySchedule.vue";
 import ChangeRecipe from "../components/ChangeRecipe.vue";
 import { useSchedule } from "../stores/schedule";
+import { useDate } from "../stores/date";
 import { getSchedule } from "../firebase";
 
 export default {
@@ -49,7 +50,8 @@ export default {
   components: { DailySchedule, ChangeRecipe },
   setup() {
     const scheduleStore = useSchedule();
-    return { scheduleStore };
+    const dateStore = useDate();
+    return { scheduleStore, dateStore };
   },
   mounted() {
     getSchedule().then((schedule) => {

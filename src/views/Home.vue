@@ -23,7 +23,7 @@
       >
         <div
           class="flex flex-col justify-center text-left text-xl h-[10vh] xl:h-[20vh]"
-          v-html="formattedDate"
+          v-html="dateStore.formattedDate"
         ></div>
         <div class="text-5xl flex items-center">
           <p>*</p>
@@ -45,12 +45,16 @@
           class="h-[57vh] sm:h-[52vh] xl:h-[60vh] flex flex-col sm:flex-row gap-x-5"
         >
           <!--LUNCH CARD-->
-          <Card title="L U N C H" :day="getFormattedDayToday()" meal="Lunch" />
+          <Card
+            title="L U N C H"
+            :day="dateStore.getFormattedDayToday()"
+            meal="Lunch"
+          />
           <!--DINNER CARD-->
           <Card
             class="mt-5 sm:mt-0"
             title="D I N N E R"
-            :day="getFormattedDayToday()"
+            :day="dateStore.getFormattedDayToday()"
             meal="Dinner"
           />
         </div>
@@ -65,7 +69,7 @@
       >
         <div
           class="flex flex-col justify-center text-[1.8rem] h-[20vh]"
-          v-html="formattedDate"
+          v-html="dateStore.formattedDate"
         ></div>
         <div class="text-8xl mt-4 flex items-center">
           <p>*</p>
@@ -85,13 +89,13 @@
         <div class="flex gap-x-5 w-[98%]">
           <CardSimple
             title="L U N C H"
-            :day="getFormattedDayTomorrow()"
+            :day="dateStore.getFormattedDayTomorrow()"
             meal="Lunch"
           />
           <!--DINNER CARD-->
           <CardSimple
             title="D I N N E R"
-            :day="getFormattedDayTomorrow()"
+            :day="dateStore.getFormattedDayTomorrow()"
             meal="Dinner"
           />
         </div>
@@ -120,71 +124,22 @@
 import Card from "../components/Card.vue";
 import CardSimple from "../components/CardSimple.vue";
 import { useSchedule } from "../stores/schedule";
+import { useDate } from "../stores/date";
 import { getSchedule } from "../firebase";
-
-const daysOfWeek = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
 
 export default {
   components: { Card, CardSimple },
   setup() {
     //Gets info from Pinia scheduleStore
     const scheduleStore = useSchedule();
-    return { scheduleStore };
+    const dateStore = useDate();
+    return { scheduleStore, dateStore };
   },
   mounted() {
     //Gets info from Firebase -> async function in firebase.js
     getSchedule().then((schedule) => {
       this.scheduleStore.schedule = schedule;
     });
-  },
-  computed: {
-    //Computed description on name
-    formattedDate() {
-      const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
-      const currentDate = new Date();
-      const dayOfWeek = this.getFormattedDayToday();
-      const dayOfMonth = currentDate.getDate();
-      const month = months[currentDate.getMonth()];
-      const year = currentDate.getFullYear();
-      const yearLastTwoDigits = year.toString().slice(-2);
-
-      return `<p>${dayOfWeek}</p>
-          <p>${dayOfMonth} <span class="font-hand">${month.toUpperCase()}</span> '${yearLastTwoDigits}</p>`;
-    },
-  },
-  //Method description on name
-  methods: {
-    getFormattedDayToday() {
-      const currentDate = new Date();
-      return daysOfWeek[currentDate.getDay()];
-    },
-    getFormattedDayTomorrow() {
-      const currentDate = new Date();
-      const tomorrow = new Date(currentDate);
-      tomorrow.setDate(currentDate.getDate() + 1);
-      return daysOfWeek[tomorrow.getDay()];
-    },
   },
 };
 </script>

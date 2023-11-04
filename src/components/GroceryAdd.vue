@@ -4,7 +4,12 @@
       class="flex justify-center gap-x-5 w-full px-8 border-black dark:border-background border-t-2 xl:border-none dark:text-background"
     >
       <div class="flex flex-col justify-center text-2xl h-[10vh]">
-        <p>Week <span class="font-hand text-3xl">2</span></p>
+        <p>
+          Week
+          <span class="font-hand text-3xl">{{
+            dateStore.currentWeekOfYear
+          }}</span>
+        </p>
       </div>
       <div class="text-6xl mt-3 flex items-center">
         <p>*</p>
@@ -104,6 +109,8 @@
 </template>
 
 <script>
+import { useDate } from "../stores/date";
+
 export default {
   props: {
     groceryStore: Object,
@@ -111,6 +118,10 @@ export default {
     formNewVisible: Boolean,
     newProduct: Object,
     existingProduct: Object,
+  },
+  setup() {
+    const dateStore = useDate();
+    return { dateStore };
   },
   methods: {
     addNewProduct() {
