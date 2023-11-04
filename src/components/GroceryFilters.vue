@@ -24,7 +24,12 @@
         >
       </button>
     </div>
+    <div v-if="loading" class="w-full flex items-center h-[25vh] xl:h-[52vh]">
+      <Loader class="w-full" />
+    </div>
+
     <div
+      v-else
       class="max-h-[38vh] xl:max-h-[52vh] justify-start overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime mb-16 xl:mb-8"
     >
       <div v-if="filteredItems.length > 0" class="flex flex-col gap-y-2">
@@ -58,6 +63,7 @@
 </template>
 
 <script>
+import Loader from "../components/Loader.vue";
 import { useSchedule } from "../stores/schedule";
 import { useGrocery } from "../stores/grocery";
 import { getSchedule } from "../firebase";
@@ -68,6 +74,7 @@ import { updateFilteredIngredients } from "../firebase";
 
 export default {
   name: "GroceryFilters",
+  components: { Loader },
   data() {
     return {
       selectedCategory: "All",
@@ -115,8 +122,8 @@ export default {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-
     this.loading = false;
+    this.$emit("loading", this.loading);
   },
 
   mounted() {
@@ -145,6 +152,7 @@ export default {
       })
       .finally(() => {
         this.loading = false;
+        this.$emit("loading", this.loading);
       });
   },
   methods: {

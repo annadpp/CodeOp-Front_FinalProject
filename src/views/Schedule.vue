@@ -12,7 +12,7 @@
       </div>
 
       <div
-        class="h-[65vh] border-black"
+        class="h-[65vh] border-black w-full"
         :class="{ 'opacity-20': showChangeRecipe }"
       >
         <div
@@ -20,8 +20,19 @@
         >
           WEEK {{ dateStore.currentWeekOfYear }}
         </div>
-        <div class="xl:h-[56vh] grid grid-cols-1 xl:grid-cols-7 pb-12 xl:pb-0">
+        <div
+          class="xl:h-[56vh] grid grid-cols-1 pb-12 xl:pb-0"
+          :class="{
+            'xl:flex items-center': loading,
+            'xl:grid xl:grid-cols-7': !loading,
+          }"
+        >
+          <div v-if="loading" class="w-full h-[50vh] flex items-center px-5">
+            <Loader class="w-full" />
+          </div>
+
           <DailySchedule
+            v-else
             v-for="(day, i) in daysOfWeek"
             :key="day"
             :day="day"
@@ -41,13 +52,14 @@
 <script>
 import DailySchedule from "../components/DailySchedule.vue";
 import ChangeRecipe from "../components/ChangeRecipe.vue";
+import Loader from "../components/Loader.vue";
 import { useSchedule } from "../stores/schedule";
 import { useDate } from "../stores/date";
 import { getSchedule } from "../firebase";
 
 export default {
   name: "Schedule",
-  components: { DailySchedule, ChangeRecipe },
+  components: { DailySchedule, ChangeRecipe, Loader },
   setup() {
     const scheduleStore = useSchedule();
     const dateStore = useDate();
@@ -57,10 +69,15 @@ export default {
     getSchedule().then((schedule) => {
       this.scheduleStore.schedule = schedule;
     }); // Get info from Firebase -> careful! async function in Firebase.js
+
+    setTimeout(() => {
+      this.loading = false; // Set loading to false after 1 second
+    }, 800);
   },
   data() {
     return {
       showChangeRecipe: false,
+      loading: true,
     };
   },
   methods: {

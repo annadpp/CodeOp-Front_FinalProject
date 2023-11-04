@@ -47,8 +47,8 @@
 </template>
 
 <script>
-import { useSchedule } from "../stores/schedule";
 import defaultImage from "../assets/hungry-cat.png";
+import { useSchedule } from "../stores/schedule";
 
 export default {
   name: "Card",

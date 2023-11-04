@@ -1,5 +1,11 @@
 <template>
-  <div class="absolute z-0 w-full xl:static top-[10vh]">
+  <div
+    v-if="loading"
+    class="w-full h-[100vh] xl:h-[75vh] px-5 flex items-center"
+  >
+    <Loader class="w-full" />
+  </div>
+  <div v-else class="absolute z-0 w-full xl:static top-[10vh]">
     <div
       class="grid xl:grid-cols-10 items-center h-[15vh] xl:h-[17vh] pt-8 xl:px-5 xl:mb-2"
     >
@@ -255,11 +261,13 @@
 
 <script>
 import axios from "axios";
+import Loader from "../components/Loader.vue";
 import { useSchedule } from "../stores/schedule";
 import { updateSchedule } from "../firebase";
 
 export default {
   name: "Recipe",
+  components: { Loader },
   data() {
     return {
       //Stores info gotten from API
@@ -272,7 +280,7 @@ export default {
         steps: "",
       },
       //Other values needed for functions
-      loading: false,
+      loading: true,
       closedForm: true,
       weeklyMenu: [],
       selectedMeal: "",
@@ -292,11 +300,14 @@ export default {
   mounted() {
     window.addEventListener("resize", this.handleWindowResize);
     this.handleWindowResize();
+
+    setTimeout(() => {
+      this.loading = false; // Set loading to false after 1 second
+    }, 800);
   },
   methods: {
     //Used to get recipes info from API based on params.id received from Recipes
     getRecipes() {
-      this.loading = true;
       const idRecipe = Number(this.$route.params.id);
       const apiUrl = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idRecipe}`;
 
@@ -307,9 +318,6 @@ export default {
         })
         .catch((error) => {
           console.error(`Error fetching recipe:`, error);
-        })
-        .finally(() => {
-          this.loading = false;
         });
     },
     handleResponse(response) {

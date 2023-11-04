@@ -42,6 +42,13 @@
           </h3>
         </div>
         <div
+          v-if="loading"
+          class="w-full h-[25vh] sm:h-[40vh] md:h-[52vh] flex items-center"
+        >
+          <Loader class="w-full" />
+        </div>
+        <div
+          v-else
           class="h-[57vh] sm:h-[52vh] xl:h-[60vh] flex flex-col sm:flex-row gap-x-5"
         >
           <!--LUNCH CARD-->
@@ -86,7 +93,10 @@
           <span class="rotate-[-8deg]">Tomorrow</span>
         </h3>
         <!--LUNCH CARD-->
-        <div class="flex gap-x-5 w-[98%]">
+        <div v-if="loading" class="w-full">
+          <Loader class="w-full" img="8" />
+        </div>
+        <div v-else class="flex gap-x-5 w-[98%]">
           <CardSimple
             title="L U N C H"
             :day="dateStore.getFormattedDayTomorrow()"
@@ -123,12 +133,13 @@
 <script>
 import Card from "../components/Card.vue";
 import CardSimple from "../components/CardSimple.vue";
+import Loader from "../components/Loader.vue";
 import { useSchedule } from "../stores/schedule";
 import { useDate } from "../stores/date";
 import { getSchedule } from "../firebase";
 
 export default {
-  components: { Card, CardSimple },
+  components: { Card, CardSimple, Loader },
   setup() {
     //Gets info from Pinia scheduleStore
     const scheduleStore = useSchedule();
@@ -140,6 +151,15 @@ export default {
     getSchedule().then((schedule) => {
       this.scheduleStore.schedule = schedule;
     });
+
+    setTimeout(() => {
+      this.loading = false; // Set loading to false after 1 second
+    }, 800);
+  },
+  data() {
+    return {
+      loading: true,
+    };
   },
 };
 </script>

@@ -31,8 +31,16 @@
             >
           </h3>
         </div>
+        <div v-if="loading" class="h-[25vh] xl:h-[52vh] w-full flex">
+          <Loader class="w-full" />
+        </div>
         <div
-          class="grid grid-cols-2 h-[48vh] mb-14 xl:mb-0 xl:h-[52vh] gap-3 xl:gap-5 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
+          v-else
+          class="h-[48vh] mb-14 xl:mb-0 xl:h-[52vh] gap-3 xl:gap-5 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
+          :class="{
+            'flex items-center': loading,
+            'grid grid-cols-2': !loading,
+          }"
         >
           <Card
             v-for="recipe in search ? filteredRecipes : filtersRight"
@@ -52,6 +60,7 @@
       class="grid order-1 xl:order-2 col-span-1 border-black border-y-2 xl:border-none xl:col-span-3 xl:h-[85vh]"
     >
       <div
+        v-if="!loading"
         class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5 dark:text-background"
       >
         <p>S E A R C H &nbsp&nbsp+ &nbsp&nbspF I L T E R</p>
@@ -71,6 +80,13 @@
       </div>
 
       <div
+        v-if="loading"
+        class="w-full px-5 h-[20vh] xl:h-[75vh] flex items-center"
+      >
+        <Loader class="w-full" img="8" />
+      </div>
+      <div
+        v-else
         v-if="showFilter"
         class="flex flex-col justify-around border-black dark:border-background border-t-2 h-[50vh] xl:h-[65vh] p-5"
       >
@@ -175,11 +191,12 @@
 <script>
 import axios from "axios";
 import Card from "../components/Card.vue";
+import Loader from "../components/Loader.vue";
 import { useSchedule } from "../stores/schedule";
 
 export default {
   name: "Recipes",
-  components: { Card },
+  components: { Card, Loader },
   data() {
     return {
       data: [],
@@ -200,7 +217,7 @@ export default {
         "Spanish",
         "Kenyan",
       ],
-      loading: false,
+      loading: true,
       search: "",
       selectedCategory: null,
       activeCategory: true,
@@ -231,7 +248,6 @@ export default {
   },
   methods: {
     async getRecipes() {
-      this.loading = true;
       for (
         let letter = "a".charCodeAt(0);
         letter <= "z".charCodeAt(0);
@@ -261,14 +277,13 @@ export default {
       this.data = this.data.concat(recipes);
     },
     getCategories() {
-      this.loading = true;
       const apiUrlCategories =
         "https://www.themealdb.com/api/json/v1/1/categories.php";
       axios
         .get(apiUrlCategories)
         .then(this.handleResponseCategories)
         .finally(() => {
-          this.loading = false;
+          this.loadingFilters = false;
         });
     },
     handleResponseCategories(response) {
