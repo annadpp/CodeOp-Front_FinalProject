@@ -54,7 +54,7 @@
             alt=""
           />
         </div>
-        <div class="flex flex-col items-end lg:flex-row">
+        <div class="flex flex-col items-end lg:flex-row gap-x-2">
           <router-link to="/schedule"
             ><button
               @click="toggleMenuVisibility"

@@ -3,10 +3,10 @@
     <div
       class="flex justify-center gap-x-5 w-full px-8 border-black dark:border-background border-t-2 xl:border-none dark:text-background"
     >
-      <div class="flex flex-col justify-center text-[1.3rem] h-[10vh]">
-        <p>WEEK <span class="font-hand">2</span></p>
+      <div class="flex flex-col justify-center text-2xl h-[10vh]">
+        <p>Week <span class="font-hand text-3xl">2</span></p>
       </div>
-      <div class="text-5xl flex items-center">
+      <div class="text-6xl mt-3 flex items-center">
         <p>*</p>
       </div>
     </div>

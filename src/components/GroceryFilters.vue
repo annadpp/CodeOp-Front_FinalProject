@@ -25,20 +25,33 @@
       </button>
     </div>
     <div
-      class="h-[38vh] xl:h-[52vh] flex flex-col gap-y-2 justify-start overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime mb-16 xl:mb-8"
+      class="max-h-[38vh] xl:max-h-[52vh] justify-start overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime mb-16 xl:mb-8"
     >
-      <div
-        v-for="item in filteredItems"
-        :key="item.id"
-        class="flex items-center justify-between px-5 bg-blueberry h-[4vh] xl:h-[5vh] w-full dark:text-background"
-      >
-        <p class="font-hand text-xl">{{ item.ingredient }}</p>
-        <button
-          @click="removeIngredient(item)"
-          class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-[7rem] xl:w-[10vw] text-sm xl:text-md bg-background dark:bg-stone-950 dark:text-background hover:border-orange hover:text-orange"
+      <div v-if="filteredItems.length > 0" class="flex flex-col gap-y-2">
+        <div
+          v-for="item in filteredItems"
+          :key="item.id"
+          class="flex items-center justify-between px-5 bg-blueberry h-[4vh] xl:h-[5vh] w-full dark:text-background"
         >
-          Remove
-        </button>
+          <p class="font-hand text-xl">{{ item.ingredient }}</p>
+          <button
+            @click="removeIngredient(item)"
+            class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-[7rem] xl:w-[10vw] text-sm xl:text-base bg-background dark:bg-stone-950 dark:text-background hover:border-orange hover:text-orange"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+      <div
+        v-else
+        class="w-full xl:h-[52vh] flex flex-col text-xl md:text-2xl items-center justify-center py-8 px-5 bg-blueberry dark:text-background"
+      >
+        <img
+          src="../assets/mad-cat.png"
+          alt=""
+          class="object-contain h-[20vw] md:h-[11vw] xl:h-[9vw]"
+        />
+        <p class="font-hand mt-5">NO ITEMS</p>
       </div>
     </div>
   </div>
@@ -203,13 +216,17 @@ export default {
         });
     },
     removeIngredient(ingredientToRemove) {
+      // Find the index based on ingredient and category
       const index = this.groceryStore.filteredIngredients.findIndex(
-        (item) => item.id === ingredientToRemove.id
+        (item) =>
+          item.ingredient === ingredientToRemove.ingredient &&
+          item.category === ingredientToRemove.category
       );
 
       if (index !== -1) {
         this.groceryStore.filteredIngredients.splice(index, 1);
 
+        //Updates removedIngredients and filteredIngredients
         this.groceryStore.removedIngredients.push(ingredientToRemove);
         updateRemovedIngredients(this.groceryStore.removedIngredients);
         updateFilteredIngredients(this.groceryStore.filteredIngredients);

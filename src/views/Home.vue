@@ -17,7 +17,7 @@
         </h2>
       </div>
 
-      <!--TODAY'S DATE-->
+      <!--TODAY'S DATE MOBILE-->
       <div
         class="flex xl:hidden justify-center gap-x-5 w-full px-8 border-black dark:border-background border-y-2 mb-10 dark:text-background"
       >
@@ -67,7 +67,7 @@
           class="flex flex-col justify-center text-[1.8rem] h-[20vh]"
           v-html="formattedDate"
         ></div>
-        <div class="text-[6rem] flex items-center">
+        <div class="text-8xl mt-4 flex items-center">
           <p>*</p>
         </div>
       </div>
@@ -107,7 +107,7 @@
           <router-link :to="`/recipes`">Browse recipes</router-link>
         </button>
         <button
-          class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+          class="rounded-full border-2 bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
         >
           <router-link :to="`/schedule`">Check full menu</router-link>
         </button>

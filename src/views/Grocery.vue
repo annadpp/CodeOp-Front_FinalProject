@@ -17,7 +17,6 @@
       <GroceryFilters class="hidden xl:flex xl:flex-col" />
     </div>
 
-    <!--FILTERS-->
     <GroceryAdd
       :groceryStore="groceryStore"
       :formExistingVisible="formExistingVisible"
