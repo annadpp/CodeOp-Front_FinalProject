@@ -7,6 +7,8 @@
         What could I eat?
       </h2>
     </div>
+
+    <!--GRID LEFT-->
     <div
       class="grid order-2 xl:order-1 col-span-1 xl:col-span-5 h-[67vh] xl:h-[85vh] xl:border-black dark:xl:border-background xl:border-r-2 xl:p-5"
     >
@@ -20,6 +22,7 @@
         </h2>
       </div>
       <div class="grid xl:h-[65vh] px-5 pt-8 xl:p-0">
+        <!--RECIPES COUNTER-->
         <div class="flex h-[5vh]">
           <h3
             class="bg-orange h-7 xl:h-8 w-full flex justify-center items-center text-border-lime text-xl xl:text-2xl"
@@ -31,9 +34,15 @@
             >
           </h3>
         </div>
-        <div v-if="loading" class="h-[25vh] xl:h-[52vh] w-full flex">
+
+        <!--LOADER FOR RECIPES-->
+        <div
+          v-if="loading"
+          class="h-[25vh] xl:h-[52vh] w-full flex xl:items-center"
+        >
           <Loader class="w-full" />
         </div>
+        <!--RECIPES -> info received from API-->
         <div
           v-else
           class="h-[48vh] mb-14 xl:mb-0 xl:h-[52vh] gap-3 xl:gap-5 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
@@ -56,12 +65,12 @@
       </div>
     </div>
 
+    <!--GRID RIGHT-->
     <div
       class="grid order-1 xl:order-2 col-span-1 border-black border-y-2 xl:border-none xl:col-span-3 xl:h-[85vh]"
     >
       <div
-        v-if="!loading"
-        class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5 dark:text-background"
+        class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5 dark:text-background xl:border-black dark:xl:border-background border-b-2"
       >
         <p>S E A R C H &nbsp&nbsp+ &nbsp&nbspF I L T E R</p>
         <input
@@ -79,16 +88,15 @@
         </div>
       </div>
 
-      <div
-        v-if="loading"
-        class="w-full px-5 h-[20vh] xl:h-[75vh] flex items-center"
-      >
+      <!--LOADER FOR FILTERS-->
+      <div v-if="loading" class="w-full px-5 h-[20vh] flex items-center">
         <Loader class="w-full" img="8" />
       </div>
+
       <div
         v-else
         v-if="showFilter"
-        class="flex flex-col justify-around border-black dark:border-background border-t-2 h-[50vh] xl:h-[65vh] p-5"
+        class="flex flex-col justify-around dark:border-background h-[50vh] xl:h-[65vh] p-5"
       >
         <div class="flex gap-x-5">
           <button
@@ -142,13 +150,15 @@
               :class="[
                 'rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full',
                 {
-                  'hover:border-orange hover:text-orange': !selectedCategory,
+                  'hover:border-orange hover:text-orange dark:hover:border-orange dark:hover:text-orange':
+                    !selectedCategory,
                 },
                 {
-                  'border-orange text-orange': selectedCategory === category,
+                  'border-orange text-orange dark:border-orange dark:text-orange':
+                    selectedCategory === category,
                 },
                 {
-                  'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300 cursor-no-drop	':
+                  'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300 dark:border-stone-900 dark:text-stone-900 hover:dark:border-stone-900 hover:dark:text-stone-900 cursor-no-drop	':
                     selectedCategory && selectedCategory !== category,
                 },
               ]"
@@ -184,6 +194,7 @@
           </div>
         </div>
       </div>
+      <!-- <RecipesFilters /> -->
     </div>
   </div>
 </template>
@@ -191,6 +202,7 @@
 <script>
 import axios from "axios";
 import Card from "../components/Card.vue";
+// import RecipesFilters from "../components/RecipesFilters.vue";
 import Loader from "../components/Loader.vue";
 import { useSchedule } from "../stores/schedule";
 

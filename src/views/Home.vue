@@ -17,7 +17,7 @@
         </h2>
       </div>
 
-      <!--TODAY'S DATE MOBILE-->
+      <!--TODAY'S DATE MOBILE -> gets info from Pinia dateStore-->
       <div
         class="flex xl:hidden justify-center gap-x-5 w-full px-8 border-black dark:border-background border-y-2 mb-10 dark:text-background"
       >
@@ -41,12 +41,14 @@
             <span class="rotate-[8deg]">Today</span>
           </h3>
         </div>
+        <!--LOADER-->
         <div
           v-if="loading"
           class="w-full h-[25vh] sm:h-[40vh] md:h-[52vh] flex items-center"
         >
           <Loader class="w-full" />
         </div>
+        <!--TODAY'S LUNCH/DINNER -> This charges after "loading" is set to false-->
         <div
           v-else
           class="h-[57vh] sm:h-[52vh] xl:h-[60vh] flex flex-col sm:flex-row gap-x-5"
@@ -70,7 +72,7 @@
 
     <!--GRID RIGHT-->
     <div class="grid col-span-3 xl:h-[85vh]">
-      <!--TODAY'S DATE-->
+      <!--TODAY'S DATE DESKTOP -> gets info from Pinia dateStore-->
       <div
         class="hidden xl:flex justify-center gap-x-5 w-full px-8 dark:text-background"
       >
@@ -92,10 +94,12 @@
         >
           <span class="rotate-[-8deg]">Tomorrow</span>
         </h3>
-        <!--LUNCH CARD-->
+
+        <!--LOADER-->
         <div v-if="loading" class="w-full">
           <Loader class="w-full" img="8" />
         </div>
+        <!--LUNCH CARD -> This charges after "loading" is set to false-->
         <div v-else class="flex gap-x-5 w-[98%]">
           <CardSimple
             title="L U N C H"
@@ -152,8 +156,9 @@ export default {
       this.scheduleStore.schedule = schedule;
     });
 
+    //Sets loading to false after 0,8 seconds -> fake loader
     setTimeout(() => {
-      this.loading = false; // Set loading to false after 1 second
+      this.loading = false;
     }, 800);
   },
   data() {

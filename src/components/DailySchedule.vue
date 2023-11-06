@@ -1,4 +1,5 @@
 <template>
+  <!--ONE FULL DAY SCHEDULE-->
   <div
     class="flex flex-col w-full justify between items-center gap-y-4 px-5 py-8 xl:p-0 border-black dark:border-background border-t-2 xl:border-none"
   >
@@ -8,21 +9,24 @@
       >
         <span class="rotate-[8deg]">{{ day }}</span>
       </h3>
+      <!--Triangle button -> OPENS FULL DAILY SCHEDULE CARD MOBILE-->
       <button @click="toggleDayVisibility">
         <span v-if="dayVisible"
           ><i
-            class="xl:hidden fa-solid fa-caret-up inline-block text-right pl-5 py-1"
+            class="xl:hidden fa-solid fa-caret-up inline-block text-right pl-5 py-1 dark:text-background"
           ></i
         ></span>
 
+        <!--Triangle button -> CLOSES FULL DAILY SCHEDULE CARD MOBILE-->
         <span v-if="!dayVisible"
           ><i
-            class="xl:hidden fa-solid fa-caret-down inline-block text-right pl-5 py-1"
+            class="xl:hidden fa-solid fa-caret-down inline-block text-right pl-5 py-1 dark:text-background"
           ></i
         ></span>
       </button>
     </div>
 
+    <!--LUNCH CARD-->
     <div v-if="dayVisible" class="w-full grid grid-cols-2 xl:grid-cols-1">
       <div class="flex flex-col xl:items-center">
         <h3
@@ -58,6 +62,7 @@
         </div>
       </div>
 
+      <!--DINNER CARD-->
       <div class="flex flex-col items-end xl:items-center">
         <h3
           class="bg-lime h-6 xl:h-8 w-full flex justify-center text-border-orange text-xl"
@@ -108,11 +113,12 @@ export default {
     };
   },
   setup() {
+    //Gets info from Pinia scheduleStore
     const scheduleStore = useSchedule();
-
     return { scheduleStore };
   },
   mounted() {
+    //Gets info from screen size
     window.addEventListener("resize", this.handleWindowResize);
     this.handleWindowResize();
   },

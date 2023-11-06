@@ -1,4 +1,5 @@
 <template>
+  <!--DIV Changes color depending whether there is a meal stored or not -> info saved in Pinia-->
   <div
     :class="{
       'bg-blueberry': this.scheduleStore.handleInfo !== '',
@@ -30,8 +31,9 @@
           'xl:grid-cols-3 ': this.scheduleStore.handleInfo !== '',
         }"
       >
-        <!--CURRENT MEAL NAME/NO MEAL-->
+        <!--CURRENT MEAL NAME/NO MEAL DESKTOP -> gets info from Pinia-->
         <div class="flex flex-col xl:col-span-2 xl:mb-0">
+          <!--router-link using Pinia handleInfo id to go to current meal recipe-->
           <router-link
             v-if="this.scheduleStore.handleInfo !== ''"
             :to="`/recipes/${this.scheduleStore.handleInfo.id}`"
@@ -45,6 +47,7 @@
           >
             <p>NO MEAL</p>
           </div>
+          <!--MEAL IMG DESKTOP-> depends on whether there is info stored or not-->
           <img
             v-if="this.scheduleStore.handleInfo !== ''"
             class="hidden xl:flex flex-col object-cover w-full mb-12 h-[17vh]"
@@ -59,7 +62,7 @@
           />
         </div>
 
-        <!--DAY/MEAL/IMAGE-->
+        <!--DAY/MEAL/IMAGE MOBILE-->
         <div
           :class="{
             'grid-cols-1': this.scheduleStore.handleInfo === '',
@@ -83,6 +86,7 @@
               {{ this.scheduleStore.handleInfo.meal }}
             </div>
           </div>
+          <!--MEAL IMG DESKTOP-> depends on whether there is info stored or not-->
           <div>
             <img
               v-if="this.scheduleStore.handleInfo !== ''"
@@ -151,10 +155,12 @@ export default {
   },
   methods: {
     closeForm() {
+      //Emits closeForm to parent + resets handleInfo on form closing
       this.$emit("closeForm");
       this.scheduleStore.handleInfo = "";
     },
     removeRecipe(id) {
+      //Filters and keeps in Pinia scheduleStore all recipes there but the current one we're deleting + resets handleInfo + updates Firebasse
       this.scheduleStore.schedule = this.scheduleStore.schedule.filter(
         (item) => item.id !== id
       );

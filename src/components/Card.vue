@@ -3,6 +3,7 @@
     class="flex flex-col justify-between items-center w-full text-md lg:text-lg xl:text-xl"
     :class="{
       'sm:max-h-[48vh] xl:max-h-[55vh]': meal,
+      'max-h-[32vh] sm:max-h-[23vh] xl:max-h-[25vh]': !meal,
     }"
   >
     <!--LUNCH/DINNER-->

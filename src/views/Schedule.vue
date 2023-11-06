@@ -16,7 +16,7 @@
         :class="{ 'opacity-20': showChangeRecipe }"
       >
         <div
-          class="h-[3vh] gap-x-5 py-6 xl:py-0 mb-4 text-right border-black border-t-2 xl:border-none px-5 xl:px-0"
+          class="h-[3vh] gap-x-5 py-6 xl:py-0 mb-4 text-right border-black dark:border-background dark:text-background border-t-2 xl:border-none px-5 xl:px-0"
         >
           WEEK {{ dateStore.currentWeekOfYear }}
         </div>
