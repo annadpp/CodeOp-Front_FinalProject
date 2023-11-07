@@ -1,4 +1,5 @@
 <template>
+  <!--Props to change loader size if needed-->
   <div
     class="bg-blueberry flex items-end justify-center"
     :class="img ? 'h-[' + (img - 3) + 'vh]' : 'h-[7vh] md:h-[10vh]'"

@@ -145,7 +145,7 @@ import { getSchedule } from "../firebase";
 export default {
   components: { Card, CardSimple, Loader },
   setup() {
-    //Gets info from Pinia scheduleStore
+    //Gets info from Pinia scheduleStore + dateStore
     const scheduleStore = useSchedule();
     const dateStore = useDate();
     return { scheduleStore, dateStore };

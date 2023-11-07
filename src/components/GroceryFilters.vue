@@ -3,6 +3,7 @@
     <div
       class="grid grid-cols-2 xl:grid-cols-4 xl:h-[5vh] pt-5 xl:pt-0 gap-3 xl:gap-y-0 xl:gap-x-5 mb-5"
     >
+      <!--FILTERS MENU BUTTONS -> loops on hardcoded categoryOptions (style changes if selected)-->
       <button
         v-for="category in categoryOptions"
         :key="category"
@@ -24,14 +25,18 @@
         >
       </button>
     </div>
+
+    <!--LOADER -> if loading true-->
     <div v-if="loading" class="w-full flex items-center h-[25vh] xl:h-[52vh]">
       <Loader class="w-full" />
     </div>
 
+    <!--GROCERY LIST -> if loading false-->
     <div
       v-else
       class="max-h-[38vh] xl:max-h-[52vh] justify-start overflow-auto scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime mb-16 xl:mb-8"
     >
+      <!--INGREDIENT -> Gets items from filteredItems (resulting from Pinia after filters applied)-->
       <div v-if="filteredItems.length > 0" class="flex flex-col gap-y-2">
         <div
           v-for="item in filteredItems"
@@ -39,6 +44,7 @@
           class="flex items-center justify-between px-5 bg-blueberry h-[4vh] xl:h-[5vh] w-full dark:text-background"
         >
           <p class="font-hand text-xl">{{ item.ingredient }}</p>
+          <!--Button to remove ingredients-->
           <button
             @click="removeIngredient(item)"
             class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-[7rem] xl:w-[10vw] text-sm xl:text-base bg-background dark:bg-stone-950 dark:text-background hover:border-orange hover:text-orange"
@@ -47,6 +53,7 @@
           </button>
         </div>
       </div>
+      <!--IMAGE IN CASE THERE ARE NO ITEMS IN filteredItems-->
       <div
         v-else
         class="w-full xl:h-[52vh] flex flex-col text-xl md:text-2xl items-center justify-center py-8 px-5 bg-blueberry dark:text-background"
@@ -77,7 +84,9 @@ export default {
   components: { Loader },
   data() {
     return {
+      //Default for selectedCategory
       selectedCategory: "All",
+      //Harcoded category options
       categoryOptions: ["All", "Food", "Cleaning", "Others"],
       loading: false,
     };
@@ -123,7 +132,6 @@ export default {
       console.error("Error fetching data:", error);
     }
     this.loading = false;
-    this.$emit("loading", this.loading);
   },
 
   mounted() {
@@ -152,7 +160,6 @@ export default {
       })
       .finally(() => {
         this.loading = false;
-        this.$emit("loading", this.loading);
       });
   },
   methods: {
@@ -234,7 +241,7 @@ export default {
       if (index !== -1) {
         this.groceryStore.filteredIngredients.splice(index, 1);
 
-        //Updates removedIngredients and filteredIngredients
+        //Updates removedIngredients and filteredIngredients Firebase
         this.groceryStore.removedIngredients.push(ingredientToRemove);
         updateRemovedIngredients(this.groceryStore.removedIngredients);
         updateFilteredIngredients(this.groceryStore.filteredIngredients);

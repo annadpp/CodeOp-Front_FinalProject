@@ -66,12 +66,13 @@ export default {
     return { scheduleStore, dateStore };
   },
   mounted() {
+    //Gets info from Firebase -> careful! async function in Firebase.js
     getSchedule().then((schedule) => {
       this.scheduleStore.schedule = schedule;
-    }); // Get info from Firebase -> careful! async function in Firebase.js
+    });
 
     setTimeout(() => {
-      this.loading = false; // Set loading to false after 1 second
+      this.loading = false; //Sets loading to false after 0,8 seconds -> for fake loader
     }, 800);
   },
   data() {

@@ -4,9 +4,10 @@ export const useGrocery = defineStore("grocery", {
   state: () => ({
     groceryList: [],
     removedIngredients: [],
-    counter: 0,
+    // counter: 0,
     filteredIngredients: [],
     newProducts: [],
+    //Hardcoded base common ingredients
     commonIngredients: [
       { name: "Salt", category: "Food" },
       { name: "Pepper", category: "Food" },

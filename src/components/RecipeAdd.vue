@@ -1,9 +1,11 @@
 <template>
   <div>
+    <!--BUTTON TO CLOSE RECIPE ADD FORM-->
     <button @click="toggleVisibility" class="h-[40px] w-[40px] bg-lime">
       <p class="text-border-orange hover:text-2xl text-black">X</p>
     </button>
 
+    <!--SELECT DAY/MEAL A RECIPE WILL BE ADDED -> "sent" keeps track of status for div to show/hide-->
     <div v-if="!sent">
       <div
         class="grid grid-cols-4 gap-x-5 h-[18vh] xl:h-[30vh] w-[98%] xl:mt-[7vh]"
@@ -26,6 +28,7 @@
         </div>
         <div class="col-span-3 w-full flex flex-col justify-between h-[30vh]">
           <div class="flex flex-col gap-y-5">
+            <!--v-model passes day info-->
             <select
               name="day"
               id="day"
@@ -41,6 +44,7 @@
               <option value="Saturday">Saturday</option>
               <option value="Sunday">Sunday</option>
             </select>
+            <!--v-model passes day info-->
             <select
               name="meal"
               id="meal"
@@ -56,8 +60,10 @@
       </div>
     </div>
 
+    <!--INFO ABOUT MEAL THAT'S BEEN ADDED -> "sent" keeps track of status for div to show/hide-->
     <div v-else class="flex justify-center items-center xl:h-[37vh]">
       <p class="mb-10 text-lg xl:text-2xl text-center leading-8 xl:leading-10">
+        <!--Info on name from Props, day + meal stored from v-models-->
         <span class="text-border-orange bg-lime py-2 px-5 text-black">{{
           data.name
         }}</span>
@@ -72,6 +78,7 @@
       </p>
     </div>
 
+    <!--ADD BUTTON -> "sent" keeps track of status for it to show/hide-->
     <button
       v-if="!sent"
       @click.prevent="addToWeeklyMenu"
@@ -80,6 +87,7 @@
       Add to weekly menu
     </button>
 
+    <!--CHECK FULL MENU BUTTON -> "sent" keeps track of status for it to show/hide (redirects to Schedule)-->
     <button
       v-else
       @click.prevent="addToWeeklyMenu"
@@ -92,60 +100,66 @@
 
 <script>
 export default {
-  props: {
-    data: Object, // Pass the data from the parent component (Recipe.vue)
-  },
+  props: ["data"],
   data() {
     return {
+      //Get info from v-models
       selectedDay: "",
       selectedMeal: "",
       sent: false,
-      // Other data properties...
     };
   },
 
   methods: {
     toggleVisibility() {
-      //Toggles closedForm to open/close add recipe form + changes sent status
+      //Toggles closedForm to open/close add recipe form + changes sent status -> emits to Parent so toggle works from both files
       this.closedForm = !this.closedForm;
       this.sent = false;
       this.$emit("toggleVisibility");
     },
     addToWeeklyMenu() {
+      //Checks if the selected meal already exists in the weekly schedule (Pinia) by finding index and comparing day + meal
       const existing = this.scheduleStore.schedule.findIndex(
         (recipe) =>
           recipe.day === this.selectedDay && recipe.meal === this.selectedMeal
       );
 
       if (existing !== -1) {
+        //If the meal exists, updates its details in the schedule
         this.scheduleStore.schedule[existing] = {
           meal: this.selectedMeal,
           day: this.selectedDay,
           img: this.data.img,
           name: this.data.name,
           id: Number(this.$route.params.id),
+          //Maps so it includes all ingredients
           ingredients: this.data.ingredients.map(
             (ingredient) => ingredient.name
           ),
         };
       } else {
+        //If the meal doesn't exist, adds it to the schedule
         this.scheduleStore.schedule.push({
           meal: this.selectedMeal,
           day: this.selectedDay,
           img: this.data.img,
           name: this.data.name,
           id: Number(this.$route.params.id),
+          //Maps so it includes all ingredients
           ingredients: this.data.ingredients.map(
             (ingredient) => ingredient.name
           ),
         });
       }
+      //Updates the schedule in Pinia
       updateSchedule(this.scheduleStore.schedule);
-      this.$emit("addToWeeklyMenu"); // Emit an event to notify Recipe.vue
+      //Emits an event to indicate to Recipe that the meal was added to the weekly menu
+      this.$emit("addToWeeklyMenu");
+      //Sets to true to indicate that the action has been completed -> div information will change
       this.sent = true;
     },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style></style>

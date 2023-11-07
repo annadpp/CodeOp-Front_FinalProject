@@ -1,13 +1,16 @@
 <template>
+  <!--LOADER -> on loading true-->
   <div v-if="loading" class="w-full px-5 h-[20vh] flex items-center">
     <Loader class="w-full" img="8" />
   </div>
 
+  <!--CATEGORIES/COUNTRIES FILTERS -> on loading false + showFilter true (MOBILE closed on load)-->
   <div
     v-else
     v-if="showFilter"
     class="flex flex-col justify-around dark:border-background h-[50vh] xl:h-[65vh] p-5"
   >
+    <!--CATEGORIES/COUNTRIES BUTTONS -> changes boolean on click (styles depending on true/false)-->
     <div class="flex gap-x-5">
       <button
         :class="{
@@ -50,10 +53,12 @@
       </button>
     </div>
 
+    <!--CATEGORIES/COUNTRIES BUTTONS -> one of each displaying, depending on boolean set-->
     <div v-if="showCategories">
       <div
         class="grid grid-cols-2 gap-x-3 xl:gap-x-5 h-[40vh] xl:h-[50vh] justify-center items-center"
       >
+        <!--CATEGORIES BUTTONS -> style + status changes on category selected-->
         <button
           v-for="category in dataCategories"
           @click="handleCategories(category)"
@@ -82,6 +87,7 @@
       <div
         class="grid grid-cols-2 gap-x-3 xl:gap-x-5 h-[40vh] xl:h-[50vh] justify-center items-center"
       >
+        <!--COUNTRIES BUTTONS -> style + status changes on category selected-->
         <button
           v-for="country in dataCountries"
           @click="handleCountries(country)"
@@ -144,13 +150,17 @@ export default {
     };
   },
   setup() {
+    //Gets info from Pinia scheduleStore
     const scheduleStore = useSchedule();
     return { scheduleStore };
   },
   mounted() {
+    //Triggers methods to fetch and filter info
     this.getRecipes();
     this.getCategories();
+    //Resets for storing new information
     this.scheduleStore.handleInfo = "";
+    //Gets screen size info
     window.addEventListener("resize", this.handleWindowResize);
     this.handleWindowResize();
   },
@@ -246,6 +256,7 @@ export default {
       this.showFilter = !this.showFilter;
     },
     handleWindowResize() {
+      //Needed to close advanced filters on MOBILE (open default in DESKTOP)
       this.screenWidth = window.innerWidth;
       if (this.screenWidth > 1280) {
         this.showFilter = true;

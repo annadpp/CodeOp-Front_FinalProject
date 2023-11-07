@@ -17,7 +17,7 @@
           {{ data.name }}
         </h2>
       </div>
-      <!--RECIPE INFO (category + country) DESKTOP-> data from API-->
+      <!--RECIPE INFO (category + country) DESKTOP -> data from API-->
       <div class="xl:col-span-2">
         <div class="gap-x-5 hidden xl:flex">
           <p class="text-6xl flex justify-end items-end text-left w-1/3">*</p>
@@ -298,11 +298,12 @@ export default {
     this.getRecipes();
   },
   mounted() {
+    //Gets screen size info
     window.addEventListener("resize", this.handleWindowResize);
     this.handleWindowResize();
 
     setTimeout(() => {
-      this.loading = false; // Set loading to false after 1 second
+      this.loading = false; //Sets loading to false after 1 second -> for fake loader
     }, 800);
   },
   methods: {

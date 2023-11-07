@@ -26,15 +26,17 @@
       </button>
     </div>
 
-    <!--LUNCH CARD-->
+    <!--LUNCH-->
     <div v-if="dayVisible" class="w-full grid grid-cols-2 xl:grid-cols-1">
       <div class="flex flex-col xl:items-center">
         <h3
           class="bg-lime h-6 xl:h-8 w-full flex justify-center text-border-orange text-xl"
         >
+          <!--Meal time -> gets info from Props-->
           <span class="rotate-[-8deg]">{{ lunch }}</span>
         </h3>
 
+        <!--LUNCH CARD -> colors depends on whether there is a meal scheduled or not-->
         <div
           :class="{
             'bg-blueberry': scheduledMeal('Lunch') !== 'NO MEAL',
@@ -46,6 +48,7 @@
           <div
             class="h-[14.5vh] font-hand flex justify-center items-center text-center text-lg px-5 dark:text-background"
           >
+            <!--router-link to recipe/recipes depending on whether there is a meal scheduled or not -> gets id checking meal + day-->
             <router-link
               :to="`/recipes/${getItemId('Lunch')}`"
               class="hover:underline leading-4"
@@ -53,6 +56,7 @@
               >{{ scheduledMeal("Lunch") }}</router-link
             >
           </div>
+          <!--Button to open change recipe menu-->
           <button
             class="flex w-full h-[3.1vh] border-black dark:border-background border-t-2 justify-center items-center hover:bg-black hover:text-background dark:hover:bg-background dark:hover:text-black"
             @click="showChangeRecipeForm('Lunch')"
@@ -62,14 +66,16 @@
         </div>
       </div>
 
-      <!--DINNER CARD-->
+      <!--DINNER-->
       <div class="flex flex-col items-end xl:items-center">
         <h3
           class="bg-lime h-6 xl:h-8 w-full flex justify-center text-border-orange text-xl"
         >
+          <!--Meal time -> gets info from Props-->
           <span class="rotate-[-8deg]">{{ dinner }}</span>
         </h3>
 
+        <!--DINNER CARD -> colors depends on whether there is a meal scheduled or not-->
         <div
           :class="{
             'bg-blueberry': scheduledMeal('Dinner') !== 'NO MEAL',
@@ -81,6 +87,7 @@
           <div
             class="h-[14.5vh] font-hand flex justify-center items-center text-center text-lg px-5"
           >
+            <!--router-link to recipe/recipes depending on whether there is a meal scheduled or not -> gets id checking meal + day-->
             <router-link
               :to="`/recipes/${getItemId('Dinner')}`"
               class="hover:underline leading-4"
@@ -88,6 +95,7 @@
               >{{ scheduledMeal("Dinner") }}</router-link
             >
           </div>
+          <!--Button to open change recipe menu-->
           <button
             class="flex w-full h-[3.1vh] border-black dark:border-background border-t-2 justify-center items-center hover:bg-black hover:text-background dark:hover:bg-background dark:hover:text-black"
             @click="showChangeRecipeForm('Dinner')"
@@ -123,34 +131,44 @@ export default {
     this.handleWindowResize();
   },
   methods: {
+    //Compares a scheduled meal + day in Pinia for the provided meal + day (info from Props)
     scheduledMeal(meal) {
       for (const item of this.scheduleStore.schedule) {
         if (meal === item.meal && this.day === item.day) {
+          //Passes id info + returns name so it shows in the daily schedule
           this.id = item.id;
           return item.name;
         }
       }
+      //Returns if no match
       return "NO MEAL";
     },
     getItemId(meal) {
+      //Gets the id of a scheduled meal if it matches the provided meal + day (info from Props)
       const item = this.scheduleStore.schedule.find(
         (item) => meal === item.meal && this.day === item.day
       );
+      //Returns the id if the meal is found, otherwise returns an empty string
       return item ? item.id : "";
     },
     showChangeRecipeForm(meal) {
+      //Looks for an item in Pinia that matches current meal + day
       const item = this.scheduleStore.schedule.find(
         (item) => meal === item.meal && this.day === item.day
       );
       if (item) {
+        //If found, assigns the found item to handleInfo in the scheduleStore so the information is available
         this.scheduleStore.handleInfo = item;
       }
+      //Emits an event to show the change recipe form so it changes showChangeRecipe to true in the parent to change form visibility
       this.$emit("showChangeRecipeForm");
     },
     toggleDayVisibility() {
+      //Used to toggle daily sections
       this.dayVisible = !this.dayVisible;
     },
     handleWindowResize() {
+      //Used to keep daily sections closed on MOBILE
       this.screenWidth = window.innerWidth;
       if (this.screenWidth > 1280) {
         this.dayVisible = true;
