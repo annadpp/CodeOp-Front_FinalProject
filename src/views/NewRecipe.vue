@@ -192,6 +192,7 @@ export default {
     return {
       loading: false,
       addImageInfoClicked: false,
+      id: 99999,
       name: "",
       image: "",
       category: "",
@@ -210,6 +211,7 @@ export default {
     addNewRecipe() {
       //Creates a new object to hold the information
       const newRecipe = {
+        idMeal: this.id + 1,
         strMeal: this.name,
         strMealThumb: this.image,
         strCategory: this.category,
@@ -221,14 +223,23 @@ export default {
           return result;
         }, {}),
         //Collects steps' input values
-        strInstructions: this.steps.map((step) => step.step).join("."),
+        strInstructions: this.steps.map((step) => step.step).join(". "),
       };
 
-      // Push the new recipe to the recipesStore (Pinia) + updates Firebase
-      this.recipesStore.recipe.push(newRecipe);
-      updateRecipes(this.recipesStore.recipe);
+      this.id++;
+      let existingRecipes = this.recipesStore.recipe;
 
-      // Reset fields for the next entry
+      // Append the new recipe to the existing list
+      existingRecipes.push(newRecipe);
+
+      // Update the entire list of recipes in the store and Firebase
+      this.recipesStore.recipe = existingRecipes;
+      updateRecipes(existingRecipes);
+
+      //Increments the counter for the next id
+      this.id++;
+
+      //Resets fields for the next entry
       this.name = "";
       this.image = "";
       this.category = "";

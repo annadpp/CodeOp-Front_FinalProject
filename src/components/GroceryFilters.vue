@@ -95,7 +95,10 @@ export default {
     //Filters for buttons All/Food/Cleaning/Others -> on click, displays only the items with requested category
     filteredItems() {
       if (this.selectedCategory === "All") {
-        return this.groceryStore.filteredIngredients;
+        return this.groceryStore.filteredIngredients.map((item, index) => ({
+          ...item,
+          id: item.id || index + 1, //Checks and assign a default ID if 'id' is falsy
+        }));
       } else if (this.selectedCategory === "Food") {
         return this.groceryStore.filteredIngredients.filter(
           (item) => item.category === "Food" || !item.category

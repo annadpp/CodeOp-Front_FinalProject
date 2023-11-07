@@ -264,6 +264,8 @@ import axios from "axios";
 import Loader from "../components/Loader.vue";
 // import RecipeAdd from "../components/RecipeAdd.vue";
 import { useSchedule } from "../stores/schedule";
+import { useRecipe } from "../stores/recipes";
+import { getRecipes } from "../firebase";
 import { updateSchedule } from "../firebase";
 
 export default {
@@ -293,7 +295,8 @@ export default {
   setup() {
     //Gets info from Pinia scheduleStore
     const scheduleStore = useSchedule();
-    return { scheduleStore };
+    const recipesStore = useRecipe();
+    return { scheduleStore, recipesStore };
   },
   created() {
     this.getRecipes();
@@ -303,6 +306,11 @@ export default {
     window.addEventListener("resize", this.handleWindowResize);
     this.handleWindowResize();
 
+    //Gets info from Firebase -> async function in firebase.js
+    getRecipes().then((newRecipe) => {
+      this.recipesStore.recipe = newRecipe;
+    });
+
     setTimeout(() => {
       this.loading = false; //Sets loading to false after 1 second -> for fake loader
     }, 800);
@@ -311,16 +319,21 @@ export default {
     //Used to get recipes info from API based on params.id received from Recipes
     getRecipes() {
       const idRecipe = Number(this.$route.params.id);
-      const apiUrl = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idRecipe}`;
 
-      axios
-        .get(apiUrl)
-        .then((response) => {
-          this.handleResponse(response);
-        })
-        .catch((error) => {
-          console.error(`Error fetching recipe:`, error);
-        });
+      if (idRecipe < 99999) {
+        const apiUrl = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idRecipe}`;
+
+        axios
+          .get(apiUrl)
+          .then((response) => {
+            this.handleResponse(response);
+          })
+          .catch((error) => {
+            console.error(`Error fetching recipe:`, error);
+          });
+      } else {
+        this.handleNewRecipes();
+      }
     },
     handleResponse(response) {
       const recipe = response.data.meals[0];
@@ -343,6 +356,37 @@ export default {
           country: recipe.strArea,
           steps: recipe.strInstructions,
         };
+      }
+    },
+    handleNewRecipes() {
+      if (this.recipesStore.recipe && this.recipesStore.recipe.length > 0) {
+        const thisRecipe = this.recipesStore.recipe.find(
+          (recipe) => recipe.idMeal === Number(this.$route.params.id)
+        );
+
+        if (thisRecipe) {
+          const ingredients = [];
+          for (let i = 1; i <= 20; i++) {
+            const ingredientName = thisRecipe[`strIngredient${i}`];
+            const measure = thisRecipe[`strMeasure${i}`];
+            if (ingredientName) {
+              ingredients.push({
+                name: ingredientName,
+                measure: measure,
+              });
+            }
+          }
+
+          this.data = {
+            id: thisRecipe.idMeal,
+            img: thisRecipe.strMealThumb,
+            name: thisRecipe.strMeal,
+            ingredients: ingredients,
+            category: thisRecipe.strCategory,
+            country: thisRecipe.strArea,
+            steps: thisRecipe.strInstructions,
+          };
+        }
       }
     },
     toggleVisibility() {

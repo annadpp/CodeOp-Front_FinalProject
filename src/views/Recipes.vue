@@ -205,6 +205,8 @@ import Card from "../components/Card.vue";
 // import RecipesFilters from "../components/RecipesFilters.vue";
 import Loader from "../components/Loader.vue";
 import { useSchedule } from "../stores/schedule";
+import { useRecipe } from "../stores/recipes";
+import { getRecipes } from "../firebase";
 
 export default {
   name: "Recipes",
@@ -243,7 +245,8 @@ export default {
   },
   setup() {
     const scheduleStore = useSchedule();
-    return { scheduleStore };
+    const recipesStore = useRecipe();
+    return { scheduleStore, recipesStore };
   },
   mounted() {
     this.getRecipes();
@@ -251,6 +254,9 @@ export default {
     this.scheduleStore.handleInfo = "";
     window.addEventListener("resize", this.handleWindowResize);
     this.handleWindowResize();
+    getRecipes().then((newRecipe) => {
+      this.recipesStore.recipe = newRecipe;
+    });
   },
   watch: {
     search: function () {
@@ -276,6 +282,7 @@ export default {
             error;
         }
       }
+      this.handleNewRecipes();
       this.loading = false;
     },
     handleResponse(response) {
@@ -287,6 +294,16 @@ export default {
         country: recipe.strArea,
       }));
       this.data = this.data.concat(recipes);
+    },
+    handleNewRecipes() {
+      const newRecipes = this.recipesStore.recipe.map((recipe) => ({
+        name: recipe.strMeal,
+        img: recipe.strMealThumb,
+        id: recipe.idMeal,
+        category: recipe.strCategory,
+        country: recipe.strArea,
+      }));
+      this.data = this.data.concat(newRecipes);
     },
     getCategories() {
       const apiUrlCategories =
