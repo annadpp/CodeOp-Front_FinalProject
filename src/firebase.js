@@ -124,3 +124,24 @@ export async function getCommonIngredients() {
     console.error(error);
   }
 }
+
+//setter method
+export function updateRecipes(RecipesArray) {
+  set(ref(db, "recipes"), RecipesArray);
+}
+
+//getter method
+export async function getRecipes() {
+  const dbRef = ref(db);
+  try {
+    const snapshot = await get(child(dbRef, "recipes"));
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      console.log("No data available");
+      return [];
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}

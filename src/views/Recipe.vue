@@ -10,7 +10,7 @@
       class="grid xl:grid-cols-10 items-center h-[15vh] xl:h-[17vh] pt-8 xl:px-5 xl:mb-2"
     >
       <!--RECIPE NAME -> data from API-->
-      <div class="xl:col-span-8 leading-[2.6rem]">
+      <div class="xl:col-span-8">
         <h2
           class="text-xl xl:text-4xl text-center xl:text-left leading-6 px-5 xl:p-0 dark:text-background"
         >
@@ -148,7 +148,7 @@
           </li>
         </ol>
 
-        <!--ADD WEEKLY CARD-->
+        <!--*********************ADD WEEKLY CARD-->
         <div
           v-else
           class="h-[48vh] xl:h-[58vh] w-full p-5 border-2 border-black dark:border-background drop-shadow-[8px_8px_0px_#000000] bg-blueberry"
@@ -262,6 +262,7 @@
 <script>
 import axios from "axios";
 import Loader from "../components/Loader.vue";
+// import RecipeAdd from "../components/RecipeAdd.vue";
 import { useSchedule } from "../stores/schedule";
 import { updateSchedule } from "../firebase";
 

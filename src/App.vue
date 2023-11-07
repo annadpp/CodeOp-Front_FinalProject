@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="xl:overflow-y-hidden">
     <Header menu="home" class="z-100 fixed" />
     <div class="fixed bg-background dark:bg-stone-950 w-full h-full">
       <img

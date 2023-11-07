@@ -4,6 +4,7 @@ import Grocery from "./views/Grocery.vue";
 import Schedule from "./views/Schedule.vue";
 
 import Recipe from "./views/Recipe.vue";
+import NewRecipe from "./views/NewRecipe.vue";
 
 export const routes = [
   { path: "/", component: Home },
@@ -12,4 +13,5 @@ export const routes = [
   { path: "/schedule", component: Schedule, name: Schedule },
 
   { path: "/recipes/:id", component: Recipe, name: Recipe },
+  { path: "/recipes/new", component: NewRecipe, name: NewRecipe },
 ];

@@ -1,4 +1,5 @@
 <template>
+  <!--NOT WORKING PROPERLY-->
   <!--LOADER -> on loading true-->
   <div v-if="loading" class="w-full px-5 h-[20vh] flex items-center">
     <Loader class="w-full" img="8" />
