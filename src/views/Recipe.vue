@@ -238,11 +238,21 @@
           <!--BUTTONS BOTTOM-->
           <!--Add to weekly menu -> if info not sent-->
           <button
+            :disabled="!selectedDay || !selectedMeal"
             v-if="!sent"
             @click.prevent="addToWeeklyMenu"
-            class="rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+            class="rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full"
+            :class="{
+              'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300':
+                !selectedDay || !selectedMeal,
+              'hover:border-orange hover:text-orange':
+                selectedDay || selectedMeal,
+            }"
           >
             Add to weekly menu
+            <span v-if="!selectedDay || !selectedMeal"
+              >(fill in all the fields)</span
+            >
           </button>
           <!--Check full menu -> if info sent-->
           <button
@@ -262,7 +272,6 @@
 <script>
 import axios from "axios";
 import Loader from "../components/Loader.vue";
-// import RecipeAdd from "../components/RecipeAdd.vue";
 import { useSchedule } from "../stores/schedule";
 import { useRecipe } from "../stores/recipes";
 import { getRecipes } from "../firebase";
@@ -300,15 +309,17 @@ export default {
   },
   created() {
     this.getRecipes();
+    console.log("this.recipesStore.recipe", this.recipesStore.recipe);
   },
   mounted() {
-    //Gets screen size info
     window.addEventListener("resize", this.handleWindowResize);
     this.handleWindowResize();
 
-    //Gets info from Firebase -> async function in firebase.js
+    // Getting recipes asynchronously
     getRecipes().then((newRecipe) => {
       this.recipesStore.recipe = newRecipe;
+      this.getRecipes(); // Call getRecipes after setting this.recipesStore.recipe
+      this.loading = false; // This could be placed here if loading relies on the completion of these initializations
     });
 
     setTimeout(() => {
@@ -393,6 +404,8 @@ export default {
       //Toggles closedForm to open/close add recipe form + changes sent status
       this.closedForm = !this.closedForm;
       this.sent = false;
+      this.selectedDay = "";
+      this.selectedMeal = "";
     },
     addToWeeklyMenu() {
       //Find an existing recipe in schedule that matches the day + meal of current recipe by checking the index.

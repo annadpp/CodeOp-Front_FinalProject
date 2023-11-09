@@ -120,7 +120,7 @@
         class="flex flex-col p-5 items-center gap-y-2 xl:gap-y-5 xl:h-[25vh] justify-center border-black dark:border-background border-t-2 mb-12 xl:mb-0 dark:text-background"
       >
         <button
-          class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+          class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange bg-background dark:bg-stone-950"
         >
           <router-link :to="`/recipes`">Browse recipes</router-link>
         </button>

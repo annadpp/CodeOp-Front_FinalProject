@@ -3,7 +3,7 @@
     class="flex flex-col justify-between items-center w-full text-md lg:text-lg xl:text-xl"
     :class="{
       'sm:max-h-[48vh] xl:max-h-[55vh]': meal,
-      'max-h-[32vh] sm:max-h-[23vh] xl:max-h-[25vh]': !meal,
+      'max-h-[32vh] sm:max-h-[23vh] xl:max-h-[24vh]': !meal,
     }"
   >
     <!--LUNCH/DINNER-->
@@ -28,8 +28,8 @@
     <div
       class="flex items-center justify-center bg-blueberry w-full font-hand text-xl leading-4 sm:leading-5 dark:text-background"
       :class="{
-        'h-[8vh] sm:h-[16vh] xl:h-[20vh]': meal,
-        'h-[10vh] sm:h-[8vh] xl:h-[10vh]': !meal,
+        'h-[8vh] sm:h-[16vh] xl:h-[18vh]': meal,
+        'h-[10vh] sm:h-[8vh] xl:h-[9vh]': !meal,
       }"
     >
       <!--Depends on lunch/dinner info (Home/meal) or no info (Recipes/!meal) -> router-link depending on API's recipe id-->

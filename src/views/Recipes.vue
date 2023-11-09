@@ -21,7 +21,7 @@
           What could I eat?
         </h2>
       </div>
-      <div class="grid xl:h-[65vh] px-5 pt-8 xl:p-0">
+      <div class="grid xl:h-[58vh] px-5 pt-8 xl:p-0">
         <!--RECIPES COUNTER-->
         <div class="flex h-[5vh]">
           <h3
@@ -45,7 +45,7 @@
         <!--RECIPES -> info received from API-->
         <div
           v-else
-          class="h-[48vh] mb-14 xl:mb-0 xl:h-[52vh] gap-3 xl:gap-5 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
+          class="h-[43vh] mb-4 xl:mb-0 xl:h-[50vh] gap-3 xl:gap-5 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
           :class="{
             'flex items-center': loading,
             'grid grid-cols-2': !loading,
@@ -63,14 +63,30 @@
           />
         </div>
       </div>
+      <div
+        v-if="!loading"
+        class="xl:h-[9vh] flex items-center w-full mb-10 xl:mb-0 px-5 xl:px-0"
+      >
+        <router-link
+          class="flex items-center justify-center rounded-full border-2 border-black dark:border-background h-[5vh] w-full hover:border-orange hover:text-orange mb-6"
+          :to="`/recipes/new`"
+          ><button>Add new custom recipe</button></router-link
+        >
+      </div>
     </div>
 
     <!--GRID RIGHT-->
     <div
-      class="grid order-1 xl:order-2 col-span-1 border-black border-y-2 xl:border-none xl:col-span-3 xl:h-[85vh]"
+      class="grid order-1 xl:order-2 col-span-1 xl:col-span-3 xl:h-[85vh]"
+      :class="{
+        'border-black border-b-2 xl:border-none': showFilter,
+      }"
     >
       <div
-        class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5 dark:text-background xl:border-black dark:xl:border-background border-b-2"
+        class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5 border-black dark:text-background dark:xl:border-background border-b-2"
+        :class="{
+          'border-black pb-[2.35vh]': loading,
+        }"
       >
         <p>S E A R C H &nbsp&nbsp+ &nbsp&nbspF I L T E R</p>
         <input
@@ -194,7 +210,6 @@
           </div>
         </div>
       </div>
-      <!-- <RecipesFilters /> -->
     </div>
   </div>
 </template>
@@ -202,7 +217,6 @@
 <script>
 import axios from "axios";
 import Card from "../components/Card.vue";
-// import RecipesFilters from "../components/RecipesFilters.vue";
 import Loader from "../components/Loader.vue";
 import { useSchedule } from "../stores/schedule";
 import { useRecipe } from "../stores/recipes";
@@ -296,6 +310,7 @@ export default {
       this.data = this.data.concat(recipes);
     },
     handleNewRecipes() {
+      //Loops through new recipes in Pinia, gets the information and passes it to data
       const newRecipes = this.recipesStore.recipe.map((recipe) => ({
         name: recipe.strMeal,
         img: recipe.strMealThumb,

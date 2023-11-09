@@ -145,3 +145,24 @@ export async function getRecipes() {
     console.error(error);
   }
 }
+
+//setter method
+export function updateRecipesId(RecipesIdArray) {
+  set(ref(db, "recipesId"), RecipesIdArray);
+}
+
+//getter method
+export async function getRecipesId() {
+  const dbRef = ref(db);
+  try {
+    const snapshot = await get(child(dbRef, "recipesId"));
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      console.log("No data available");
+      return [];
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}

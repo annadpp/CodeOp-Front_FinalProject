@@ -188,7 +188,7 @@ export default {
           (removedItem) => {
             return (
               groceryItem.ingredient === removedItem.ingredient &&
-              groceryItem.meal === removedItem.meal &&
+              groceryItem.name === removedItem.name &&
               groceryItem.day === removedItem.day
             );
           }
@@ -224,7 +224,6 @@ export default {
       const groceryItemNames = this.groceryStore.groceryList.map(
         (item) => item.name
       );
-
       this.groceryStore.filteredIngredients =
         this.groceryStore.filteredIngredients.filter((item) => {
           if (item.name === undefined || groceryItemNames.includes(item.name)) {
@@ -234,7 +233,10 @@ export default {
         });
     },
     removeIngredient(ingredientToRemove) {
-      // Find the index based on ingredient and category, so all ingredients are correctly deleted
+      // Find the index based on ingredient and category to remove
+
+      //***ID IS NOT ++ */
+      //***REMOVE FROM REMOVEDINGREDIENTS WHEN RECIPE REMOVED */
       const index = this.groceryStore.filteredIngredients.findIndex(
         (item) =>
           item.ingredient === ingredientToRemove.ingredient &&
@@ -242,10 +244,18 @@ export default {
       );
 
       if (index !== -1) {
+        // Remove the ingredient from the filtered ingredients
         this.groceryStore.filteredIngredients.splice(index, 1);
 
-        //Updates removedIngredients and filteredIngredients Firebase
+        // Update IDs to ensure they're unique after removal
+        this.groceryStore.filteredIngredients.forEach((item, i) => {
+          item.id = i + 1; // Update the ID as per the new index
+        });
+
+        // Push the removed ingredient to the removedIngredients
         this.groceryStore.removedIngredients.push(ingredientToRemove);
+
+        // Update the removed and filtered ingredients in Firebase
         updateRemovedIngredients(this.groceryStore.removedIngredients);
         updateFilteredIngredients(this.groceryStore.filteredIngredients);
       }
