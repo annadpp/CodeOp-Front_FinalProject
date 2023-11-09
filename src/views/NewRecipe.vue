@@ -221,7 +221,7 @@
       }"
       class="text-lg rounded-full border-2 bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full dark:text-background"
     >
-      Add new recipe
+      Add new custom recipe
       <span v-if="!isFormComplete">(fill in all the fields)</span>
     </button>
   </div>

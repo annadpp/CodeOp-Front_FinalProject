@@ -33,7 +33,8 @@
           class="bg-lime h-6 xl:h-8 w-full flex justify-center text-border-orange text-xl"
         >
           <!--Meal time -> gets info from Props-->
-          <span class="rotate-[-8deg]">{{ lunch }}</span>
+          <span class="xl:hidden rotate-[-8deg]">Lunch</span>
+          <span class="hidden xl:inline rotate-[-8deg]">{{ lunch }}</span>
         </h3>
 
         <!--LUNCH CARD -> colors depends on whether there is a meal scheduled or not-->
@@ -61,7 +62,8 @@
             class="flex w-full h-[3.1vh] border-black dark:border-background border-t-2 justify-center items-center hover:bg-black hover:text-background dark:hover:bg-background dark:hover:text-black"
             @click="showChangeRecipeForm('Lunch')"
           >
-            C H A N G E
+            <span v-if="scheduledMeal('Lunch') !== 'NO MEAL'">C H A N G E</span>
+            <span v-else>A D D</span>
           </button>
         </div>
       </div>
@@ -72,7 +74,8 @@
           class="bg-lime h-6 xl:h-8 w-full flex justify-center text-border-orange text-xl"
         >
           <!--Meal time -> gets info from Props-->
-          <span class="rotate-[-8deg]">{{ dinner }}</span>
+          <span class="xl:hidden rotate-[-8deg]">Dinner</span>
+          <span class="hidden xl:inline rotate-[-8deg]">{{ dinner }}</span>
         </h3>
 
         <!--DINNER CARD -> colors depends on whether there is a meal scheduled or not-->
@@ -100,7 +103,10 @@
             class="flex w-full h-[3.1vh] border-black dark:border-background border-t-2 justify-center items-center hover:bg-black hover:text-background dark:hover:bg-background dark:hover:text-black"
             @click="showChangeRecipeForm('Dinner')"
           >
-            C H A N G E
+            <span v-if="scheduledMeal('Dinner') !== 'NO MEAL'"
+              >C H A N G E</span
+            >
+            <span v-else>A D D</span>
           </button>
         </div>
       </div>

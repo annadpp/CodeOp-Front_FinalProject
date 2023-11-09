@@ -83,7 +83,7 @@
       }"
     >
       <div
-        class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5 border-black dark:text-background dark:xl:border-background border-b-2"
+        class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5 border-black dark:border-background dark:text-background dark:xl:border-background border-b-2"
         :class="{
           'border-black pb-[2.35vh]': loading,
         }"
@@ -92,7 +92,7 @@
         <input
           placeholder="Look for a new recipe"
           v-model="search"
-          class="border-black dark:bg-stone-900 dark:text-background drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8] p-2 w-full h-[4vh] xl:h-[5vh]"
+          class="border-black dark:border-background dark:bg-stone-900 dark:text-background drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8] p-2 w-full h-[4vh] xl:h-[5vh]"
           type="text"
         />
         <div class="xl:hidden flex justify-end w-full mt-1">
@@ -106,8 +106,8 @@
       </div>
 
       <!--LOADER FOR FILTERS-->
-      <div v-if="loading" class="w-full px-5 h-[20vh] flex items-center">
-        <Loader class="w-full" img="8" />
+      <div v-if="loading" class="w-full px-5 xl:h-[20vh] flex items-center">
+        <Loader class="hidden xl:flex w-full" img="8" />
       </div>
 
       <div

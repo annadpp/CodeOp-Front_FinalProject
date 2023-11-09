@@ -114,9 +114,9 @@
         >
           <router-link :to="`/recipes`"
             ><p v-if="this.scheduleStore.handleInfo === ''">
-              Go to recipes & add meal
+              Go to Recipes & add meal
             </p>
-            <p v-else>Go to recipes & change meal</p></router-link
+            <p v-else>Go to Recipes & change meal</p></router-link
           >
         </button>
         <button

@@ -120,7 +120,7 @@
 
         <!--Button add to weekly menu only displayed if filter on-->
         <div
-          class="order-1 xl:order-3 border-black border-t-2 xl:border-none p-5 xl:p-0"
+          class="order-1 xl:order-3 border-black dark:border-background border-t-2 xl:border-none p-5 xl:p-0"
           :class="{ 'hidden, p-0': !closedForm }"
         >
           <button
