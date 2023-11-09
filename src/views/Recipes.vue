@@ -68,7 +68,7 @@
         class="xl:h-[9vh] flex items-center w-full mb-10 xl:mb-0 px-5 xl:px-0"
       >
         <router-link
-          class="flex items-center justify-center rounded-full border-2 border-black dark:border-background h-[5vh] w-full hover:border-orange hover:text-orange mb-6"
+          class="flex items-center justify-center rounded-full border-2 border-black dark:border-background h-[5vh] w-full hover:border-orange hover:text-orange mb-6 dark:text-background"
           :to="`/recipes/new`"
           ><button>Add new custom recipe</button></router-link
         >
@@ -90,6 +90,7 @@
       >
         <p>S E A R C H &nbsp&nbsp+ &nbsp&nbspF I L T E R</p>
         <input
+          placeholder="Look for a new recipe"
           v-model="search"
           class="border-black dark:bg-stone-900 dark:text-background drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8] p-2 w-full h-[4vh] xl:h-[5vh]"
           type="text"

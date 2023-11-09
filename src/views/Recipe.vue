@@ -20,7 +20,11 @@
       <!--RECIPE INFO (category + country) DESKTOP -> data from API-->
       <div class="xl:col-span-2">
         <div class="gap-x-5 hidden xl:flex">
-          <p class="text-6xl flex justify-end items-end text-left w-1/3">*</p>
+          <p
+            class="text-6xl flex justify-end items-end text-left w-1/3 dark:text-background"
+          >
+            *
+          </p>
           <div class="flex flex-col items-end gap-y-4 w-2/3">
             <h4
               class="bg-lime h-6 xl:h-8 w-full flex justify-center items-center text-border-orange text-xl"
@@ -57,7 +61,7 @@
           <div
             class="gap-x-5 xl:hidden flex flex-col justify-center items-end xl:justify-end xl:items-end"
           >
-            <p class="text-6xl flex xl:w-1/3">*</p>
+            <p class="text-6xl flex xl:w-1/3 dark:text-background">*</p>
             <div
               class="flex flex-col justify-end items-end gap-y-4 w-full xl:w-2/3 mb-5 xl:mb-0"
             >
@@ -104,7 +108,7 @@
             <!--Loops on info from API to get ingredient info-->
             <div
               v-for="ingredient in data.ingredients"
-              class="flex justify-center items-center bg-blueberry h-[3vh] w-full"
+              class="flex justify-center items-center bg-blueberry h-[3vh] w-full dark:text-background"
             >
               <p class="font-hand">
                 <u class="capitalize">{{ ingredient.name }}</u
@@ -243,7 +247,7 @@
             @click.prevent="addToWeeklyMenu"
             class="rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full"
             :class="{
-              'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300':
+              'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-stone-900 dark:border-stone-900 dark:text-stone-900 hover:dark:border-stone-900 hover:dark:text-stone-900 cursor-no-drop':
                 !selectedDay || !selectedMeal,
               'hover:border-orange hover:text-orange':
                 selectedDay || selectedMeal,

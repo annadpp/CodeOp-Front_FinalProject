@@ -17,14 +17,14 @@
         <input
           v-model="name"
           placeholder="Add recipe name"
-          class="w-full text-xl xl:text-4xl text-center xl:text-left leading-6 px-5 xl:p-0 dark:text-background bg-background"
+          class="w-full text-xl xl:text-4xl text-center xl:text-left leading-6 px-5 xl:p-0 dark:text-background bg-background dark:bg-stone-950"
         />
       </div>
       <!--RECIPE INFO (category + country)-->
       <div class="xl:col-span-2 xl:mt-5" :class="{ 'opacity-20': sent }">
         <div class="gap-x-5 flex">
           <p
-            class="hidden xl:flex text-6xl justify-end items-end text-left w-1/3"
+            class="hidden xl:flex text-6xl justify-end items-end text-left w-1/3 dark:text-background"
           >
             *
           </p>
@@ -65,7 +65,7 @@
     >
       <!--ADD IMAGE-->
       <div
-        class="flex flex-col px-5 my-5 xl:my-0 gap-x-5 xl:gap-x-0 xl:h-[25.5vh] xl:border-black xl:border-b-2"
+        class="flex flex-col px-5 my-5 xl:my-0 gap-x-5 xl:gap-x-0 xl:h-[25.5vh] xl:border-black xl:border-b-2 dark:xl:border-background"
       >
         <p class="dark:text-background">A D D&nbsp;&nbsp; I M A G E</p>
         <div class="flex flex-col justify-center xl:h-[19vh] gap-y-5 xl:mt-2">
@@ -88,14 +88,14 @@
           <div>
             <button
               v-if="!addImageInfoClicked"
-              class="rounded-full border-2 bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+              class="rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
               @click="addImageInfoClicked = true"
             >
               Add image
             </button>
             <button
               v-else
-              class="rounded-full border-2 bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+              class="rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
             >
               Change image
             </button>
@@ -121,13 +121,13 @@
             <input
               v-model="item.ingredient"
               :placeholder="'Ingredient ' + (i + 1)"
-              class="bg-blueberry dark:text-background p-2 w-full h-[3vh] font-hand"
+              class="bg-blueberry dark:text-background p-2 w-full h-[3vh] font-hand placeholder:text-gray-700"
               type="text"
             />
             <input
               v-model="item.measure"
               :placeholder="'Measure ' + (i + 1)"
-              class="bg-blueberry dark:text-background p-2 w-full h-[3vh] font-hand"
+              class="bg-blueberry dark:text-background p-2 w-full h-[3vh] font-hand placeholder:text-gray-700"
               type="text"
             />
           </div>
@@ -141,7 +141,7 @@
         >
           <button
             @click="addIngredientField"
-            class="item-end rounded-full border-2 bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+            class="item-end rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
           >
             More <span class="hidden sm:inline-block">ingredients</span>
           </button>
@@ -150,7 +150,7 @@
           <button
             v-if="ingredients.length > 1"
             @click="removeIngredientField"
-            class="item-end rounded-full border-2 bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+            class="item-end rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
           >
             Less <span class="hidden sm:inline-block">ingredients</span>
           </button>
@@ -177,7 +177,7 @@
             <input
               v-model="step.step"
               placeholder="Write step"
-              class="h-[4vh] w-full bg-background"
+              class="h-[4vh] w-full bg-background dark:bg-stone-950"
             />
           </div>
         </div>
@@ -191,14 +191,14 @@
         >
           <button
             @click="addStepField"
-            class="rounded-full border-2 bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+            class="rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
           >
             More <span class="hidden sm:inline-block">steps</span>
           </button>
           <button
             v-if="steps.length > 1"
             @click="removeStepField"
-            class="rounded-full border-2 bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+            class="rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
           >
             Less <span class="hidden sm:inline-block">steps</span>
           </button>
@@ -209,17 +209,17 @@
 
   <div
     :class="{ 'opacity-20': sent }"
-    class="pb-12 px-5 xl:p-5 h-[16vh] xl:h-[10vh] border-black border-t-2 flex items-center"
+    class="pb-12 px-5 xl:p-5 h-[16vh] xl:h-[10vh] border-black dark:border-background border-t-2 flex items-center"
   >
     <button
       @click="addNewRecipe"
       :disabled="!isFormComplete"
       :class="{
-        'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300':
+        'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300 dark:border-stone-900 dark:text-stone-900 hover:dark:border-stone-900 hover:dark:text-stone-900 cursor-no-drop':
           !isFormComplete,
         'hover:border-orange hover:text-orange': isFormComplete,
       }"
-      class="text-lg rounded-full border-2 bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full"
+      class="text-lg rounded-full border-2 bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full dark:text-background"
     >
       Add new recipe
       <span v-if="!isFormComplete">(fill in all the fields)</span>
