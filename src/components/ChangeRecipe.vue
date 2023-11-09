@@ -119,10 +119,9 @@
             <p v-else>Go to recipes & change meal</p></router-link
           >
         </button>
-        <!--Removes recipe -> emits to Recipe + deletes from Schedule-->
         <button
           v-if="this.scheduleStore.handleInfo !== ''"
-          @click="removeRecipe(this.scheduleStore.handleInfo.id)"
+          @click="removeRecipe(this.scheduleStore.handleInfo)"
           class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
         >
           Delete meal
@@ -136,12 +135,12 @@
 import { useSchedule } from "../stores/schedule";
 import { getSchedule } from "../firebase";
 import { updateSchedule } from "../firebase";
+import { getRemovedIngredients } from "../firebase";
+import { updateRemovedIngredients } from "../firebase";
 
 export default {
   name: "ChangeRecipe",
-  props: {
-    closedForm: Boolean,
-  },
+  props: ["closedForm"],
   setup() {
     //Gets info from Pinia scheduleStore
     const scheduleStore = useSchedule();
@@ -152,6 +151,9 @@ export default {
     getSchedule().then((schedule) => {
       this.scheduleStore.schedule = schedule;
     });
+    getRemovedIngredients().then((removedIngredients) => {
+      this.scheduleStore.removedIngredients = removedIngredients;
+    });
   },
   methods: {
     closeForm() {
@@ -160,12 +162,19 @@ export default {
       this.scheduleStore.handleInfo = "";
     },
     removeRecipe(id) {
+      //Removes recipe -> removes from removedIngredients + deletes from Schedule
       //Filters and keeps in Pinia scheduleStore all recipes there but the current one we're deleting + resets handleInfo + updates Firebasse
       this.scheduleStore.schedule = this.scheduleStore.schedule.filter(
-        (item) => item.id !== id
+        (item) => item.id !== id.id
       );
+
+      this.scheduleStore.removedIngredients =
+        this.scheduleStore.removedIngredients.filter(
+          (item) => item.name !== id.name
+        );
       this.scheduleStore.handleInfo = "";
       updateSchedule(this.scheduleStore.schedule);
+      updateRemovedIngredients(this.scheduleStore.removedIngredients);
     },
   },
 };
