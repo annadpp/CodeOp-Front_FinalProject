@@ -7,10 +7,10 @@
 - The app has a user-friendly UI, with a homepage showing at a glance the most important information regarding meal planning and clear menus in order to make interactions simple and intuitive.
 
 - The main features are:
-  _ Planning weekly meal schedule;
-  _ Generating the grocery list based on weekly meal schedule;
-  _ Recipes database;
-  _ Recipe and shopping list customization
+  - Planning weekly meal schedule;
+  - Generating the grocery list based on weekly meal schedule;
+  - Recipes database;
+  - Recipe and shopping list customization
 
 ## Install dependencies
 
@@ -78,7 +78,7 @@
 ## Planning tools
 
     * Trello
-    * Figma -> https://www.figma.com/file/S8sl3LK1LAshUZKnOHB0XY/Final-Project-CodeOp?type=design&node-id=81%3A486&mode=design&t=I6nqf42byYluSrpc-1
+    * [Figma](https://www.figma.com/file/S8sl3LK1LAshUZKnOHB0XY/Final-Project-CodeOp?type=design&node-id=81%3A486&mode=design&t=I6nqf42byYluSrpc-1)
 
 ## Feature Extensions
 

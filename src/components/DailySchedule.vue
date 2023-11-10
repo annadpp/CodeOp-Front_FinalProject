@@ -8,6 +8,22 @@
         class="bg-orange h-6 xl:h-8 w-full xl:w-[95%] flex justify-center items-center text-border-lime text-lg xl:text-xl pl-10 xl:pl-0"
       >
         <span class="rotate-[8deg]">{{ day }}</span>
+        <span
+          class="xl:hidden"
+          v-if="
+            scheduledMeal('Lunch') !== 'NO MEAL' ||
+            scheduledMeal('Dinner') !== 'NO MEAL'
+          "
+          >*</span
+        >
+        <span
+          class="xl:hidden"
+          v-if="
+            scheduledMeal('Lunch') !== 'NO MEAL' &&
+            scheduledMeal('Dinner') !== 'NO MEAL'
+          "
+          >*</span
+        >
       </h3>
       <!--Triangle button -> OPENS FULL DAILY SCHEDULE CARD MOBILE-->
       <button @click="toggleDayVisibility">

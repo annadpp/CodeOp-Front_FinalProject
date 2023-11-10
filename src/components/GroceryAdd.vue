@@ -64,7 +64,14 @@
         </select>
         <!--Button trigers form submit-->
         <button
-          class="mt-3 xl:mt-6 rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full bg-background dark:bg-stone-950 hover:border-orange hover:text-orange"
+          class="mt-2 xl:mt-6 rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full bg-background dark:bg-stone-950"
+          :class="{
+            'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300 dark:border-stone-900 dark:text-stone-900 hover:dark:border-stone-900 hover:dark:text-stone-900 cursor-no-drop':
+              existingProduct.name === '',
+            'hover:border-orange hover:text-orange':
+              existingProduct.category !== '',
+          }"
+          :disabled="existingProduct.name === ''"
         >
           Add existing product
         </button>
@@ -111,7 +118,13 @@
         </select>
         <!--Button trigers form submit-->
         <button
-          class="mt-2 xl:mt-6 rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full bg-background dark:bg-stone-950 hover:border-orange hover:text-orange"
+          class="mt-2 xl:mt-6 rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full bg-background dark:bg-stone-950"
+          :class="{
+            'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300 dark:border-stone-900 dark:text-stone-900 hover:dark:border-stone-900 hover:dark:text-stone-900 cursor-no-drop':
+              newProduct.category === '',
+            'hover:border-orange hover:text-orange': newProduct.category !== '',
+          }"
+          :disabled="newProduct.category === ''"
         >
           Add new product
         </button>

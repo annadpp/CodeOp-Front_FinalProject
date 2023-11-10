@@ -48,10 +48,11 @@
           class="h-[43vh] mb-4 xl:mb-0 xl:h-[50vh] gap-3 xl:gap-5 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
           :class="{
             'flex items-center': loading,
-            'grid grid-cols-2': !loading,
+            'grid grid-cols-2': !loading && filteredRecipes.length > 1,
           }"
         >
           <Card
+            v-if="filteredRecipes.length > 1"
             v-for="recipe in search ? filteredRecipes : filtersRight"
             :key="recipe.id"
             heightcard="25"
@@ -61,6 +62,18 @@
             :name="recipe.name"
             :img="recipe.img"
           />
+          <!--IMAGE IN CASE THERE ARE NO ITEMS IN filteredItems-->
+          <div
+            v-else
+            class="w-full h-[43vh] xl:h-[50vh] flex flex-col text-xl md:text-2xl items-center justify-center py-8 px-5 bg-blueberry dark:text-background"
+          >
+            <img
+              src="../assets/mad-cat.png"
+              alt=""
+              class="object-contain h-[20vw] md:h-[11vw] xl:h-[9vw]"
+            />
+            <p class="font-hand mt-5">NO RECIPES</p>
+          </div>
         </div>
       </div>
       <div

@@ -95,6 +95,10 @@
             </button>
             <button
               v-else
+              @click="
+                addImageInfoClicked = false;
+                image = '';
+              "
               class="rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
             >
               Change image
@@ -337,7 +341,7 @@ export default {
       // Check if all required fields are filled
       return (
         this.name &&
-        this.image &&
+        this.addImageInfoClicked &&
         this.category &&
         this.country &&
         this.ingredients.every((item) => item.ingredient && item.measure) &&
