@@ -3,14 +3,16 @@
     class="absolute z-0 w-full xl:static top-[10vh] grid grid-cols-1 xl:grid-cols-8 justify-center items-center"
   >
     <div class="grid xl:hidden items-center h-[15vh] p-5">
-      <h2 class="text-4xl xl:text-left text-black dark:text-background">
+      <h2
+        class="text-center text-4xl xl:text-left text-black dark:text-background"
+      >
         What could I eat?
       </h2>
     </div>
 
     <!--GRID LEFT-->
     <div
-      class="grid order-2 xl:order-1 col-span-1 xl:col-span-5 h-[67vh] xl:h-[85vh] xl:border-black dark:xl:border-background xl:border-r-2 xl:p-5"
+      class="grid order-2 xl:order-1 col-span-1 xl:col-span-5 h-[50vh] md:h-[58vh] xl:h-[85vh] xl:border-black dark:xl:border-background xl:border-r-2 xl:p-5"
     >
       <div
         class="hidden xl:grid xl:row-span-2 items-center h-[15vh] xl:h-[17vh] p-5 xl:p-0"
@@ -21,7 +23,7 @@
           What could I eat?
         </h2>
       </div>
-      <div class="grid xl:h-[58vh] px-5 pt-8 xl:p-0">
+      <div class="grid h-[42vh] md:h-[29vh] xl:h-[58vh] px-5 pt-8 xl:p-0">
         <!--RECIPES COUNTER-->
         <div class="flex h-[5vh]">
           <h3
@@ -38,14 +40,14 @@
         <!--LOADER FOR RECIPES-->
         <div
           v-if="loading"
-          class="h-[25vh] xl:h-[52vh] w-full flex xl:items-center"
+          class="h-[7vh] md:h-[10vh] xl:h-[52vh] w-full flex xl:items-center"
         >
           <Loader class="w-full" />
         </div>
         <!--RECIPES -> info received from API-->
         <div
           v-else
-          class="h-[43vh] mb-4 xl:mb-0 xl:h-[50vh] gap-3 xl:gap-5 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
+          class="h-[30vh] md:h-[32vh] mb-4 xl:mb-0 xl:h-[50vh] gap-3 xl:gap-5 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
           :class="{
             'flex items-center': loading,
             'grid grid-cols-2': !loading && filteredRecipes.length >= 1,
@@ -178,7 +180,7 @@
         <!--Different categories/countries to be filtered button -> depends on which of buttons above is selected-->
         <div v-if="showCategories">
           <div
-            class="grid grid-cols-2 gap-x-3 xl:gap-x-5 h-[40vh] xl:h-[50vh] justify-center items-center"
+            class="grid grid-cols-2 gap-x-3 xl:gap-x-5 h-[30vh] xl:h-[50vh] justify-center items-center"
           >
             <!--Adds a button for each category stored in dataCategories-->
             <button
@@ -382,6 +384,9 @@ export default {
       this.activeCategory = !this.activeCategory;
       this.activeCountry = false;
       this.search = null;
+      if (this.screenWidth < 1280) {
+        this.showFilter = false;
+      }
     },
     async handleCountries(country) {
       //Resets the search input
@@ -399,6 +404,9 @@ export default {
       this.activeCountry = !this.activeCountry;
       this.activeCategory = false;
       this.search = null;
+      if (this.screenWidth < 1280) {
+        this.showFilter = false;
+      }
     },
     //Methods below are self-explanatory
     switchCategories() {

@@ -32,7 +32,7 @@
 
       <!--TODAY MEAL SCHEDULE-->
       <div
-        class="grid xl:h-[65vh] border-black dark:border-background px-5 xl:px-0"
+        class="grid h-[65vh] md:h-[56vh] xl:h-[65vh] border-black dark:border-background px-5 xl:px-0"
       >
         <div class="flex h-[3vh] xl:h-[5vh]">
           <h3

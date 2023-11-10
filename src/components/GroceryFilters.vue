@@ -1,5 +1,5 @@
 <template>
-  <div class="grid xl:h-[65vh] border-black p-5 xl:p-0">
+  <div class="grid h-[65vh] border-black p-5 xl:p-0">
     <div
       class="grid grid-cols-2 xl:grid-cols-4 xl:h-[5vh] pt-5 xl:pt-0 gap-3 xl:gap-y-0 xl:gap-x-5 mb-5"
     >

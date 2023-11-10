@@ -24,6 +24,7 @@
           <p class="xl:mb-5">{{ this.name }}</p>
           <img
             class="hidden xl:flex flex-col object-cover w-full mb-12 h-[17vh]"
+            :src="image"
             alt=""
           />
         </div>
@@ -49,7 +50,7 @@
           <img
             class="xl:hidden flex-col object-cover w-full xl:mb-12 h-[17vh]"
             alt=""
-            :src="this.image"
+            :src="image"
           />
         </div>
       </div>
@@ -58,7 +59,7 @@
         class="flex flex-col xl:flex-row gap-3 xl:gap-5 dark:text-background w-full"
       >
         <router-link
-          :to="`/recipes/${this.id}`"
+          :to="`/recipes/${this.recipesStore.id - 1}`"
           class="flex justify-center items-center rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
         >
           <button>See meal</button></router-link
@@ -69,6 +70,8 @@
 </template>
 
 <script>
+import { useRecipe } from "../stores/recipes";
+
 export default {
   props: [
     //Props from NewRecipe
@@ -79,6 +82,11 @@ export default {
     "sent",
     "id",
   ],
+  setup() {
+    //Gets info from Pinia recipesStore
+    const recipesStore = useRecipe();
+    return { recipesStore };
+  },
   methods: {
     emitSentStatus() {
       //Emits sent-status to parent (opacity reasons)

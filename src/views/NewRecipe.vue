@@ -249,6 +249,7 @@ import NewRecipeAdded from "../components/NewRecipeAdded.vue";
 import { useRecipe } from "../stores/recipes";
 import { updateRecipes } from "../firebase";
 import { getRecipesId } from "../firebase";
+import { getRecipes } from "../firebase";
 import { updateRecipesId } from "../firebase";
 
 export default {
@@ -263,6 +264,9 @@ export default {
     //Gets info from Firebase -> async function in firebase.js
     getRecipesId().then((newRecipeId) => {
       this.recipesStore.id = newRecipeId;
+    });
+    getRecipes().then((newRecipe) => {
+      this.recipesStore.recipe = newRecipe;
     });
   },
   data() {
