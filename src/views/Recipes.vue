@@ -100,7 +100,7 @@
       }"
     >
       <div
-        class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5 border-black dark:border-background dark:text-background dark:xl:border-background border-b-2"
+        class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5 border-black dark:border-background dark:text-background dark:xl:border-background border-y-2"
         :class="{
           'border-black pb-[2.35vh]': loading,
         }"
