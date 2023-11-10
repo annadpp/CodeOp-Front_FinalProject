@@ -72,7 +72,7 @@
           <div class="h-[8vh] xl:h-[16vh] flex items-center">
             <input
               v-if="!addImageInfoClicked"
-              placeholder="Write image url"
+              placeholder="Write/paste image url"
               v-model="image"
               class="border-black dark:bg-stone-900 dark:text-background drop-shadow-[8px_8px_0px_#000000] dark:drop-shadow-[8px_8px_0px_#F2EEE8] p-2 w-[99%] h-[4vh] xl:h-[5vh]"
               type="text"

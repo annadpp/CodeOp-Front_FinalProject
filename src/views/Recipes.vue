@@ -23,7 +23,7 @@
           What could I eat?
         </h2>
       </div>
-      <div class="grid h-[42vh] md:h-[29vh] xl:h-[58vh] px-5 pt-8 xl:p-0">
+      <div class="grid h-[42vh] md:h-[30vh] xl:h-[58vh] px-5 pt-8 xl:p-0">
         <!--RECIPES COUNTER-->
         <div class="flex h-[5vh]">
           <h3
@@ -40,9 +40,9 @@
         <!--LOADER FOR RECIPES-->
         <div
           v-if="loading"
-          class="h-[7vh] md:h-[10vh] xl:h-[52vh] w-full flex xl:items-center"
+          class="h-[5vh] md:h-[3vh] xl:h-[52vh] w-full flex xl:items-center"
         >
-          <Loader class="w-full" />
+          <Loader class="w-full md:mt-8 xl:mt-0" />
         </div>
         <!--RECIPES -> info received from API-->
         <div
@@ -81,7 +81,7 @@
       </div>
       <div
         v-if="!loading"
-        class="xl:h-[9vh] flex items-center w-full mb-10 xl:mb-0 px-5 xl:px-0"
+        class="xl:h-[9vh] flex items-center w-full md:mb-8 xl:mb-0 px-5 xl:px-0"
       >
         <router-link
           class="flex items-center justify-center rounded-full border-2 xl:text-lg bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange mb-6 dark:text-background"
@@ -132,7 +132,7 @@
       <div
         v-else
         v-if="showFilter"
-        class="flex flex-col justify-around dark:border-background h-[50vh] xl:h-[65vh] p-5"
+        class="flex flex-col justify-start xl:justify-around dark:border-background h-[44vh] xl:h-[65vh] p-5"
       >
         <!--CATEGORY/COUNTRIES BUTTONS-->
         <div class="flex gap-x-5">
@@ -141,7 +141,7 @@
               'bg-orange text-border-lime': showCategories,
               'bg-lime text-border-orange': !showCategories,
             }"
-            class="h-6 xl:h-8 flex justify-center items-center text-xl w-1/2"
+            class="mb-6 xl:mb-0 h-6 xl:h-8 flex justify-center items-center text-xl w-1/2"
             @click="
               showCategories = true;
               showCountries = false;
@@ -161,7 +161,7 @@
               'bg-orange text-border-lime': showCountries,
               'bg-lime text-border-orange': !showCountries,
             }"
-            class="h-6 xl:h-8 flex justify-center items-center text-xl w-1/2"
+            class="mb-6 h-6 xl:h-8 flex justify-center items-center text-xl w-1/2"
             @click="
               showCategories = false;
               showCountries = true;
@@ -180,7 +180,7 @@
         <!--Different categories/countries to be filtered button -> depends on which of buttons above is selected-->
         <div v-if="showCategories">
           <div
-            class="grid grid-cols-2 gap-x-3 xl:gap-x-5 h-[30vh] xl:h-[50vh] justify-center items-center"
+            class="grid grid-cols-2 gap-y-[1vh] gap-x-3 xl:gap-x-5 h-[29vh] xl:h-[50vh] justify-center items-center"
           >
             <!--Adds a button for each category stored in dataCategories-->
             <button
@@ -211,7 +211,7 @@
 
         <div v-else-if="showCountries">
           <div
-            class="grid grid-cols-2 gap-x-3 xl:gap-x-5 h-[40vh] xl:h-[50vh] justify-center items-center"
+            class="grid grid-cols-2 gap-y-[1vh] gap-x-3 xl:gap-x-5 h-[29vh] xl:h-[50vh] justify-center items-center"
           >
             <!--Adds a button for each country stored in dataCountries-->
             <button
