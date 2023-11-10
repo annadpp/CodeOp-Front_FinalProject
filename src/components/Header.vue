@@ -54,6 +54,7 @@
             alt=""
           />
         </div>
+        <!--ROUTER LINKS TO DIFFERENT SECTIONS-->
         <div class="flex flex-col items-end lg:flex-row gap-x-2">
           <router-link to="/schedule"
             ><button

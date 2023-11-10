@@ -126,7 +126,7 @@
           <button
             v-if="closedForm"
             @click="toggleVisibility"
-            class="rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange xl:mb-5"
+            class="rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange xl:mb-5 md:text-lg"
           >
             Add to weekly menu
           </button>
@@ -245,16 +245,16 @@
             :disabled="!selectedDay || !selectedMeal"
             v-if="!sent"
             @click.prevent="addToWeeklyMenu"
-            class="rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full"
+            class="rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full text-base md:text-lg"
             :class="{
-              'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-stone-900 dark:border-stone-900 dark:text-stone-900 hover:dark:border-stone-900 hover:dark:text-stone-900 cursor-no-drop':
+              'border-gray-300 text-gray-300 hover:border-gray-300 hover:text-gray-300 dark:border-stone-900 dark:text-stone-900 hover:dark:border-stone-900 hover:dark:text-stone-900 cursor-no-drop':
                 !selectedDay || !selectedMeal,
               'hover:border-orange hover:text-orange':
                 selectedDay || selectedMeal,
             }"
           >
             Add to weekly menu
-            <span v-if="!selectedDay || !selectedMeal"
+            <span v-if="!selectedDay || !selectedMeal" class="hidden md:inline"
               >(fill in all the fields)</span
             >
           </button>
@@ -312,10 +312,11 @@ export default {
     return { scheduleStore, recipesStore };
   },
   created() {
+    //Runs on page created to get and filter information properly
     this.getRecipes();
-    console.log("this.recipesStore.recipe", this.recipesStore.recipe);
   },
   mounted() {
+    //Gets info on screen size -> ingredients open/closed MOBILE
     window.addEventListener("resize", this.handleWindowResize);
     this.handleWindowResize();
 
@@ -334,7 +335,7 @@ export default {
     //Used to get recipes info from API based on params.id received from Recipes
     getRecipes() {
       const idRecipe = Number(this.$route.params.id);
-
+      //Gets info from API if id < 99999 (API ids less than 54000 by now)
       if (idRecipe < 99999) {
         const apiUrl = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idRecipe}`;
 
@@ -347,12 +348,15 @@ export default {
             console.error(`Error fetching recipe:`, error);
           });
       } else {
+        //Gets info from Pinia if id >= 99999
         this.handleNewRecipes();
       }
     },
     handleResponse(response) {
+      //Used for information obtained from the API
       const recipe = response.data.meals[0];
       const ingredients = [];
+      //Loops through ingredients to pass ingredients/measures info correctly (i as per how info is presented in API)
       for (let i = 1; i <= 20; i++) {
         const ingredientName = recipe[`strIngredient${i}`];
         const measure = recipe[`strMeasure${i}`];
@@ -374,6 +378,7 @@ export default {
       }
     },
     handleNewRecipes() {
+      //Used for information obtained from Pinia recipes (new custome recipe)
       if (this.recipesStore.recipe && this.recipesStore.recipe.length > 0) {
         const thisRecipe = this.recipesStore.recipe.find(
           (recipe) => recipe.idMeal === Number(this.$route.params.id)
@@ -381,6 +386,7 @@ export default {
 
         if (thisRecipe) {
           const ingredients = [];
+          //Loops through ingredients to pass ingredients/measures info correctly (i as per how info is presented in API)
           for (let i = 1; i <= 20; i++) {
             const ingredientName = thisRecipe[`strIngredient${i}`];
             const measure = thisRecipe[`strMeasure${i}`];
@@ -391,7 +397,7 @@ export default {
               });
             }
           }
-
+          //Info from Pinia we're storing/using
           this.data = {
             id: thisRecipe.idMeal,
             img: thisRecipe.strMealThumb,
@@ -417,7 +423,6 @@ export default {
         (recipe) =>
           recipe.day === this.selectedDay && recipe.meal === this.selectedMeal
       );
-
       if (existing !== -1) {
         //If an entry for the same day and meal already exists, updates it (we just want one recipe per meal/day)
         this.scheduleStore.schedule[existing] = {
@@ -469,7 +474,6 @@ export default {
         const cleanedSteps = breakSteps
           .map((step) => step.trim())
           .filter((step) => !/^\d+\.$/.test(step) && !/STEP\s+\d+/.test(step));
-
         return cleanedSteps;
       }
       return [];

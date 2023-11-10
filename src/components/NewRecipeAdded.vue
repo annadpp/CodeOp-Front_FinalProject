@@ -79,11 +79,9 @@ export default {
     "sent",
     "id",
   ],
-  created() {
-    console.log(this.id);
-  },
   methods: {
     emitSentStatus() {
+      //Emits sent-status to parent (opacity reasons)
       this.$emit("sent-status", false);
     },
   },

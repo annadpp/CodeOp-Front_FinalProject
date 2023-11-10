@@ -3,7 +3,7 @@
     class="flex flex-col justify-between items-center w-full text-md lg:text-lg xl:text-xl"
     :class="{
       'sm:max-h-[48vh] xl:max-h-[55vh]': meal,
-      'max-h-[32vh] sm:max-h-[23vh] xl:max-h-[24vh]': !meal,
+      'max-h-[30vh] sm:max-h-[23vh] xl:max-h-[24vh]': !meal,
     }"
   >
     <!--LUNCH/DINNER-->
@@ -16,8 +16,8 @@
         :class="{
           'object-cover': (meal && todaysMealImg) || !meal,
           'object-contain': meal && !todaysMealImg,
-          'h-[12vh] sm:h-[26vh] xl:h-[30vh]': meal,
-          'sm:h-[15vh] ': !meal,
+          'h-[12vh] sm:h-[26vh] xl:h-[31vh]': meal,
+          'h-[20vh] sm:h-[15vh] ': !meal,
         }"
         :src="meal ? todaysMealImg || defaultImage : img"
         alt=""
@@ -41,7 +41,7 @@
             : 'hover:underline p-5 text-center',
         ]"
       >
-        {{ meal ? scheduledMealHome(meal) : name }}
+        {{ mealWithAsterisk }}
       </router-link>
     </div>
   </section>
@@ -50,6 +50,7 @@
 <script>
 import defaultImage from "../assets/hungry-cat.png";
 import { useSchedule } from "../stores/schedule";
+import { getSchedule } from "../firebase";
 
 export default {
   name: "Card",
@@ -63,6 +64,11 @@ export default {
     "day",
     "meal",
   ],
+  mounted() {
+    getSchedule().then((schedule) => {
+      this.scheduleStore.schedule = schedule;
+    });
+  },
   setup() {
     //Gets info from Pinia scheduleStore
     const scheduleStore = useSchedule();
@@ -78,6 +84,17 @@ export default {
     //Handles hungry-cat.png
     defaultImage() {
       return defaultImage;
+    },
+    mealWithAsterisk() {
+      //Adds asterisk to the recipes that are already included in the schedule comparing if the meal name === in this.scheduleStore.schedule (Pinia)
+      const mealName = this.meal
+        ? this.scheduledMealHome(this.meal)
+        : this.name;
+      const isScheduled = this.scheduleStore.schedule.some(
+        (item) => item.name === mealName
+      );
+      //Only returns * is meal included and is in card for Recipes (not Home)
+      return isScheduled && !this.meal ? `${mealName}*` : mealName;
     },
   },
   methods: {

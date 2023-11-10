@@ -1,4 +1,4 @@
-# Meal Planning App ReadMe - CodeOp Front-End final project
+# Meal Planning App - CodeOp Front-End final project
 
 ## What is Meal Planning App about
 
@@ -78,7 +78,7 @@
 ## Planning tools
 
     * Trello
-    * [Figma](https://www.figma.com/file/S8sl3LK1LAshUZKnOHB0XY/Final-Project-CodeOp?type=design&node-id=81%3A486&mode=design&t=I6nqf42byYluSrpc-1)
+    * Figma (https://www.figma.com/file/S8sl3LK1LAshUZKnOHB0XY/Final-Project-CodeOp?type=design&node-id=81%3A486&mode=design&t=I6nqf42byYluSrpc-1)
 
 ## Feature Extensions
 

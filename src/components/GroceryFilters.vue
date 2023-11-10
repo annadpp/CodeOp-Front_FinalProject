@@ -234,9 +234,6 @@ export default {
     },
     removeIngredient(ingredientToRemove) {
       // Find the index based on ingredient and category to remove
-
-      //***ID IS NOT ++ */
-      //***REMOVE FROM REMOVEDINGREDIENTS WHEN RECIPE REMOVED */
       const index = this.groceryStore.filteredIngredients.findIndex(
         (item) =>
           item.ingredient === ingredientToRemove.ingredient &&

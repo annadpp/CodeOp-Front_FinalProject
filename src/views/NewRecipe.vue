@@ -88,7 +88,7 @@
           <div>
             <button
               v-if="!addImageInfoClicked"
-              class="rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+              class="rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange text-sm md:text-base"
               @click="addImageInfoClicked = true"
             >
               Add image
@@ -99,7 +99,7 @@
                 addImageInfoClicked = false;
                 image = '';
               "
-              class="rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+              class="rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange text-sm md:text-base"
             >
               Change image
             </button>
@@ -145,7 +145,7 @@
         >
           <button
             @click="addIngredientField"
-            class="item-end rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+            class="item-end rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange text-sm md:text-base"
           >
             More <span class="hidden sm:inline-block">ingredients</span>
           </button>
@@ -154,7 +154,7 @@
           <button
             v-if="ingredients.length > 1"
             @click="removeIngredientField"
-            class="item-end rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+            class="item-end rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange text-sm md:text-base"
           >
             Less <span class="hidden sm:inline-block">ingredients</span>
           </button>
@@ -195,14 +195,14 @@
         >
           <button
             @click="addStepField"
-            class="rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+            class="rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange text-sm md:text-base"
           >
             More <span class="hidden sm:inline-block">steps</span>
           </button>
           <button
             v-if="steps.length > 1"
             @click="removeStepField"
-            class="rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+            class="rounded-full border-2 bg-background dark:bg-stone-950 dark:text-background border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange text-sm md:text-base"
           >
             Less <span class="hidden sm:inline-block">steps</span>
           </button>
@@ -226,7 +226,9 @@
       class="text-lg rounded-full border-2 bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full dark:text-background"
     >
       Add new custom recipe
-      <span v-if="!isFormComplete">(fill in all the fields)</span>
+      <span class="hidden md:inline" v-if="!isFormComplete"
+        >(fill in all the fields)</span
+      >
     </button>
   </div>
 
@@ -258,6 +260,7 @@ export default {
     return { recipesStore };
   },
   mounted() {
+    //Gets info from Firebase -> async function in firebase.js
     getRecipesId().then((newRecipeId) => {
       this.recipesStore.id = newRecipeId;
     });
@@ -278,19 +281,22 @@ export default {
   },
   methods: {
     addIngredientField() {
+      //Adds one more ingredient field below
       this.ingredients.push({ ingredient: "", measure: "" });
     },
     addStepField() {
+      //Adds one more step field below
       this.steps.push({ step: "" });
     },
     removeIngredientField() {
+      //Removes the last ingredient field if there is more than one
       if (this.ingredients.length > 1) {
-        this.ingredients.pop(); // Removes the last ingredient field
+        this.ingredients.pop();
       }
     },
     removeStepField() {
       if (this.steps.length > 1) {
-        this.steps.pop(); // Removes the last step field
+        this.steps.pop(); //Removes the last step field if there is more than one
       }
     },
     addNewRecipe() {
@@ -301,7 +307,7 @@ export default {
         strMealThumb: this.image,
         strCategory: this.category,
         strArea: this.country,
-        //Restructures ingredients
+        //Restructures ingredients so they keep the same structure as the information gotten from the API
         ...this.ingredients.reduce((result, item, i) => {
           result[`strIngredient${i + 1}`] = item.ingredient;
           result[`strMeasure${i + 1}`] = item.measure;
@@ -310,16 +316,11 @@ export default {
         //Collects steps' input values
         strInstructions: this.steps.map((step) => step.step).join(". "),
       };
-
-      // Append the new recipe to the existing list
+      //Appends the new recipe to the existing list
       this.recipesStore.recipe.push(newRecipe);
-
-      // Update the entire list of recipes in the store and Firebase
+      //Updates the entire list of recipes and the id in Firebase
       updateRecipes(this.recipesStore.recipe);
       updateRecipesId(this.recipesStore.id);
-
-      //Increments the counter for the next id
-
       //To open sent form
       this.sent = true;
     },
@@ -338,7 +339,7 @@ export default {
   },
   computed: {
     isFormComplete() {
-      // Check if all required fields are filled
+      //Checks if all required fields are filled -> used to enable/disable add button
       return (
         this.name &&
         this.addImageInfoClicked &&

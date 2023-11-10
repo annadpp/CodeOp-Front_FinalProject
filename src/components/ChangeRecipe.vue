@@ -110,7 +110,7 @@
       >
         <!--router-link to Recipes-->
         <button
-          class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+          class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange text-sm md:text-base"
         >
           <router-link :to="`/recipes`"
             ><p v-if="this.scheduleStore.handleInfo === ''">
@@ -122,7 +122,7 @@
         <button
           v-if="this.scheduleStore.handleInfo !== ''"
           @click="removeRecipe(this.scheduleStore.handleInfo)"
-          class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange"
+          class="rounded-full border-2 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange text-sm md:text-base"
         >
           Delete meal
         </button>
@@ -163,15 +163,16 @@ export default {
     },
     removeRecipe(id) {
       //Removes recipe -> removes from removedIngredients + deletes from Schedule
-      //Filters and keeps in Pinia scheduleStore all recipes there but the current one we're deleting + resets handleInfo + updates Firebasse
+      //Filters and keeps in Pinia Schedule all recipes there but the current one we're deleting
       this.scheduleStore.schedule = this.scheduleStore.schedule.filter(
         (item) => item.id !== id.id
       );
-
+      //Filters and keeps in Pinia removedIngredients all ingredients there but the ones related to the recipe deleted from schedule
       this.scheduleStore.removedIngredients =
         this.scheduleStore.removedIngredients.filter(
           (item) => item.name !== id.name
         );
+      //Resets handleInfo + updates Firebasse
       this.scheduleStore.handleInfo = "";
       updateSchedule(this.scheduleStore.schedule);
       updateRemovedIngredients(this.scheduleStore.removedIngredients);

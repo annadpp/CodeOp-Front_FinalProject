@@ -48,11 +48,12 @@
           class="h-[43vh] mb-4 xl:mb-0 xl:h-[50vh] gap-3 xl:gap-5 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-orange scrollbar-track-lime"
           :class="{
             'flex items-center': loading,
-            'grid grid-cols-2': !loading && filteredRecipes.length > 1,
+            'grid grid-cols-2': !loading && filteredRecipes.length >= 1,
           }"
         >
+          <!--Recipes card -> checks filter to show info + passes props-->
           <Card
-            v-if="filteredRecipes.length > 1"
+            v-show="filteredRecipes.length >= 1"
             v-for="recipe in search ? filteredRecipes : filtersRight"
             :key="recipe.id"
             heightcard="25"
@@ -64,7 +65,7 @@
           />
           <!--IMAGE IN CASE THERE ARE NO ITEMS IN filteredItems-->
           <div
-            v-else
+            v-show="filteredRecipes.length < 1"
             class="w-full h-[43vh] xl:h-[50vh] flex flex-col text-xl md:text-2xl items-center justify-center py-8 px-5 bg-blueberry dark:text-background"
           >
             <img
@@ -81,7 +82,7 @@
         class="xl:h-[9vh] flex items-center w-full mb-10 xl:mb-0 px-5 xl:px-0"
       >
         <router-link
-          class="flex items-center justify-center rounded-full border-2 border-black dark:border-background h-[5vh] w-full hover:border-orange hover:text-orange mb-6 dark:text-background"
+          class="flex items-center justify-center rounded-full border-2 xl:text-lg bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange mb-6 dark:text-background"
           :to="`/recipes/new`"
           ><button>Add new custom recipe</button></router-link
         >
@@ -92,7 +93,8 @@
     <div
       class="grid order-1 xl:order-2 col-span-1 xl:col-span-3 xl:h-[85vh]"
       :class="{
-        'border-black border-b-2 xl:border-none': showFilter,
+        'border-black dark:border-background border-b-2 xl:border-none':
+          showFilter,
       }"
     >
       <div
@@ -109,11 +111,13 @@
           type="text"
         />
         <div class="xl:hidden flex justify-end w-full mt-1">
+          <!--Button open/close category/country filters MOBILE -> text depends on open/closed-->
           <button
             @click="toggleFilter"
-            class="item-right rounded-full border-2 border-black dark:border-background h-[4vh] w-2/3 sm:w-2/5 hover:border-orange hover:text-orange"
+            class="item-right rounded-full border-2 border-black dark:border-background text-sm md:text-base h-[4vh] w-2/3 sm:w-2/5 hover:border-orange hover:text-orange"
           >
-            Advanced filter
+            <span v-if="!showFilter">More filters</span
+            ><span v-else>Less filters</span>
           </button>
         </div>
       </div>
@@ -128,6 +132,7 @@
         v-if="showFilter"
         class="flex flex-col justify-around dark:border-background h-[50vh] xl:h-[65vh] p-5"
       >
+        <!--CATEGORY/COUNTRIES BUTTONS-->
         <div class="flex gap-x-5">
           <button
             :class="{
@@ -170,15 +175,17 @@
           </button>
         </div>
 
+        <!--Different categories/countries to be filtered button -> depends on which of buttons above is selected-->
         <div v-if="showCategories">
           <div
             class="grid grid-cols-2 gap-x-3 xl:gap-x-5 h-[40vh] xl:h-[50vh] justify-center items-center"
           >
+            <!--Adds a button for each category stored in dataCategories-->
             <button
               v-for="category in dataCategories"
               @click="handleCategories(category)"
               :class="[
-                'rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full',
+                'rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full text-sm md:text-base',
                 {
                   'hover:border-orange hover:text-orange dark:hover:border-orange dark:hover:text-orange':
                     !selectedCategory,
@@ -204,11 +211,12 @@
           <div
             class="grid grid-cols-2 gap-x-3 xl:gap-x-5 h-[40vh] xl:h-[50vh] justify-center items-center"
           >
+            <!--Adds a button for each country stored in dataCountries-->
             <button
               v-for="country in dataCountries"
               @click="handleCountries(country)"
               :class="[
-                'rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full',
+                'rounded-full border-2 border-black dark:border-background dark:text-background h-[4vh] xl:h-[5vh] w-full text-sm md:text-base',
                 { 'hover:border-orange hover:text-orange': !selectedCountry },
                 { 'border-orange text-orange': selectedCountry === country },
                 {
@@ -243,6 +251,7 @@ export default {
     return {
       data: [],
       dataCategories: [],
+      //Hardcoded as there is no way to access them through the free API info
       dataCountries: [
         "French",
         "Chinese",
@@ -272,16 +281,20 @@ export default {
     };
   },
   setup() {
+    //Gets info from Pinia recipesStore + scheduleStore
     const scheduleStore = useSchedule();
     const recipesStore = useRecipe();
     return { scheduleStore, recipesStore };
   },
   mounted() {
+    //Gets information on mounted so it's correctly updated from other parts of the app
     this.getRecipes();
     this.getCategories();
-    this.scheduleStore.handleInfo = "";
+    this.scheduleStore.handleInfo = ""; //Makes sure no remaining information from previous computations is still stored -> could lead to code failure
+    //Checks screen width -> for filters open/closed MOBILE
     window.addEventListener("resize", this.handleWindowResize);
     this.handleWindowResize();
+    //Gets info from Firebase -> async function in firebase.js
     getRecipes().then((newRecipe) => {
       this.recipesStore.recipe = newRecipe;
     });
@@ -294,6 +307,7 @@ export default {
   },
   methods: {
     async getRecipes() {
+      //Runs through all alphabet letters -> API doesn't get info from all recipes at once, just per first letter
       for (
         let letter = "a".charCodeAt(0);
         letter <= "z".charCodeAt(0);
@@ -314,6 +328,7 @@ export default {
       this.loading = false;
     },
     handleResponse(response) {
+      //Loops through new recipes in API, gets the information and passes it to data
       const recipes = response.data.meals.map((recipe) => ({
         name: recipe.strMeal,
         img: recipe.strMealThumb,
@@ -335,6 +350,7 @@ export default {
       this.data = this.data.concat(newRecipes);
     },
     getCategories() {
+      //Used to get info from all categories in API -> API provides this option
       const apiUrlCategories =
         "https://www.themealdb.com/api/json/v1/1/categories.php";
       axios
@@ -345,42 +361,49 @@ export default {
         });
     },
     handleResponseCategories(response) {
+      //Extracts category names from the API response and stores them in dataCategories
       this.dataCategories = response.data.categories.map(
         (category) => category.strCategory
       );
     },
     async handleCategories(category) {
+      //Resets the search input
       this.search = null;
+      //Awaits the next animation frame for smoother UI updates
       await new Promise((resolve) => requestAnimationFrame(resolve));
+      //Toggles the selected category -> if it's already selected, deselect, otherwise select and deselect country
       if (this.selectedCategory === category) {
         this.selectedCategory = null;
       } else {
         this.selectedCategory = category;
         this.selectedCountry = null;
       }
+      //Toggles the active state of the category dropdown + resets the search input
       this.activeCategory = !this.activeCategory;
       this.activeCountry = false;
-    },
-    switchCategories() {
-      this.showCategories = true;
-      this.showCountries = false;
-    },
-    handleResponseCountries() {
-      this.dataCountries = response.data;
+      this.search = null;
     },
     async handleCountries(country) {
+      //Resets the search input
       this.search = null;
+      //Awaits the next animation frame for smoother UI updates
       await new Promise((resolve) => requestAnimationFrame(resolve));
+      //Toggles the selected country -> if it's already selected, deselect, otherwise select and deselect category
       if (this.selectedCountry === country) {
         this.selectedCountry = null;
       } else {
         this.selectedCountry = country;
         this.selectedCategory = null;
       }
+      //Toggles the active state of the category dropdown + resets the search input
       this.activeCountry = !this.activeCountry;
       this.activeCategory = false;
-
       this.search = null;
+    },
+    //Methods below are self-explanatory
+    switchCategories() {
+      this.showCategories = true;
+      this.showCountries = false;
     },
     switchCountries() {
       this.showCategories = false;
@@ -399,34 +422,39 @@ export default {
     },
   },
   computed: {
-    totalRecipes() {
-      return this.data.length;
-    },
     filteredRecipes() {
+      //Filters recipes based on search input  -> lowercase so it's case insensitive
       const input = this.search.toLowerCase();
       return this.data.filter((recipe) =>
         recipe.name.toLowerCase().includes(input)
       );
     },
     filteredCategories() {
+      //Checks if a category is selected -> lowercase so it's case insensitive
       if (this.selectedCategory) {
         const category = this.selectedCategory.toLowerCase();
+        //Filters recipes whose category matches the selected category
         return this.data.filter(
           (recipe) => recipe.category.toLowerCase() === category
         );
       }
+      //If no category is selected, returns all recipes
       return this.data;
     },
     filteredCountries() {
+      // Filters recipes based on the selected country -> returns all recipes if no country is selected
       if (this.selectedCountry) {
         const country = this.selectedCountry.toLowerCase();
+        //Filters recipes whose country matches the selected country
         return this.data.filter(
           (recipe) => recipe.country.toLowerCase() === country
         );
       }
+      //If no country is selected, returns all recipes
       return this.data;
     },
     filtersRight() {
+      //Returns the appropriate filter function (Countries/Categories) based on the selected category
       return this.selectedCategory
         ? this.filteredCategories
         : this.filteredCountries;
