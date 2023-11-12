@@ -16,7 +16,7 @@
         :class="{
           'object-cover': (meal && todaysMealImg) || !meal,
           'object-contain': meal && !todaysMealImg,
-          'h-[12vh] sm:h-[26vh] xl:h-[31vh]': meal,
+          'h-[12vh] sm:h-[26vh] xl:h-[32vh]': meal,
           'h-[20vh] sm:h-[15vh] ': !meal,
         }"
         :src="meal ? todaysMealImg || defaultImage : img"

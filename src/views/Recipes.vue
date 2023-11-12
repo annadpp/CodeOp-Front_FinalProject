@@ -81,7 +81,7 @@
       </div>
       <div
         v-if="!loading"
-        class="xl:h-[9vh] flex items-center w-full md:mb-8 xl:mb-0 px-5 xl:px-0"
+        class="xl:h-[9vh] flex items-center w-full mb-4 md:mb-8 xl:mb-0 px-5 xl:px-0"
       >
         <router-link
           class="flex items-center justify-center rounded-full border-2 xl:text-lg bg-background dark:bg-stone-950 border-black dark:border-background h-[4vh] xl:h-[5vh] w-full hover:border-orange hover:text-orange mb-6 dark:text-background"
@@ -100,9 +100,10 @@
       }"
     >
       <div
-        class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5 border-black dark:border-background dark:text-background dark:xl:border-background border-y-2"
+        class="flex flex-col justify-center items-center xl:h-[20vh] gap-x-5 w-full px-8 py-5 xl:py-0 gap-y-5 border-black dark:border-background dark:text-background dark:xl:border-background border-b-2"
         :class="{
           'border-black pb-[2.35vh]': loading,
+          'border-t-2': this.screenWidth < 1280,
         }"
       >
         <p>S E A R C H &nbsp&nbsp+ &nbsp&nbspF I L T E R</p>
@@ -132,7 +133,7 @@
       <div
         v-else
         v-if="showFilter"
-        class="flex flex-col justify-start xl:justify-around dark:border-background h-[44vh] xl:h-[65vh] p-5"
+        class="flex flex-col justify-start xl:justify-around dark:border-background h-[44vh] xl:h-[65vh] p-5 xl:mt-5"
       >
         <!--CATEGORY/COUNTRIES BUTTONS-->
         <div class="flex gap-x-5">
@@ -180,7 +181,7 @@
         <!--Different categories/countries to be filtered button -> depends on which of buttons above is selected-->
         <div v-if="showCategories">
           <div
-            class="grid grid-cols-2 gap-y-[1vh] gap-x-3 xl:gap-x-5 h-[29vh] xl:h-[50vh] justify-center items-center"
+            class="grid grid-cols-2 gap-y-[1vh] gap-x-3 xl:gap-x-5 h-[29vh] xl:h-[50vh] justify-center items-center xl:mb-8"
           >
             <!--Adds a button for each category stored in dataCategories-->
             <button
@@ -211,7 +212,7 @@
 
         <div v-else-if="showCountries">
           <div
-            class="grid grid-cols-2 gap-y-[1vh] gap-x-3 xl:gap-x-5 h-[29vh] xl:h-[50vh] justify-center items-center"
+            class="grid grid-cols-2 gap-y-[1vh] gap-x-3 xl:gap-x-5 h-[29vh] xl:h-[50vh] justify-center items-center xl:mb-8"
           >
             <!--Adds a button for each country stored in dataCountries-->
             <button

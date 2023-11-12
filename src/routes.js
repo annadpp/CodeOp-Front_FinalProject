@@ -6,6 +6,8 @@ import Schedule from "./views/Schedule.vue";
 import Recipe from "./views/Recipe.vue";
 import NewRecipe from "./views/NewRecipe.vue";
 
+import NotFound from "./views/NotFound.vue";
+
 export const routes = [
   { path: "/", component: Home },
   { path: "/recipes", component: Recipes, name: Recipes },
@@ -14,4 +16,6 @@ export const routes = [
 
   { path: "/recipes/:id", component: Recipe, name: Recipe },
   { path: "/recipes/new", component: NewRecipe, name: NewRecipe },
+
+  { path: "/:pathMatch(.*)*", component: NotFound },
 ];

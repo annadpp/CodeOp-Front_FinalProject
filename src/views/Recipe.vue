@@ -319,14 +319,12 @@ export default {
     //Gets info on screen size -> ingredients open/closed MOBILE
     window.addEventListener("resize", this.handleWindowResize);
     this.handleWindowResize();
-
     // Getting recipes asynchronously
     getRecipes().then((newRecipe) => {
       this.recipesStore.recipe = newRecipe;
       this.getRecipes(); // Call getRecipes after setting this.recipesStore.recipe
       this.loading = false; // This could be placed here if loading relies on the completion of these initializations
     });
-
     setTimeout(() => {
       this.loading = false; //Sets loading to false after 1 second -> for fake loader
     }, 800);
